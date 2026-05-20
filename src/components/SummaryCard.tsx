@@ -110,10 +110,12 @@ export default function SummaryCard({ items, animate = false }: SummaryCardProps
                   r="8.33"
                   $isComplete={isComplete}
                 />
-                <CheckMark
-                  d="M7.5 10L9.16667 11.6667L12.5 8.33333"
-                  $isComplete={isComplete}
-                />
+                {isComplete && (
+                  <CheckMark
+                    d="M7.5 10L9.16667 11.6667L12.5 8.33333"
+                    $isComplete={isComplete}
+                  />
+                )}
               </CheckIconSvg>
             </CheckIcon>
             <ItemText>{item}</ItemText>
