@@ -37,7 +37,7 @@ const StepIcon = styled.div.attrs({ className: 'step-icon' })<{ $isCurrent: bool
 const CheckIcon = styled(CheckSmStrokeIcon).attrs({ className: 'step-check-icon' })`
   width: 16px;
   height: 16px;
-  color: #68b828;
+  color: #293239;
 `;
 
 const StepNumber = styled.span.attrs({ className: 'step-number' })<{ $isCurrent: boolean }>`
