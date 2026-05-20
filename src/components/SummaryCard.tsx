@@ -35,8 +35,8 @@ const CheckIconSvg = styled.svg<{ $isComplete: boolean }>`
 `;
 
 const CheckCircle = styled.circle<{ $isComplete: boolean }>`
-  fill: ${props => props.$isComplete ? '#68B828' : '#68737D'};
-  opacity: ${props => props.$isComplete ? 1 : 0.3};
+  fill: ${props => props.$isComplete ? '#68B828' : '#D8DCDE'};
+  opacity: 1;
   transition: all 0.3s ease;
 `;
 
