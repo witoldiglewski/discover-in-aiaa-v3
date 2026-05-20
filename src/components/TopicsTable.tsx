@@ -18,6 +18,7 @@ const Container = styled.div.attrs({ className: 'topics-table-container' })`
   gap: 20px;
   width: 100%;
   height: 100%;
+  position: relative;
 `;
 
 const Header = styled.div.attrs({ className: 'topics-table-header' })`
@@ -38,7 +39,7 @@ const Title = styled.h2.attrs({ className: 'topics-title' })`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: #2f3130;
   margin: 0;
 `;
@@ -54,7 +55,7 @@ const Subtitle = styled.p.attrs({ className: 'topics-subtitle' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
 `;
@@ -72,7 +73,7 @@ const ColumnHeader = styled.div.attrs({ className: 'table-column-header' })<{ $w
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3130;
   ${props => props.$width ? `width: ${props.$width};` : 'flex: 1;'}
 `;
@@ -110,6 +111,17 @@ const TableContent = styled.div.attrs({ className: 'table-content' })`
   }
 `;
 
+const FadeOverlay = styled.div.attrs({ className: 'fade-overlay' })`
+  position: absolute;
+  bottom: 1px;
+  left: 21px;
+  right: 33px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  pointer-events: none;
+  border-radius: 0 0 11px 11px;
+`;
+
 const TableRow = styled.div.attrs({ className: 'table-row' })<{ $index?: number }>`
   display: flex;
   gap: 20px;
@@ -118,7 +130,7 @@ const TableRow = styled.div.attrs({ className: 'table-row' })<{ $index?: number 
   border-bottom: 1px solid #eae9e8;
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease forwards;
-  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
+  animation-delay: ${props => props.$index ? props.$index * 0.05 : 0}s;
 
   &:last-child {
     border-bottom: none;
@@ -132,7 +144,7 @@ const TopicCell = styled.div.attrs({ className: 'table-cell-topic' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,7 +157,7 @@ const ConversationsCell = styled.div.attrs({ className: 'table-cell-conversation
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -170,7 +182,7 @@ const Tag = styled.div.attrs({ className: 'automation-tag' })`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #25390f;
   white-space: nowrap;
 `;
@@ -228,6 +240,8 @@ export default function TopicsTable() {
           </TableRow>
         ))}
       </TableContent>
+
+      <FadeOverlay />
     </Container>
   );
 }

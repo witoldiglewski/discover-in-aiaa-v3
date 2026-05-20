@@ -7,6 +7,7 @@ import SummaryCard from './SummaryCard';
 import TopicsTable from './TopicsTable';
 import ArticlesTable from './ArticlesTable';
 import ProceduresTable from './ProceduresTable';
+import SummaryGrid from './SummaryGrid';
 import ActionFooter from './ActionFooter';
 
 const Container = styled.div.attrs({ className: 'main-content-container' })`
@@ -45,7 +46,7 @@ const Title = styled.h1.attrs({ className: 'page-title' })`
   font-weight: 400;
   font-size: 26px;
   line-height: 32px;
-  letter-spacing: 0.354px;
+  letter-spacing: 0;
   color: #2f3130;
   margin: 0;
   max-width: 700px;
@@ -56,7 +57,7 @@ const Subtitle = styled.p.attrs({ className: 'page-subtitle' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
   max-width: 670px;
@@ -157,6 +158,10 @@ export default function MainContent() {
     // Go back through the stepper steps
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+      // If going back to step 0, hide the table to show the loader/summary card
+      if (currentStep === 1) {
+        setShowTable(false);
+      }
     }
   };
 
@@ -184,7 +189,9 @@ export default function MainContent() {
           </LeftPanel>
 
           <RightPanel>
-            {currentStep === 3 ? (
+            {currentStep === 4 ? (
+              <SummaryGrid />
+            ) : currentStep === 3 ? (
               <ProceduresTable />
             ) : currentStep === 2 ? (
               <ArticlesTable />

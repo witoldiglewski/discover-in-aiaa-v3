@@ -42,7 +42,7 @@ const Title = styled.h2.attrs({ className: 'procedures-title' })`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: #2f3130;
   margin: 0;
 `;
@@ -58,7 +58,7 @@ const Subtitle = styled.p.attrs({ className: 'procedures-subtitle' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
 `;
@@ -76,7 +76,7 @@ const ColumnHeader = styled.div.attrs({ className: 'procedures-column-header' })
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3130;
   ${props => props.$width ? `width: ${props.$width};` : ''}
   ${props => props.$width === '260px' ? 'min-width: 260px;' : ''}
@@ -109,7 +109,7 @@ const TitleCell = styled.div.attrs({ className: 'procedures-cell-title' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -135,7 +135,7 @@ const StatusText = styled.span.attrs({ className: 'status-text' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   white-space: nowrap;
   overflow: hidden;
@@ -167,7 +167,7 @@ const ImpactText = styled.span.attrs({ className: 'impact-text' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   white-space: nowrap;
 `;
@@ -193,7 +193,7 @@ const ReviewButton = styled.button.attrs({ className: 'review-button' })`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   white-space: nowrap;
 

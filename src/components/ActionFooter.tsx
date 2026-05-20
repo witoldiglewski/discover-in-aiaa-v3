@@ -44,7 +44,7 @@ const StepText = styled.p.attrs({ className: 'step-text' })`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
   white-space: nowrap;

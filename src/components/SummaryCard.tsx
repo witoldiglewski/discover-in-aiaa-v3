@@ -54,7 +54,7 @@ const ItemText = styled.p.attrs({ className: 'checklist-item-text' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
   white-space: nowrap;

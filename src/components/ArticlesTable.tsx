@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
 import SparkleAltIcon from '../../svg-assets/sparkle-alt.svg?react';
 import HighImpactIcon from '../../svg-assets/high-impact.svg?react';
 import MediumImpactIcon from '../../svg-assets/medium-impact.svg?react';
+import ArticleOverlay from './ArticleOverlay';
 
 const fadeInUp = keyframes`
   from {
@@ -42,7 +44,7 @@ const Title = styled.h2.attrs({ className: 'articles-title' })`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: #2f3130;
   margin: 0;
 `;
@@ -58,7 +60,7 @@ const Subtitle = styled.p.attrs({ className: 'articles-subtitle' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   margin: 0;
 `;
@@ -76,7 +78,7 @@ const ColumnHeader = styled.div.attrs({ className: 'articles-column-header' })<{
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3130;
   ${props => props.$width ? `width: ${props.$width};` : ''}
   ${props => props.$width === '260px' ? 'min-width: 260px;' : ''}
@@ -109,7 +111,7 @@ const TitleCell = styled.div.attrs({ className: 'articles-cell-title' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -135,7 +137,7 @@ const StatusText = styled.span.attrs({ className: 'status-text' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   white-space: nowrap;
   overflow: hidden;
@@ -167,7 +169,7 @@ const ImpactText = styled.span.attrs({ className: 'impact-text' })`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #646864;
   white-space: nowrap;
 `;
@@ -193,7 +195,7 @@ const ReviewButton = styled.button.attrs({ className: 'review-button' })`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3130;
   white-space: nowrap;
 
@@ -222,46 +224,51 @@ const articles: Article[] = [
 ];
 
 export default function ArticlesTable() {
+  const [showOverlay, setShowOverlay] = useState(false);
+
   return (
-    <Container>
-      <Header>
-        <TitleRow>
-          <Title>Create articles</Title>
-          <InfoIcon />
-        </TitleRow>
-        <Subtitle>
-          All recommendations are drafts and require your review before publishing.
-        </Subtitle>
-      </Header>
+    <>
+      {showOverlay && <ArticleOverlay onClose={() => setShowOverlay(false)} />}
+      <Container>
+        <Header>
+          <TitleRow>
+            <Title>Create articles</Title>
+            <InfoIcon />
+          </TitleRow>
+          <Subtitle>
+            All recommendations are drafts and require your review before publishing.
+          </Subtitle>
+        </Header>
 
-      <TableHeader>
-        <ColumnHeader $width="260px">Title</ColumnHeader>
-        <ColumnHeader>Status</ColumnHeader>
-        <ColumnHeader>Impact</ColumnHeader>
-        <ColumnHeader $width="80px">Action</ColumnHeader>
-      </TableHeader>
+        <TableHeader>
+          <ColumnHeader $width="260px">Title</ColumnHeader>
+          <ColumnHeader>Status</ColumnHeader>
+          <ColumnHeader>Impact</ColumnHeader>
+          <ColumnHeader $width="80px">Action</ColumnHeader>
+        </TableHeader>
 
-      <TableContent>
-        {articles.map((article, index) => (
-          <TableRow key={index} $index={index}>
-            <TitleCell>{article.title}</TitleCell>
-            <StatusCell>
-              <SparkleIcon />
-              <StatusText>{article.status}</StatusText>
-            </StatusCell>
-            <ImpactCell>
-              {article.impact === 'high' ? <ImpactIndicatorHigh /> : <ImpactIndicatorMedium />}
-              <ImpactText>{article.impact === 'high' ? 'High' : 'Medium'}</ImpactText>
-            </ImpactCell>
-            <ActionCell>
-              <ReviewButton>
-                Review
-                <ChevronIcon />
-              </ReviewButton>
-            </ActionCell>
-          </TableRow>
-        ))}
-      </TableContent>
-    </Container>
+        <TableContent>
+          {articles.map((article, index) => (
+            <TableRow key={index} $index={index}>
+              <TitleCell>{article.title}</TitleCell>
+              <StatusCell>
+                <SparkleIcon />
+                <StatusText>{article.status}</StatusText>
+              </StatusCell>
+              <ImpactCell>
+                {article.impact === 'high' ? <ImpactIndicatorHigh /> : <ImpactIndicatorMedium />}
+                <ImpactText>{article.impact === 'high' ? 'High' : 'Medium'}</ImpactText>
+              </ImpactCell>
+              <ActionCell>
+                <ReviewButton onClick={() => setShowOverlay(true)}>
+                  Review
+                  <ChevronIcon />
+                </ReviewButton>
+              </ActionCell>
+            </TableRow>
+          ))}
+        </TableContent>
+      </Container>
+    </>
   );
 }

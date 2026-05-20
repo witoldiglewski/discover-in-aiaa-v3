@@ -76,7 +76,7 @@ const StepNumber = styled.span.attrs({ className: 'step-number' })<{ $isCurrent:
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: ${props => props.$isCurrent ? 'white' : '#293239'};
   ${props => props.$willComplete && `animation: ${fadeOut} 0.3s ease forwards;`}
 `;
@@ -87,7 +87,7 @@ const StepLabel = styled.p.attrs({ className: 'step-label' })<{ $isCurrent: bool
   font-weight: ${props => props.$isCurrent ? '600' : '400'};
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: ${props => {
     if (props.$isCompleted) return '#5c6970';
     return props.$isCurrent ? '#293239' : '#5c6970';
@@ -117,7 +117,7 @@ const StepDescription = styled.p.attrs({ className: 'step-description' })`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #293239;
   margin: 0;
   padding-left: 24px;
