@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
-import SparkleFillIcon from '@zendeskgarden/svg-icons/src/16/sparkle-fill.svg?react';
+import SparkleAltIcon from '../../svg-assets/sparkle-alt.svg?react';
+import HighImpactIcon from '../../svg-assets/high-impact.svg?react';
+import MediumImpactIcon from '../../svg-assets/medium-impact.svg?react';
 
 const Container = styled.div.attrs({ className: 'articles-table-container' })`
   display: flex;
@@ -108,11 +110,10 @@ const StatusCell = styled.div.attrs({ className: 'articles-cell-status' })`
   min-width: 0;
 `;
 
-const SparkleIcon = styled(SparkleFillIcon).attrs({ className: 'sparkle-icon' })`
+const SparkleIcon = styled(SparkleAltIcon).attrs({ className: 'sparkle-icon' })`
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: #8d59b1;
 `;
 
 const StatusText = styled.span.attrs({ className: 'status-text' })`
@@ -135,11 +136,15 @@ const ImpactCell = styled.div.attrs({ className: 'articles-cell-impact' })`
   min-width: 0;
 `;
 
-const ImpactIndicator = styled.div.attrs({ className: 'impact-indicator' })<{ $level: 'high' | 'medium' }>`
+const ImpactIndicatorHigh = styled(HighImpactIcon).attrs({ className: 'impact-indicator-high' })`
   width: 16px;
   height: 16px;
-  border-radius: 50%;
-  background: ${props => props.$level === 'high' ? '#68B828' : '#F79A3E'};
+  flex-shrink: 0;
+`;
+
+const ImpactIndicatorMedium = styled(MediumImpactIcon).attrs({ className: 'impact-indicator-medium' })`
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
 `;
 
@@ -231,7 +236,7 @@ export default function ArticlesTable() {
               <StatusText>{article.status}</StatusText>
             </StatusCell>
             <ImpactCell>
-              <ImpactIndicator $level={article.impact} />
+              {article.impact === 'high' ? <ImpactIndicatorHigh /> : <ImpactIndicatorMedium />}
               <ImpactText>{article.impact === 'high' ? 'High' : 'Medium'}</ImpactText>
             </ImpactCell>
             <ActionCell>
