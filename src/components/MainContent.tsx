@@ -170,7 +170,7 @@ export default function MainContent() {
           <RightPanel>
             <LoaderAnimation />
             <Divider />
-            <SummaryCard items={summaryItems} />
+            <SummaryCard items={summaryItems} animate={true} />
           </RightPanel>
         </PanelsContainer>
       </ContentArea>

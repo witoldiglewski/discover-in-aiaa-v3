@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Card = styled.div`
@@ -17,19 +18,36 @@ const ChecklistItem = styled.div`
   width: 100%;
 `;
 
-const CheckIcon = styled.div`
+const CheckIcon = styled.div<{ $isComplete: boolean }>`
   width: 20px;
   height: 20px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.3s ease;
 `;
 
-const CheckIconSvg = styled.svg`
-  width: 16.67px;
-  height: 16.67px;
-  color: #646864;
+const CheckIconSvg = styled.svg<{ $isComplete: boolean }>`
+  width: 20px;
+  height: 20px;
+  transition: color 0.3s ease;
+`;
+
+const CheckCircle = styled.circle<{ $isComplete: boolean }>`
+  fill: ${props => props.$isComplete ? '#68B828' : '#68737D'};
+  opacity: ${props => props.$isComplete ? 1 : 0.3};
+  transition: all 0.3s ease;
+`;
+
+const CheckMark = styled.path<{ $isComplete: boolean }>`
+  stroke: white;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: ${props => props.$isComplete ? 1 : 0};
+  transition: opacity 0.3s ease;
 `;
 
 const ItemText = styled.p`
@@ -48,28 +66,60 @@ const ItemText = styled.p`
 
 interface SummaryCardProps {
   items: string[];
+  animate?: boolean;
 }
 
-export default function SummaryCard({ items }: SummaryCardProps) {
+export default function SummaryCard({ items, animate = false }: SummaryCardProps) {
+  const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (!animate) {
+      // If not animating, show all items as complete
+      setCompletedSteps(items.map((_, index) => index));
+      return;
+    }
+
+    // Animate items one by one with 0.5s delay
+    const timers: NodeJS.Timeout[] = [];
+
+    items.forEach((_, index) => {
+      const timer = setTimeout(() => {
+        setCompletedSteps(prev => [...prev, index]);
+      }, index * 500); // 500ms = 0.5s delay between each
+
+      timers.push(timer);
+    });
+
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, [animate, items]);
+
   return (
     <Card>
-      {items.map((item, index) => (
-        <ChecklistItem key={index}>
-          <CheckIcon>
-            <CheckIconSvg viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="8.33" fill="currentColor" opacity="0.3"/>
-              <path
-                d="M7.5 10L9.16667 11.6667L12.5 8.33333"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </CheckIconSvg>
-          </CheckIcon>
-          <ItemText>{item}</ItemText>
-        </ChecklistItem>
-      ))}
+      {items.map((item, index) => {
+        const isComplete = completedSteps.includes(index);
+
+        return (
+          <ChecklistItem key={index}>
+            <CheckIcon $isComplete={isComplete}>
+              <CheckIconSvg viewBox="0 0 20 20" $isComplete={isComplete}>
+                <CheckCircle
+                  cx="10"
+                  cy="10"
+                  r="8.33"
+                  $isComplete={isComplete}
+                />
+                <CheckMark
+                  d="M7.5 10L9.16667 11.6667L12.5 8.33333"
+                  $isComplete={isComplete}
+                />
+              </CheckIconSvg>
+            </CheckIcon>
+            <ItemText>{item}</ItemText>
+          </ChecklistItem>
+        );
+      })}
     </Card>
   );
 }
