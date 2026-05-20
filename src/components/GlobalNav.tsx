@@ -48,7 +48,7 @@ const products = [
 
 export default function GlobalNav({ children }: GlobalNavProps) {
   const [currentNav, setCurrentNav] = useState('agents');
-  const [isSubnavCollapsed, setIsSubnavCollapsed] = useState(false);
+  const [isSubnavCollapsed, setIsSubnavCollapsed] = useState(true);
 
   return (
     <Product locale="en-US" products={products}>
