@@ -1,0 +1,76 @@
+- generic [ref=e131]:
+  - link "Skip to main content" [ref=e132] [cursor=pointer]:
+    - /url: "#:r1h:"
+    - img [ref=e133]
+    - text: Skip to main content
+  - banner "Header" [ref=e135]:
+    - img "Zendesk" [ref=e136]
+    - button "AI agents" [ref=e138] [cursor=pointer]:
+      - text: AI agents
+      - img [ref=e139]
+    - button "Search" [ref=e141] [cursor=pointer]:
+      - img [ref=e142]
+    - button "Help" [ref=e144] [cursor=pointer]:
+      - img [ref=e145]
+    - button "Witold Iglewski witold.iglewski@zendesk.com" [ref=e147] [cursor=pointer]:
+      - figure [ref=e148]:
+        - img [ref=e149]
+  - navigation "Main" [ref=e151]:
+    - list [ref=e152]:
+      - listitem [ref=e153]:
+        - button "Overview" [ref=e154] [cursor=pointer]:
+          - img [ref=e156]
+      - listitem [ref=e158]:
+        - button "AI Agents" [active] [ref=e159]:
+          - img [ref=e161]
+      - listitem [ref=e163]:
+        - button "Conversations" [ref=e164] [cursor=pointer]:
+          - img [ref=e166]
+      - listitem [ref=e168]:
+        - button "Settings" [ref=e169] [cursor=pointer]:
+          - img [ref=e171]
+      - listitem [ref=e173]:
+        - button "Tools" [ref=e174] [cursor=pointer]:
+          - img [ref=e176]
+      - listitem [ref=e178]:
+        - button "People" [ref=e179] [cursor=pointer]:
+          - img [ref=e181]
+      - listitem [ref=e183]:
+        - button "Database" [ref=e184] [cursor=pointer]:
+          - img [ref=e186]
+      - listitem [ref=e188]:
+        - button "Apps" [ref=e189] [cursor=pointer]:
+          - img [ref=e191]
+      - listitem [ref=e193]:
+        - button "Growth" [ref=e194] [cursor=pointer]:
+          - img [ref=e196]
+  - navigation "Sub" [ref=e211]:
+    - list [ref=e213]:
+      - listitem [ref=e214]:
+        - button "Discover" [ref=e215]:
+          - generic [ref=e216]: Discover
+      - listitem [ref=e217]:
+        - button "Custom Agents" [ref=e218] [cursor=pointer]:
+          - generic [ref=e219]: Custom Agents
+      - listitem [ref=e220]:
+        - button "Agent Builder" [ref=e221] [cursor=pointer]:
+          - generic [ref=e222]: Agent Builder
+      - listitem [ref=e223]:
+        - button "Performance" [ref=e224] [cursor=pointer]:
+          - generic [ref=e225]: Performance
+      - listitem [ref=e226]:
+        - button "Analytics" [ref=e227] [cursor=pointer]:
+          - generic [ref=e228]: Analytics
+  - main [ref=e198]:
+    - generic [ref=e199]:
+      - generic [ref=e200]:
+        - heading "Discover in AI Agents" [level=1] [ref=e201]
+        - generic [ref=e202]: Welcome to the AI Agents automation platform
+      - generic [ref=e203]:
+        - paragraph [ref=e204]: "This is a production-quality Zendesk prototype built with:"
+        - list [ref=e205]:
+          - listitem [ref=e206]: React with TypeScript
+          - listitem [ref=e207]: Vite for fast development
+          - listitem [ref=e208]: Garden design system (@zendeskgarden/react-*)
+          - listitem [ref=e209]: Zendesk-UI navigation (@zendesk-ui/navigation)
+        - button "Get Started" [ref=e210] [cursor=pointer]
