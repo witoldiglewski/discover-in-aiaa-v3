@@ -63,7 +63,7 @@ const TableHeader = styled.div.attrs({ className: 'table-header-row' })`
   display: flex;
   gap: 20px;
   padding-left: 28px;
-  padding-right: 32px;
+  padding-right: 41px;
   height: 20px;
 `;
 
@@ -88,6 +88,26 @@ const TableContent = styled.div.attrs({ className: 'table-content' })`
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d8dcde;
+    border-radius: 6px;
+    border: 3px solid white;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b8c0c5;
+  }
 `;
 
 const TableRow = styled.div.attrs({ className: 'table-row' })<{ $index?: number }>`

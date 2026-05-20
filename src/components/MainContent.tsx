@@ -5,6 +5,7 @@ import Stepper from './Stepper';
 import LoaderAnimation from './LoaderAnimation';
 import SummaryCard from './SummaryCard';
 import TopicsTable from './TopicsTable';
+import ArticlesTable from './ArticlesTable';
 import ActionFooter from './ActionFooter';
 
 const Container = styled.div.attrs({ className: 'main-content-container' })`
@@ -114,6 +115,7 @@ const steps = [
   },
   {
     label: 'Create articles',
+    description: 'Include instructions and forms as needed.',
   },
   {
     label: 'Create procedures',
@@ -146,6 +148,10 @@ export default function MainContent() {
   const handleNext = () => {
     if (wizardStep < 4) {
       setWizardStep(prev => prev + 1);
+      // Update stepper when moving to step 3
+      if (wizardStep === 2) {
+        setCurrentStep(2); // Move to step 3: "Create articles"
+      }
     }
   };
 
@@ -179,7 +185,9 @@ export default function MainContent() {
           </LeftPanel>
 
           <RightPanel>
-            {showTable ? (
+            {currentStep === 2 ? (
+              <ArticlesTable />
+            ) : showTable ? (
               <TopicsTable />
             ) : (
               <>
@@ -198,7 +206,7 @@ export default function MainContent() {
         onPrevious={handlePrevious}
         onNext={handleNext}
         onSaveAndClose={handleSaveAndClose}
-        isNextDisabled={true}
+        isNextDisabled={!showTable}
       />
     </Container>
   );
