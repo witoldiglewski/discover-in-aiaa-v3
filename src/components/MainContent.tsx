@@ -6,6 +6,7 @@ import LoaderAnimation from './LoaderAnimation';
 import SummaryCard from './SummaryCard';
 import TopicsTable from './TopicsTable';
 import ArticlesTable from './ArticlesTable';
+import ProceduresTable from './ProceduresTable';
 import ActionFooter from './ActionFooter';
 
 const Container = styled.div.attrs({ className: 'main-content-container' })`
@@ -119,6 +120,7 @@ const steps = [
   },
   {
     label: 'Create procedures',
+    description: 'Include instructions and forms as needed.',
   },
   {
     label: 'Summary',
@@ -182,7 +184,9 @@ export default function MainContent() {
           </LeftPanel>
 
           <RightPanel>
-            {currentStep === 2 ? (
+            {currentStep === 3 ? (
+              <ProceduresTable />
+            ) : currentStep === 2 ? (
               <ArticlesTable />
             ) : showTable ? (
               <TopicsTable />

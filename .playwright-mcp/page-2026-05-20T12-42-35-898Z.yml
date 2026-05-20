@@ -1,0 +1,14 @@
+- generic [ref=e3]:
+  - generic [ref=e4]: "[plugin:vite:import-analysis] Failed to resolve import \"../svg-assets/sparkle-alt.svg?react\" from \"src/components/ArticlesTable.tsx\". Does the file exist?"
+  - generic [ref=e5]: /Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/src/components/ArticlesTable.tsx:4:27
+  - generic [ref=e6]: 18 | import InfoStrokeIcon from "@zendeskgarden/svg-icons/src/16/info-stroke.svg?react"; 19 | import ChevronRightIcon from "@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react"; 20 | import SparkleAltIcon from "../svg-assets/sparkle-alt.svg?react"; | ^ 21 | import HighImpactIcon from "../svg-assets/high-impact.svg?react"; 22 | import MediumImpactIcon from "../svg-assets/medium-impact.svg?react";
+  - generic [ref=e7]: at TransformPluginContext._formatLog (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42553:41) at TransformPluginContext.error (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42550:16) at normalizeUrl (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40529:23) at process.processTicksAndRejections (node:internal/process/task_queues:104:5) at async file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40648:37 at async Promise.all (index 6) at async TransformPluginContext.transform (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:40575:7) at async EnvironmentPluginContainer.transform (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:42348:18) at async loadAndTransform (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:35740:27) at async viteTransformMiddleware (file:///Users/witold.iglewski/Desktop/Claude/discover-in-aiaa/node_modules/vite/dist/node/chunks/dep-Dq2t6Dq0.js:37264:24
+  - generic [ref=e8]:
+    - text: Click outside, press Esc key, or fix the code to dismiss.
+    - text: You can also disable this overlay by setting
+    - code [ref=e9]: server.hmr.overlay
+    - text: to
+    - code [ref=e10]: "false"
+    - text: in
+    - code [ref=e11]: vite.config.ts
+    - text: .

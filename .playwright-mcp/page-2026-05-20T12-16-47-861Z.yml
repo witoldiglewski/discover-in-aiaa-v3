@@ -1,0 +1,141 @@
+- generic [ref=e3]:
+  - link "Skip to main content" [ref=e4] [cursor=pointer]:
+    - /url: "#:rd:"
+    - img [ref=e5]
+    - text: Skip to main content
+  - banner "Header" [ref=e7]:
+    - img "Zendesk" [ref=e8]
+    - button "AI agents" [ref=e10] [cursor=pointer]:
+      - text: AI agents
+      - img [ref=e11]
+    - button "Search" [ref=e13] [cursor=pointer]:
+      - img [ref=e14]
+    - button "Help" [ref=e16] [cursor=pointer]:
+      - img [ref=e17]
+    - button "Witold Iglewski witold.iglewski@zendesk.com" [ref=e19] [cursor=pointer]:
+      - figure [ref=e20]:
+        - img [ref=e21]
+  - navigation "Main" [ref=e23]:
+    - list [ref=e24]:
+      - listitem [ref=e25]:
+        - button "Overview" [ref=e26] [cursor=pointer]:
+          - img [ref=e28]
+      - listitem [ref=e30]:
+        - button "AI Agents" [ref=e31]:
+          - img [ref=e33]
+      - listitem [ref=e35]:
+        - button "Conversations" [ref=e36] [cursor=pointer]:
+          - img [ref=e38]
+      - listitem [ref=e40]:
+        - button "Settings" [ref=e41] [cursor=pointer]:
+          - img [ref=e43]
+      - listitem [ref=e45]:
+        - button "Tools" [ref=e46] [cursor=pointer]:
+          - img [ref=e48]
+      - listitem [ref=e50]:
+        - button "People" [ref=e51] [cursor=pointer]:
+          - img [ref=e53]
+      - listitem [ref=e55]:
+        - button "Database" [ref=e56] [cursor=pointer]:
+          - img [ref=e58]
+      - listitem [ref=e60]:
+        - button "Apps" [ref=e61] [cursor=pointer]:
+          - img [ref=e63]
+      - listitem [ref=e65]:
+        - button "Growth" [ref=e66] [cursor=pointer]:
+          - img [ref=e68]
+    - button "Toggle subnavigation ⌃ ⇧ →" [ref=e70] [cursor=pointer]:
+      - img [ref=e72]
+  - list [ref=e75]:
+    - listitem [ref=e76]:
+      - button [ref=e77]:
+        - generic [ref=e78]: Discover
+    - listitem [ref=e79]:
+      - button [ref=e80] [cursor=pointer]:
+        - generic [ref=e81]: Custom Agents
+    - listitem [ref=e82]:
+      - button [ref=e83] [cursor=pointer]:
+        - generic [ref=e84]: Agent Builder
+    - listitem [ref=e85]:
+      - button [ref=e86] [cursor=pointer]:
+        - generic [ref=e87]: Performance
+    - listitem [ref=e88]:
+      - button [ref=e89] [cursor=pointer]:
+        - generic [ref=e90]: Analytics
+  - main [ref=e91]:
+    - generic [ref=e92]:
+      - generic [ref=e93]:
+        - generic [ref=e104]:
+          - heading "Discover automation opportunities" [level=1] [ref=e105]
+          - paragraph [ref=e106]: We analyzed your historical support conversations to find the best topics to automate. Review recommended knowledge and procedure actions before continuing.
+        - generic [ref=e107]:
+          - generic [ref=e109]:
+            - generic [ref=e111]:
+              - img [ref=e113]
+              - paragraph [ref=e115]: Analysis
+            - generic [ref=e120]:
+              - img [ref=e122]
+              - paragraph [ref=e124]: Identify topics
+            - generic [ref=e128]:
+              - generic [ref=e129]:
+                - generic [ref=e131]: "3"
+                - paragraph [ref=e132]: Create articles
+              - paragraph [ref=e135]: Include instructions and forms as needed.
+            - generic [ref=e137]:
+              - generic [ref=e139]: "4"
+              - paragraph [ref=e140]: Create procedures
+            - generic [ref=e145]:
+              - generic [ref=e147]: "5"
+              - paragraph [ref=e148]: Summary
+          - generic [ref=e153]:
+            - generic [ref=e154]:
+              - generic [ref=e155]:
+                - heading "Create articles" [level=2] [ref=e156]
+                - img [ref=e157]
+              - paragraph [ref=e161]: All recommendations are drafts and require your review before publishing.
+            - generic [ref=e162]:
+              - generic [ref=e163]: Title
+              - generic [ref=e164]: Status
+              - generic [ref=e165]: Impact
+              - generic [ref=e166]: Action
+            - generic [ref=e167]:
+              - generic [ref=e168]:
+                - generic [ref=e169]: Troubleshooting login issues
+                - generic [ref=e172]: New article
+                - generic [ref=e175]: High
+                - button "Review" [ref=e177] [cursor=pointer]:
+                  - text: Review
+                  - img [ref=e178]
+              - generic [ref=e180]:
+                - generic [ref=e181]: Resetting passwords
+                - generic [ref=e184]: New article
+                - generic [ref=e187]: High
+                - button "Review" [ref=e189] [cursor=pointer]:
+                  - text: Review
+                  - img [ref=e190]
+              - generic [ref=e192]:
+                - generic [ref=e193]: Recovering usernames
+                - generic [ref=e196]: New article
+                - generic [ref=e199]: High
+                - button "Review" [ref=e201] [cursor=pointer]:
+                  - text: Review
+                  - img [ref=e202]
+              - generic [ref=e204]:
+                - generic [ref=e205]: Unlocking accounts after too many attempts
+                - generic [ref=e208]: Article changes
+                - generic [ref=e211]: Medium
+                - button "Review" [ref=e213] [cursor=pointer]:
+                  - text: Review
+                  - img [ref=e214]
+      - generic [ref=e216]:
+        - generic [ref=e217]:
+          - button [ref=e218] [cursor=pointer]:
+            - img [ref=e219]
+          - paragraph [ref=e221]: Step 4 of 4
+          - button [disabled] [ref=e222]:
+            - img [ref=e223]
+        - generic [ref=e225]:
+          - button "Save and close" [ref=e226] [cursor=pointer]
+          - button "Next" [active] [ref=e227] [cursor=pointer]:
+            - text: Next
+            - img [ref=e228]
