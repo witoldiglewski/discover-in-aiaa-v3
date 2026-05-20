@@ -41,13 +41,12 @@ const CheckCircle = styled.circle<{ $isComplete: boolean }>`
 `;
 
 const CheckMark = styled.path<{ $isComplete: boolean }>`
-  stroke: white;
+  stroke: ${props => props.$isComplete ? 'white' : '#C2C8CC'};
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
-  opacity: ${props => props.$isComplete ? 1 : 0};
-  transition: opacity 0.3s ease;
+  transition: stroke 0.3s ease;
 `;
 
 const ItemText = styled.p`
@@ -110,12 +109,10 @@ export default function SummaryCard({ items, animate = false }: SummaryCardProps
                   r="8.33"
                   $isComplete={isComplete}
                 />
-                {isComplete && (
-                  <CheckMark
-                    d="M7.5 10L9.16667 11.6667L12.5 8.33333"
-                    $isComplete={isComplete}
-                  />
-                )}
+                <CheckMark
+                  d="M7.5 10L9.16667 11.6667L12.5 8.33333"
+                  $isComplete={isComplete}
+                />
               </CheckIconSvg>
             </CheckIcon>
             <ItemText>{item}</ItemText>
