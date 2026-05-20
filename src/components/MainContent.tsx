@@ -4,6 +4,7 @@ import StepProgress from './StepProgress';
 import Stepper from './Stepper';
 import LoaderAnimation from './LoaderAnimation';
 import SummaryCard from './SummaryCard';
+import TopicsTable from './TopicsTable';
 import ActionFooter from './ActionFooter';
 
 const Container = styled.div`
@@ -109,6 +110,7 @@ const steps = [
   },
   {
     label: 'Identify topics',
+    description: 'Selecting trending topics that could be automated',
   },
   {
     label: 'Create articles',
@@ -131,6 +133,15 @@ const summaryItems = [
 export default function MainContent() {
   const [currentStep, setCurrentStep] = useState(0);
   const [wizardStep, setWizardStep] = useState(2); // Step 2 of 4 as shown in design
+  const [showTable, setShowTable] = useState(false);
+
+  const handleAnimationComplete = () => {
+    // Wait 0.5s after animation completes, then switch to table view
+    setTimeout(() => {
+      setShowTable(true);
+      setCurrentStep(1); // Move to step 2: "Identify topics"
+    }, 500);
+  };
 
   const handleNext = () => {
     if (wizardStep < 4) {
@@ -168,9 +179,15 @@ export default function MainContent() {
           </LeftPanel>
 
           <RightPanel>
-            <LoaderAnimation />
-            <Divider />
-            <SummaryCard items={summaryItems} animate={true} />
+            {showTable ? (
+              <TopicsTable />
+            ) : (
+              <>
+                <LoaderAnimation />
+                <Divider />
+                <SummaryCard items={summaryItems} animate={true} onAnimationComplete={handleAnimationComplete} />
+              </>
+            )}
           </RightPanel>
         </PanelsContainer>
       </ContentArea>

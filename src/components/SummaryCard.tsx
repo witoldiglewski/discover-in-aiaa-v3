@@ -66,9 +66,10 @@ const ItemText = styled.p`
 interface SummaryCardProps {
   items: string[];
   animate?: boolean;
+  onAnimationComplete?: () => void;
 }
 
-export default function SummaryCard({ items, animate = false }: SummaryCardProps) {
+export default function SummaryCard({ items, animate = false, onAnimationComplete }: SummaryCardProps) {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
   useEffect(() => {
@@ -83,7 +84,16 @@ export default function SummaryCard({ items, animate = false }: SummaryCardProps
 
     items.forEach((_, index) => {
       const timer = setTimeout(() => {
-        setCompletedSteps(prev => [...prev, index]);
+        setCompletedSteps(prev => {
+          const newSteps = [...prev, index];
+
+          // If this is the last item, call onAnimationComplete
+          if (index === items.length - 1 && onAnimationComplete) {
+            onAnimationComplete();
+          }
+
+          return newSteps;
+        });
       }, index * 500); // 500ms = 0.5s delay between each
 
       timers.push(timer);
@@ -92,7 +102,7 @@ export default function SummaryCard({ items, animate = false }: SummaryCardProps
     return () => {
       timers.forEach(timer => clearTimeout(timer));
     };
-  }, [animate, items]);
+  }, [animate, items, onAnimationComplete]);
 
   return (
     <Card>
