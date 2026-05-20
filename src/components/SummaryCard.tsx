@@ -41,12 +41,12 @@ const CheckCircle = styled.circle<{ $isComplete: boolean }>`
 `;
 
 const CheckMark = styled.path<{ $isComplete: boolean }>`
-  stroke: ${props => props.$isComplete ? 'white' : '#C2C8CC'};
+  stroke: white;
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
   fill: none;
-  transition: stroke 0.3s ease;
+  transition: all 0.3s ease;
 `;
 
 const ItemText = styled.p`
