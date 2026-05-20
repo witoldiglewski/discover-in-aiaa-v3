@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
+import SparkleFillIcon from '@zendeskgarden/svg-icons/src/16/sparkle-fill.svg?react';
 
 const Container = styled.div.attrs({ className: 'articles-table-container' })`
   display: flex;
@@ -107,11 +108,11 @@ const StatusCell = styled.div.attrs({ className: 'articles-cell-status' })`
   min-width: 0;
 `;
 
-const SparkleIcon = styled.div.attrs({ className: 'sparkle-icon' })`
+const SparkleIcon = styled(SparkleFillIcon).attrs({ className: 'sparkle-icon' })`
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  background: url("data:image/svg+xml,%3Csvg width='18' height='18' viewBox='0 0 18 18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M9 1.5L9.75 5.25L11.25 9L9.75 12.75L9 16.5L8.25 12.75L6.75 9L8.25 5.25L9 1.5Z' fill='%238D59B1'/%3E%3Cpath d='M1.5 9L5.25 8.25L9 6.75L12.75 8.25L16.5 9L12.75 9.75L9 11.25L5.25 9.75L1.5 9Z' fill='%238D59B1'/%3E%3C/svg%3E") center / contain no-repeat;
+  color: #8d59b1;
 `;
 
 const StatusText = styled.span.attrs({ className: 'status-text' })`
