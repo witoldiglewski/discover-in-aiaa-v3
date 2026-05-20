@@ -48,6 +48,7 @@ const products = [
 
 export default function GlobalNav({ children }: GlobalNavProps) {
   const [currentNav, setCurrentNav] = useState('agents');
+  const [isSubnavCollapsed, setIsSubnavCollapsed] = useState(false);
 
   return (
     <Product locale="en-US" products={products}>
@@ -136,7 +137,11 @@ export default function GlobalNav({ children }: GlobalNavProps) {
       </Nav>
 
       {currentNav === 'agents' && (
-        <Subnav>
+        <Subnav
+          isCollapsible
+          isCollapsed={isSubnavCollapsed}
+          onChange={(collapsed) => setIsSubnavCollapsed(collapsed)}
+        >
           <Subnav.Item isCurrent>Discover</Subnav.Item>
           <Subnav.Item>Custom Agents</Subnav.Item>
           <Subnav.Item>Agent Builder</Subnav.Item>
