@@ -18,8 +18,10 @@ const LoaderContainer = styled.div`
 
 const BoxesContainer = styled.div`
   position: absolute;
-  left: 22px;
-  top: 16px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
 `;
 
 const Box = styled.div<{ $delay: number }>`
