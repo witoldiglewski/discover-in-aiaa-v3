@@ -1,5 +1,34 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import CheckSmStrokeIcon from '@zendeskgarden/svg-icons/src/16/check-sm-stroke.svg?react';
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+const fadeOut = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`;
 
 const StepperContainer = styled.div.attrs({ className: 'stepper-container' })`
   display: flex;
@@ -32,21 +61,24 @@ const StepIcon = styled.div.attrs({ className: 'step-icon' })<{ $isCurrent: bool
     return props.$isCurrent ? '#5c6970' : '#e8eaec';
   }};
   flex-shrink: 0;
+  transition: background-color 0.3s ease;
 `;
 
 const CheckIcon = styled(CheckSmStrokeIcon).attrs({ className: 'step-check-icon' })`
   width: 16px;
   height: 16px;
   color: #293239;
+  animation: ${fadeIn} 0.3s ease forwards;
 `;
 
-const StepNumber = styled.span.attrs({ className: 'step-number' })<{ $isCurrent: boolean }>`
+const StepNumber = styled.span.attrs({ className: 'step-number' })<{ $isCurrent: boolean; $willComplete?: boolean }>`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
   letter-spacing: -0.0004px;
   color: ${props => props.$isCurrent ? 'white' : '#293239'};
+  ${props => props.$willComplete && `animation: ${fadeOut} 0.3s ease forwards;`}
 `;
 
 const StepLabel = styled.p.attrs({ className: 'step-label' })<{ $isCurrent: boolean; $isCompleted: boolean }>`
@@ -61,6 +93,7 @@ const StepLabel = styled.p.attrs({ className: 'step-label' })<{ $isCurrent: bool
     return props.$isCurrent ? '#293239' : '#5c6970';
   }};
   margin: 0;
+  transition: color 0.3s ease, font-weight 0.3s ease;
 `;
 
 const StepContent = styled.div.attrs({ className: 'step-content' })<{ $showContent: boolean; $isLast: boolean }>`
@@ -88,6 +121,7 @@ const StepDescription = styled.p.attrs({ className: 'step-description' })`
   color: #293239;
   margin: 0;
   padding-left: 24px;
+  animation: ${fadeInUp} 0.5s ease forwards;
 `;
 
 interface Step {

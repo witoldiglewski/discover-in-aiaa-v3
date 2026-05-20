@@ -1,5 +1,16 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const Container = styled.div.attrs({ className: 'topics-table-container' })`
   display: flex;
@@ -79,12 +90,15 @@ const TableContent = styled.div.attrs({ className: 'table-content' })`
   min-height: 0;
 `;
 
-const TableRow = styled.div.attrs({ className: 'table-row' })`
+const TableRow = styled.div.attrs({ className: 'table-row' })<{ $index?: number }>`
   display: flex;
   gap: 20px;
   align-items: center;
   padding: 12px 8px;
   border-bottom: 1px solid #eae9e8;
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease forwards;
+  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
 
   &:last-child {
     border-bottom: none;
@@ -185,7 +199,7 @@ export default function TopicsTable() {
 
       <TableContent>
         {topics.map((item, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} $index={index}>
             <TopicCell>{item.topic}</TopicCell>
             <ConversationsCell>{item.conversations}</ConversationsCell>
             <AutomationCell>
