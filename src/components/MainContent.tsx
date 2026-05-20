@@ -134,7 +134,6 @@ const summaryItems = [
 
 export default function MainContent() {
   const [currentStep, setCurrentStep] = useState(0);
-  const [wizardStep, setWizardStep] = useState(2); // Step 2 of 4 as shown in design
   const [showTable, setShowTable] = useState(false);
 
   const handleAnimationComplete = () => {
@@ -146,18 +145,16 @@ export default function MainContent() {
   };
 
   const handleNext = () => {
-    if (wizardStep < 4) {
-      setWizardStep(prev => prev + 1);
-      // Update stepper when moving to step 3
-      if (wizardStep === 2) {
-        setCurrentStep(2); // Move to step 3: "Create articles"
-      }
+    // Progress through the stepper steps
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(prev => prev + 1);
     }
   };
 
   const handlePrevious = () => {
-    if (wizardStep > 1) {
-      setWizardStep(prev => prev - 1);
+    // Go back through the stepper steps
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
     }
   };
 
@@ -169,7 +166,7 @@ export default function MainContent() {
     <Container>
       <ContentArea>
         <TitleSection>
-          <StepProgress currentStep={wizardStep - 1} totalSteps={4} />
+          <StepProgress currentStep={1} totalSteps={4} />
           <div>
             <Title>Discover automation opportunities</Title>
             <Subtitle>
@@ -201,7 +198,7 @@ export default function MainContent() {
       </ContentArea>
 
       <ActionFooter
-        currentStep={wizardStep}
+        currentStep={2}
         totalSteps={4}
         onPrevious={handlePrevious}
         onNext={handleNext}
