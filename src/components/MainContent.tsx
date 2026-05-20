@@ -7,7 +7,7 @@ import SummaryCard from './SummaryCard';
 import TopicsTable from './TopicsTable';
 import ActionFooter from './ActionFooter';
 
-const Container = styled.div`
+const Container = styled.div.attrs({ className: 'main-content-container' })`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -19,7 +19,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const ContentArea = styled.div`
+const ContentArea = styled.div.attrs({ className: 'main-content-area' })`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -31,14 +31,14 @@ const ContentArea = styled.div`
   min-height: 0;
 `;
 
-const TitleSection = styled.div`
+const TitleSection = styled.div.attrs({ className: 'title-section' })`
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 100%;
 `;
 
-const Title = styled.h1`
+const Title = styled.h1.attrs({ className: 'page-title' })`
   font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 26px;
@@ -49,7 +49,7 @@ const Title = styled.h1`
   max-width: 700px;
 `;
 
-const Subtitle = styled.p`
+const Subtitle = styled.p.attrs({ className: 'page-subtitle' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -60,7 +60,7 @@ const Subtitle = styled.p`
   max-width: 670px;
 `;
 
-const PanelsContainer = styled.div`
+const PanelsContainer = styled.div.attrs({ className: 'panels-container' })`
   display: flex;
   gap: 8px;
   padding: 8px;
@@ -71,7 +71,7 @@ const PanelsContainer = styled.div`
   min-height: 0;
 `;
 
-const LeftPanel = styled.div`
+const LeftPanel = styled.div.attrs({ className: 'stepper-panel' })`
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -82,7 +82,7 @@ const LeftPanel = styled.div`
   flex-shrink: 0;
 `;
 
-const RightPanel = styled.div`
+const RightPanel = styled.div.attrs({ className: 'content-panel' })`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -96,7 +96,7 @@ const RightPanel = styled.div`
   min-width: 0;
 `;
 
-const Divider = styled.div`
+const Divider = styled.div.attrs({ className: 'section-divider' })`
   width: 300px;
   height: 1px;
   background: #eae9e8;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 
-const Container = styled.div`
+const Container = styled.div.attrs({ className: 'topics-table-container' })`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -9,20 +9,20 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Header = styled.div`
+const Header = styled.div.attrs({ className: 'topics-table-header' })`
   display: flex;
   flex-direction: column;
   gap: 7px;
   padding: 8px 12px;
 `;
 
-const TitleRow = styled.div`
+const TitleRow = styled.div.attrs({ className: 'topics-title-row' })`
   display: flex;
   gap: 8px;
   align-items: center;
 `;
 
-const Title = styled.h2`
+const Title = styled.h2.attrs({ className: 'topics-title' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 18px;
@@ -32,13 +32,13 @@ const Title = styled.h2`
   margin: 0;
 `;
 
-const InfoIcon = styled(InfoStrokeIcon)`
+const InfoIcon = styled(InfoStrokeIcon).attrs({ className: 'info-icon' })`
   width: 16px;
   height: 16px;
   color: #68737d;
 `;
 
-const Subtitle = styled.p`
+const Subtitle = styled.p.attrs({ className: 'topics-subtitle' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -48,7 +48,7 @@ const Subtitle = styled.p`
   margin: 0;
 `;
 
-const TableHeader = styled.div`
+const TableHeader = styled.div.attrs({ className: 'table-header-row' })`
   display: flex;
   gap: 20px;
   padding-left: 28px;
@@ -56,7 +56,7 @@ const TableHeader = styled.div`
   height: 20px;
 `;
 
-const ColumnHeader = styled.div<{ $width?: string }>`
+const ColumnHeader = styled.div.attrs({ className: 'table-column-header' })<{ $width?: string }>`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 14px;
@@ -66,7 +66,7 @@ const ColumnHeader = styled.div<{ $width?: string }>`
   ${props => props.$width ? `width: ${props.$width};` : 'flex: 1;'}
 `;
 
-const TableContent = styled.div`
+const TableContent = styled.div.attrs({ className: 'table-content' })`
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -79,7 +79,7 @@ const TableContent = styled.div`
   min-height: 0;
 `;
 
-const TableRow = styled.div`
+const TableRow = styled.div.attrs({ className: 'table-row' })`
   display: flex;
   gap: 20px;
   align-items: center;
@@ -91,7 +91,7 @@ const TableRow = styled.div`
   }
 `;
 
-const TopicCell = styled.div`
+const TopicCell = styled.div.attrs({ className: 'table-cell-topic' })`
   flex: 1;
   min-width: 260px;
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -105,7 +105,7 @@ const TopicCell = styled.div`
   white-space: nowrap;
 `;
 
-const ConversationsCell = styled.div`
+const ConversationsCell = styled.div.attrs({ className: 'table-cell-conversations' })`
   width: 200px;
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
@@ -118,13 +118,13 @@ const ConversationsCell = styled.div`
   white-space: nowrap;
 `;
 
-const AutomationCell = styled.div`
+const AutomationCell = styled.div.attrs({ className: 'table-cell-automation' })`
   width: 120px;
   display: flex;
   align-items: center;
 `;
 
-const Tag = styled.div`
+const Tag = styled.div.attrs({ className: 'automation-tag' })`
   display: flex;
   align-items: center;
   justify-content: center;

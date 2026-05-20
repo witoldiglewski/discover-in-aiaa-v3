@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Button } from '@zendeskgarden/react-buttons';
 
-const Footer = styled.div`
+const Footer = styled.div.attrs({ className: 'action-footer' })`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,13 +12,13 @@ const Footer = styled.div`
   flex-shrink: 0;
 `;
 
-const StepIndicator = styled.div`
+const StepIndicator = styled.div.attrs({ className: 'step-indicator' })`
   display: flex;
   gap: 19px;
   align-items: center;
 `;
 
-const ChevronButton = styled.button<{ $disabled?: boolean }>`
+const ChevronButton = styled.button.attrs({ className: 'chevron-button' })<{ $disabled?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,13 +33,13 @@ const ChevronButton = styled.button<{ $disabled?: boolean }>`
   }
 `;
 
-const ChevronIcon = styled.svg<{ $rotate?: boolean }>`
+const ChevronIcon = styled.svg.attrs({ className: 'chevron-icon' })<{ $rotate?: boolean }>`
   width: 16px;
   height: 16px;
   transform: ${props => props.$rotate ? 'rotate(180deg)' : 'none'};
 `;
 
-const StepText = styled.p`
+const StepText = styled.p.attrs({ className: 'step-text' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -50,7 +50,7 @@ const StepText = styled.p`
   white-space: nowrap;
 `;
 
-const Actions = styled.div`
+const Actions = styled.div.attrs({ className: 'footer-actions' })`
   display: flex;
   gap: 20px;
   align-items: center;

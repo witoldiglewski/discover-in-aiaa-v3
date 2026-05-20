@@ -1,26 +1,26 @@
 import styled from 'styled-components';
 import CheckSmStrokeIcon from '@zendeskgarden/svg-icons/src/16/check-sm-stroke.svg?react';
 
-const StepperContainer = styled.div`
+const StepperContainer = styled.div.attrs({ className: 'stepper-container' })`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
 
-const StepItem = styled.div`
+const StepItem = styled.div.attrs({ className: 'stepper-item' })`
   display: flex;
   flex-direction: column;
   width: 100%;
 `;
 
-const StepHeader = styled.div`
+const StepHeader = styled.div.attrs({ className: 'stepper-header' })`
   display: flex;
   gap: 12px;
   align-items: center;
   width: 100%;
 `;
 
-const StepIcon = styled.div<{ $isCurrent: boolean; $isCompleted: boolean }>`
+const StepIcon = styled.div.attrs({ className: 'step-icon' })<{ $isCurrent: boolean; $isCompleted: boolean }>`
   width: 24px;
   height: 24px;
   border-radius: 100px;
@@ -34,13 +34,13 @@ const StepIcon = styled.div<{ $isCurrent: boolean; $isCompleted: boolean }>`
   flex-shrink: 0;
 `;
 
-const CheckIcon = styled(CheckSmStrokeIcon)`
+const CheckIcon = styled(CheckSmStrokeIcon).attrs({ className: 'step-check-icon' })`
   width: 16px;
   height: 16px;
   color: #68b828;
 `;
 
-const StepNumber = styled.span<{ $isCurrent: boolean }>`
+const StepNumber = styled.span.attrs({ className: 'step-number' })<{ $isCurrent: boolean }>`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 12px;
@@ -49,7 +49,7 @@ const StepNumber = styled.span<{ $isCurrent: boolean }>`
   color: ${props => props.$isCurrent ? 'white' : '#293239'};
 `;
 
-const StepLabel = styled.p<{ $isCurrent: boolean; $isCompleted: boolean }>`
+const StepLabel = styled.p.attrs({ className: 'step-label' })<{ $isCurrent: boolean; $isCompleted: boolean }>`
   flex: 1;
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: ${props => props.$isCurrent ? '600' : '400'};
@@ -63,7 +63,7 @@ const StepLabel = styled.p<{ $isCurrent: boolean; $isCompleted: boolean }>`
   margin: 0;
 `;
 
-const StepContent = styled.div<{ $showContent: boolean; $isLast: boolean }>`
+const StepContent = styled.div.attrs({ className: 'step-content' })<{ $showContent: boolean; $isLast: boolean }>`
   display: flex;
   padding-left: 12px;
   padding-top: 12px;
@@ -71,7 +71,7 @@ const StepContent = styled.div<{ $showContent: boolean; $isLast: boolean }>`
   width: 100%;
 `;
 
-const StepContentInner = styled.div<{ $isCurrent: boolean; $isLast: boolean }>`
+const StepContentInner = styled.div.attrs({ className: 'step-content-inner' })<{ $isCurrent: boolean; $isLast: boolean }>`
   flex: 1;
   min-width: 0;
   ${props => !props.$isLast && `
@@ -79,7 +79,7 @@ const StepContentInner = styled.div<{ $isCurrent: boolean; $isLast: boolean }>`
   `}
 `;
 
-const StepDescription = styled.p`
+const StepDescription = styled.p.attrs({ className: 'step-description' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 14px;

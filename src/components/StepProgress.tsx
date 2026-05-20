@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-const ProgressContainer = styled.div`
+const ProgressContainer = styled.div.attrs({ className: 'progress-container' })`
   display: flex;
   gap: 8px;
   align-items: center;
   height: 6px;
 `;
 
-const ProgressBar = styled.div<{ $width: number; $progress: number }>`
+const ProgressBar = styled.div.attrs({ className: 'progress-bar' })<{ $width: number; $progress: number }>`
   height: 6px;
   background-color: #d8dcf4;
   border-radius: 30px;
@@ -16,7 +16,7 @@ const ProgressBar = styled.div<{ $width: number; $progress: number }>`
   flex-shrink: 0;
 `;
 
-const ProgressFill = styled.div<{ $progress: number }>`
+const ProgressFill = styled.div.attrs({ className: 'progress-fill' })<{ $progress: number }>`
   position: absolute;
   left: 0;
   top: 0;

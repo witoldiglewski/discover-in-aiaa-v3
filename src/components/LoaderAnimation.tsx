@@ -9,14 +9,14 @@ const pulse = keyframes`
   }
 `;
 
-const LoaderContainer = styled.div`
+const LoaderContainer = styled.div.attrs({ className: 'loader-container' })`
   width: 240px;
   height: 160px;
   position: relative;
   overflow: hidden;
 `;
 
-const BoxesContainer = styled.div`
+const BoxesContainer = styled.div.attrs({ className: 'loader-boxes' })`
   position: absolute;
   left: 0;
   top: 0;
@@ -24,7 +24,7 @@ const BoxesContainer = styled.div`
   height: 100%;
 `;
 
-const Box = styled.div<{ $delay: number }>`
+const Box = styled.div.attrs({ className: 'loader-box' })<{ $delay: number }>`
   position: absolute;
   background-color: rgba(141, 89, 177, 0.16);
   border-radius: 8px;

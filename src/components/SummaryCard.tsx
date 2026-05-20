@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-const Card = styled.div`
+const Card = styled.div.attrs({ className: 'summary-card' })`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -11,14 +11,14 @@ const Card = styled.div`
   width: 266px;
 `;
 
-const ChecklistItem = styled.div`
+const ChecklistItem = styled.div.attrs({ className: 'checklist-item' })`
   display: flex;
   gap: 4px;
   align-items: center;
   width: 100%;
 `;
 
-const CheckIcon = styled.div<{ $isComplete: boolean }>`
+const CheckIcon = styled.div.attrs({ className: 'check-icon' })<{ $isComplete: boolean }>`
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -28,19 +28,19 @@ const CheckIcon = styled.div<{ $isComplete: boolean }>`
   transition: all 0.3s ease;
 `;
 
-const CheckIconSvg = styled.svg<{ $isComplete: boolean }>`
+const CheckIconSvg = styled.svg.attrs({ className: 'check-icon-svg' })<{ $isComplete: boolean }>`
   width: 20px;
   height: 20px;
   transition: color 0.3s ease;
 `;
 
-const CheckCircle = styled.circle<{ $isComplete: boolean }>`
+const CheckCircle = styled.circle.attrs({ className: 'check-circle' })<{ $isComplete: boolean }>`
   fill: ${props => props.$isComplete ? '#68B828' : '#D8DCDE'};
   opacity: 1;
   transition: all 0.3s ease;
 `;
 
-const CheckMark = styled.path<{ $isComplete: boolean }>`
+const CheckMark = styled.path.attrs({ className: 'check-mark' })<{ $isComplete: boolean }>`
   stroke: white;
   stroke-width: 1.5;
   stroke-linecap: round;
@@ -49,7 +49,7 @@ const CheckMark = styled.path<{ $isComplete: boolean }>`
   transition: all 0.3s ease;
 `;
 
-const ItemText = styled.p`
+const ItemText = styled.p.attrs({ className: 'checklist-item-text' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 12px;
