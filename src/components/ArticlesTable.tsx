@@ -1,9 +1,20 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
 import SparkleAltIcon from '../../svg-assets/sparkle-alt.svg?react';
 import HighImpactIcon from '../../svg-assets/high-impact.svg?react';
 import MediumImpactIcon from '../../svg-assets/medium-impact.svg?react';
+
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const Container = styled.div.attrs({ className: 'articles-table-container' })`
   display: flex;
@@ -80,13 +91,16 @@ const TableContent = styled.div.attrs({ className: 'articles-table-content' })`
   min-height: 0;
 `;
 
-const TableRow = styled.div.attrs({ className: 'articles-table-row' })`
+const TableRow = styled.div.attrs({ className: 'articles-table-row' })<{ $index?: number }>`
   display: flex;
   gap: 20px;
   align-items: center;
   padding: 12px 20px;
   border: 1px solid #eae9e8;
   border-radius: 12px;
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease forwards;
+  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
 `;
 
 const TitleCell = styled.div.attrs({ className: 'articles-cell-title' })`
@@ -229,7 +243,7 @@ export default function ArticlesTable() {
 
       <TableContent>
         {articles.map((article, index) => (
-          <TableRow key={index}>
+          <TableRow key={index} $index={index}>
             <TitleCell>{article.title}</TitleCell>
             <StatusCell>
               <SparkleIcon />
