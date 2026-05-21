@@ -88,7 +88,32 @@ const TableContent = styled.div.attrs({ className: 'procedures-table-content' })
   flex-direction: column;
   gap: 4px;
   flex: 1;
+  border: 1px solid #dcdcda;
+  border-radius: 12px;
+  padding: 12px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d8dcde;
+    border-radius: 6px;
+    border: 3px solid white;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b8c0c5;
+  }
 `;
 
 const TableRow = styled.div.attrs({ className: 'procedures-table-row' })<{ $index?: number }>`

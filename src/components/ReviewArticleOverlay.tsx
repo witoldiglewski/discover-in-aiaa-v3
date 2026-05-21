@@ -629,9 +629,10 @@ const SaveButton = styled.button.attrs({ className: 'btn-save' })`
 
 interface ReviewArticleOverlayProps {
   onClose: () => void;
+  onSave: () => void;
 }
 
-export default function ReviewArticleOverlay({ onClose }: ReviewArticleOverlayProps) {
+export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleOverlayProps) {
   const portalRoot = document.getElementById('root')?.parentElement || document.body;
   const [currentEdit, setCurrentEdit] = useState(1);
 
@@ -835,7 +836,7 @@ export default function ReviewArticleOverlay({ onClose }: ReviewArticleOverlayPr
           </FooterLeft>
           <FooterRight>
             <CloseButton onClick={onClose}>Close</CloseButton>
-            <SaveButton>Save</SaveButton>
+            <SaveButton onClick={onSave}>Save</SaveButton>
           </FooterRight>
         </Footer>
       </Modal>

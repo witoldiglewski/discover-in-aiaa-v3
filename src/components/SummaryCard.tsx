@@ -35,13 +35,13 @@ const CheckIconSvg = styled.svg.attrs({ className: 'check-icon-svg' })<{ $isComp
 `;
 
 const CheckCircle = styled.circle.attrs({ className: 'check-circle' })<{ $isComplete: boolean }>`
-  fill: ${props => props.$isComplete ? '#68B828' : '#D8DCDE'};
+  fill: ${props => props.$isComplete ? '#ddf0c9' : '#e8eaec'};
   opacity: 1;
   transition: all 0.3s ease;
 `;
 
 const CheckMark = styled.path.attrs({ className: 'check-mark' })<{ $isComplete: boolean }>`
-  stroke: white;
+  stroke: #293239;
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;

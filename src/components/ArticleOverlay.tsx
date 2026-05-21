@@ -462,6 +462,7 @@ interface ArticleContent {
 interface ArticleOverlayProps {
   articleTitle: string;
   onClose: () => void;
+  onSave: () => void;
 }
 
 const articleContents: Record<string, ArticleContent> = {
@@ -609,7 +610,7 @@ const articleContents: Record<string, ArticleContent> = {
   }
 };
 
-export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlayProps) {
+export default function ArticleOverlay({ articleTitle, onClose, onSave }: ArticleOverlayProps) {
   const portalRoot = document.getElementById('root')?.parentElement || document.body;
   const content = articleContents[articleTitle];
 
@@ -742,7 +743,7 @@ export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlay
           </FooterLeft>
           <FooterRight>
             <CloseButton onClick={onClose}>Close</CloseButton>
-            <SaveButton>Save</SaveButton>
+            <SaveButton onClick={onSave}>Save</SaveButton>
           </FooterRight>
         </Footer>
       </Modal>

@@ -252,18 +252,39 @@ const articles: Article[] = [
 export default function ArticlesTable() {
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<string>('');
+  const [savedArticles, setSavedArticles] = useState<Set<string>>(new Set());
 
   const handleReviewClick = (title: string) => {
     setSelectedArticle(title);
     setShowOverlay(true);
   };
 
+  const handleSave = (title: string) => {
+    setSavedArticles(prev => new Set(prev).add(title));
+    setShowOverlay(false);
+  };
+
+  const handleClose = () => {
+    setShowOverlay(false);
+  };
+
   const isReviewArticle = selectedArticle === 'Unlocking accounts after too many attempts';
 
   return (
     <>
-      {showOverlay && isReviewArticle && <ReviewArticleOverlay onClose={() => setShowOverlay(false)} />}
-      {showOverlay && !isReviewArticle && <ArticleOverlay articleTitle={selectedArticle} onClose={() => setShowOverlay(false)} />}
+      {showOverlay && isReviewArticle && (
+        <ReviewArticleOverlay
+          onClose={handleClose}
+          onSave={() => handleSave(selectedArticle)}
+        />
+      )}
+      {showOverlay && !isReviewArticle && (
+        <ArticleOverlay
+          articleTitle={selectedArticle}
+          onClose={handleClose}
+          onSave={() => handleSave(selectedArticle)}
+        />
+      )}
       <Container>
         <Header>
           <TitleRow>
