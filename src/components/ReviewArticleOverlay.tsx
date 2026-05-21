@@ -384,7 +384,7 @@ const HighlightDeletion = styled.span.attrs({ className: 'highlight-deletion' })
 const SidePanel = styled.div.attrs({ className: 'side-panel' })`
   width: 360px;
   flex-shrink: 0;
-  background: #f8f9f9;
+  background: #ffffff;
   border-left: 1px solid #d8dcde;
   overflow-y: auto;
   overflow-x: hidden;
@@ -405,7 +405,7 @@ const SidePanel = styled.div.attrs({ className: 'side-panel' })`
   &::-webkit-scrollbar-thumb {
     background-color: #d8dcde;
     border-radius: 6px;
-    border: 3px solid #f8f9f9;
+    border: 3px solid #ffffff;
   }
 
   &::-webkit-scrollbar-thumb:hover {
@@ -443,72 +443,89 @@ const SummaryText = styled.div.attrs({ className: 'summary-text' })`
 `;
 
 const ReviewCard = styled.div.attrs({ className: 'review-card' })`
-  background: white;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 16px;
+  background: #f7f7f7;
+  border: 1px solid #eae9e8;
+  border-radius: 12px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
-`;
-
-const ReviewCardHeader = styled.div.attrs({ className: 'review-card-header' })`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ReviewCardTitle = styled.div.attrs({ className: 'review-card-title' })`
-  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0;
-  color: #2f3130;
-`;
-
-const ReviewCardCount = styled.div.attrs({ className: 'review-card-count' })`
-  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0;
-  color: #646864;
+  gap: 20px;
 `;
 
 const ReviewCardContent = styled.div.attrs({ className: 'review-card-content' })`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
   color: #2f3130;
-  padding: 12px;
-  background: #f8f9f9;
-  border-radius: 4px;
 `;
 
 const ReviewCardActions = styled.div.attrs({ className: 'review-card-actions' })`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const NavigationSection = styled.div.attrs({ className: 'navigation-section' })`
+  display: flex;
   gap: 8px;
-  justify-content: flex-end;
+  align-items: center;
+`;
+
+const NavButton = styled.button.attrs({ className: 'nav-button' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  color: #646864;
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+`;
+
+const NavIcon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
+const NavText = styled.span.attrs({ className: 'nav-text' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
+  color: #646864;
+`;
+
+const ActionButtons = styled.div.attrs({ className: 'action-buttons' })`
+  display: flex;
+  gap: 8px;
+  align-items: center;
 `;
 
 const RejectButton = styled.button.attrs({ className: 'reject-button' })`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #d8dcde;
-  border-radius: 4px;
-  background: white;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #eae9e8;
   cursor: pointer;
-  color: #68737d;
+  color: #2f3130;
+  flex-shrink: 0;
 
   &:hover {
-    background: #f8f9f9;
+    background: #d8dcde;
   }
 `;
 
@@ -516,16 +533,17 @@ const AcceptButton = styled.button.attrs({ className: 'accept-button' })`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #078d4f;
-  border-radius: 4px;
-  background: #078d4f;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #4b7d04;
   cursor: pointer;
   color: white;
+  flex-shrink: 0;
 
   &:hover {
-    background: #067042;
+    background: #3d6503;
   }
 `;
 
@@ -841,40 +859,58 @@ export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleO
 
               {editState.edit1Accepted === null && (
                 <ReviewCard>
-                  <ReviewCardHeader>
-                    <ReviewCardTitle>Reduce wait time</ReviewCardTitle>
-                    <ReviewCardCount>1 of 2</ReviewCardCount>
-                  </ReviewCardHeader>
                   <ReviewCardContent>
+                    <strong>Reduce wait time</strong>
+                    <br />
                     Change automatic unlock time from 30 minutes to 15 minutes to match updated security policy.
                   </ReviewCardContent>
                   <ReviewCardActions>
-                    <RejectButton onClick={handleRejectEdit1}>
-                      <RejectIcon />
-                    </RejectButton>
-                    <AcceptButton onClick={handleAcceptEdit1}>
-                      <AcceptIconStyled />
-                    </AcceptButton>
+                    <NavigationSection>
+                      <NavButton disabled>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
+                      </NavButton>
+                      <NavText>1 of 2</NavText>
+                      <NavButton>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
+                      </NavButton>
+                    </NavigationSection>
+                    <ActionButtons>
+                      <RejectButton onClick={handleRejectEdit1}>
+                        <RejectIcon />
+                      </RejectButton>
+                      <AcceptButton onClick={handleAcceptEdit1}>
+                        <AcceptIconStyled />
+                      </AcceptButton>
+                    </ActionButtons>
                   </ReviewCardActions>
                 </ReviewCard>
               )}
 
               {editState.edit2Accepted === null && (
                 <ReviewCard>
-                  <ReviewCardHeader>
-                    <ReviewCardTitle>Simplify unlock process</ReviewCardTitle>
-                    <ReviewCardCount>2 of 2</ReviewCardCount>
-                  </ReviewCardHeader>
                   <ReviewCardContent>
+                    <strong>Simplify unlock process</strong>
+                    <br />
                     Users no longer need to reset their password after unlocking via email, making the process faster.
                   </ReviewCardContent>
                   <ReviewCardActions>
-                    <RejectButton onClick={handleRejectEdit2}>
-                      <RejectIcon />
-                    </RejectButton>
-                    <AcceptButton onClick={handleAcceptEdit2}>
-                      <AcceptIconStyled />
-                    </AcceptButton>
+                    <NavigationSection>
+                      <NavButton>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
+                      </NavButton>
+                      <NavText>2 of 2</NavText>
+                      <NavButton disabled>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
+                      </NavButton>
+                    </NavigationSection>
+                    <ActionButtons>
+                      <RejectButton onClick={handleRejectEdit2}>
+                        <RejectIcon />
+                      </RejectButton>
+                      <AcceptButton onClick={handleAcceptEdit2}>
+                        <AcceptIconStyled />
+                      </AcceptButton>
+                    </ActionButtons>
                   </ReviewCardActions>
                 </ReviewCard>
               )}

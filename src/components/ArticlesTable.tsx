@@ -2,9 +2,9 @@ import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
-import SparkleAltIcon from '../../svg-assets/sparkle-alt.svg?react';
-import HighImpactIcon from '../../svg-assets/high-impact.svg?react';
-import MediumImpactIcon from '../../svg-assets/medium-impact.svg?react';
+import SparkleAltIcon from '../assets/icons/sparkle-alt.svg?react';
+import HighImpactIcon from '../assets/icons/high-impact.svg?react';
+import MediumImpactIcon from '../assets/icons/medium-impact.svg?react';
 import ArticleOverlay from './ArticleOverlay';
 import ReviewArticleOverlay from './ReviewArticleOverlay';
 

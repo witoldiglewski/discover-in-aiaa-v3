@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import InfoStrokeIcon from '@zendeskgarden/svg-icons/src/16/info-stroke.svg?react';
-import GradientImage from '../../png-assets/Gradient.png';
+import GradientImage from '../assets/images/Gradient.png';
 
 const fadeInUp = keyframes`
   from {

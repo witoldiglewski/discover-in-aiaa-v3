@@ -76,6 +76,9 @@ export default function ActionFooter({
   const canGoPrevious = currentStep > 1;
   const canGoNext = currentStep < totalSteps;
 
+  // Steps 3 and 4 use "Approve and go next" instead of "Next"
+  const nextButtonText = (currentStep === 3 || currentStep === 4) ? 'Approve and go next' : 'Next';
+
   return (
     <Footer>
       <StepIndicator>
@@ -119,7 +122,7 @@ export default function ActionFooter({
           Save and close
         </Button>
         <Button isPrimary disabled={isNextDisabled} onClick={onNext}>
-          Next
+          {nextButtonText}
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ marginLeft: '8px' }}>
             <path
               d="M7.5 5L12.5 10L7.5 15"

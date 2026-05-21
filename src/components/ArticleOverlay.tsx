@@ -607,6 +607,106 @@ const articleContents: Record<string, ArticleContent> = {
         </ul>
       </>
     )
+  },
+  'Enabling two-factor authentication': {
+    title: 'Enabling two-factor authentication',
+    body: (
+      <>
+        <p>Two-factor authentication (2FA) adds an extra layer of security to your account by requiring both your password and a verification code to log in.</p>
+
+        <h2>Why Enable 2FA?</h2>
+        <p>Two-factor authentication helps protect your account even if someone discovers your password. With 2FA enabled, they would also need access to your phone or authentication app to log in.</p>
+
+        <h2>Setting Up 2FA</h2>
+        <p>To enable two-factor authentication on your account:</p>
+        <ol>
+          <li>Log in to your account and go to Account Settings.</li>
+          <li>Navigate to the Security section.</li>
+          <li>Find "Two-Factor Authentication" and click "Enable".</li>
+          <li>Choose your preferred method: authenticator app or SMS.</li>
+          <li>Follow the on-screen instructions to complete setup.</li>
+          <li>Save your backup codes in a secure location.</li>
+        </ol>
+
+        <h2>Using an Authenticator App</h2>
+        <p>We recommend using an authenticator app for the most secure experience:</p>
+        <ul>
+          <li>Download an authenticator app like Google Authenticator or Authy.</li>
+          <li>Scan the QR code shown on your screen with the app.</li>
+          <li>Enter the 6-digit code from the app to verify setup.</li>
+        </ul>
+
+        <h2>Using SMS</h2>
+        <p>If you prefer SMS verification:</p>
+        <ul>
+          <li>Enter your mobile phone number.</li>
+          <li>We'll send you a verification code via text message.</li>
+          <li>Enter the code to complete setup.</li>
+        </ul>
+
+        <h2>Backup Codes</h2>
+        <p>When you enable 2FA, you'll receive backup codes. Store these securely—you'll need them if you lose access to your authentication method.</p>
+      </>
+    )
+  },
+  'Managing account security settings': {
+    title: 'Managing account security settings',
+    body: (
+      <>
+        <p>Keep your account secure by regularly reviewing and updating your security settings. This guide walks you through all available security options.</p>
+
+        <h2>Password Settings</h2>
+        <p>Your password is your first line of defense:</p>
+        <ul>
+          <li>Change your password regularly (we recommend every 90 days).</li>
+          <li>Use a strong, unique password that you don't use elsewhere.</li>
+          <li>Enable password expiration reminders in your settings.</li>
+          <li>Never share your password with anyone.</li>
+        </ul>
+
+        <h2>Two-Factor Authentication</h2>
+        <p>Add an extra layer of security to your account:</p>
+        <ul>
+          <li>Enable 2FA using an authenticator app or SMS.</li>
+          <li>Keep your backup codes in a secure location.</li>
+          <li>Update your phone number if it changes.</li>
+          <li>Review your trusted devices regularly.</li>
+        </ul>
+
+        <h2>Active Sessions</h2>
+        <p>Monitor where you're logged in:</p>
+        <ol>
+          <li>Go to Account Settings and select Security.</li>
+          <li>View all active sessions under "Login Activity".</li>
+          <li>Review the device, location, and time for each session.</li>
+          <li>Log out of any sessions you don't recognize.</li>
+        </ol>
+
+        <h2>Security Questions</h2>
+        <p>Set up security questions for account recovery:</p>
+        <ul>
+          <li>Choose questions with answers only you would know.</li>
+          <li>Don't use easily discoverable information (like your mother's maiden name).</li>
+          <li>Update your answers if circumstances change.</li>
+        </ul>
+
+        <h2>Email and Phone Verification</h2>
+        <p>Keep your contact information up to date:</p>
+        <ul>
+          <li>Verify your email address and phone number.</li>
+          <li>Add a backup email for account recovery.</li>
+          <li>Update immediately if your contact information changes.</li>
+        </ul>
+
+        <h2>Login Notifications</h2>
+        <p>Stay informed about account activity:</p>
+        <ul>
+          <li>Enable email notifications for new logins.</li>
+          <li>Get alerts for changes to security settings.</li>
+          <li>Receive warnings about suspicious activity.</li>
+        </ul>
+      </>
+    )
   }
 };
 
