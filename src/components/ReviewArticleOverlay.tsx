@@ -634,9 +634,36 @@ interface ReviewArticleOverlayProps {
   onSave: () => void;
 }
 
+interface EditState {
+  edit1Accepted: boolean | null; // null = pending, true = accepted, false = rejected
+  edit2Accepted: boolean | null;
+}
+
 export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleOverlayProps) {
   const portalRoot = document.getElementById('root')?.parentElement || document.body;
-  const [currentEdit, setCurrentEdit] = useState(1);
+  const [editState, setEditState] = useState<EditState>({
+    edit1Accepted: null,
+    edit2Accepted: null,
+  });
+
+  const handleAcceptEdit1 = () => {
+    setEditState(prev => ({ ...prev, edit1Accepted: true }));
+  };
+
+  const handleRejectEdit1 = () => {
+    setEditState(prev => ({ ...prev, edit1Accepted: false }));
+  };
+
+  const handleAcceptEdit2 = () => {
+    setEditState(prev => ({ ...prev, edit2Accepted: true }));
+  };
+
+  const handleRejectEdit2 = () => {
+    setEditState(prev => ({ ...prev, edit2Accepted: false }));
+  };
+
+  // Count remaining edits
+  const remainingEdits = [editState.edit1Accepted, editState.edit2Accepted].filter(state => state === null).length;
 
   return createPortal(
     <Overlay onClick={onClose}>
@@ -752,7 +779,18 @@ export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleO
                     <p>For security reasons, your account is temporarily locked after multiple unsuccessful login attempts. Here's how to unlock it and regain access.</p>
 
                     <h2>Wait for Automatic Unlock</h2>
-                    <p>Your account will automatically unlock after <HighlightDeletion>30 minutes</HighlightDeletion><HighlightAddition>15 minutes</HighlightAddition>. This is the simplest option if you're not in a hurry.</p>
+                    <p>Your account will automatically unlock after {
+                      editState.edit1Accepted === null ? (
+                        <>
+                          <HighlightDeletion>30 minutes</HighlightDeletion>
+                          <HighlightAddition>15 minutes</HighlightAddition>
+                        </>
+                      ) : editState.edit1Accepted === true ? (
+                        '15 minutes'
+                      ) : (
+                        '30 minutes'
+                      )
+                    }. This is the simplest option if you're not in a hurry.</p>
 
                     <h2>Unlock Immediately via Email</h2>
                     <p>To unlock your account right away:</p>
@@ -760,7 +798,18 @@ export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleO
                       <li>Check your email for an "Account Locked" notification.</li>
                       <li>Click the "Unlock My Account" link in the email.</li>
                       <li>Follow the verification steps to confirm your identity.</li>
-                      <li><HighlightDeletion>Create a new password if prompted.</HighlightDeletion><HighlightAddition>You'll be able to log in immediately without changing your password.</HighlightAddition></li>
+                      <li>{
+                        editState.edit2Accepted === null ? (
+                          <>
+                            <HighlightDeletion>Create a new password if prompted.</HighlightDeletion>
+                            <HighlightAddition>You'll be able to log in immediately without changing your password.</HighlightAddition>
+                          </>
+                        ) : editState.edit2Accepted === true ? (
+                          "You'll be able to log in immediately without changing your password."
+                        ) : (
+                          'Create a new password if prompted.'
+                        )
+                      }</li>
                     </ol>
 
                     <h2>Unlock via Support</h2>
@@ -786,45 +835,49 @@ export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleO
 
             <SidePanel>
               <SummaryCard>
-                <SummaryTitle>Review 2 of 2 edits</SummaryTitle>
+                <SummaryTitle>Review {remainingEdits} of 2 edits</SummaryTitle>
                 <SummaryText>AI has suggested changes to improve clarity and accuracy based on your knowledge base.</SummaryText>
               </SummaryCard>
 
-              <ReviewCard>
-                <ReviewCardHeader>
-                  <ReviewCardTitle>Reduce wait time</ReviewCardTitle>
-                  <ReviewCardCount>1 of 2</ReviewCardCount>
-                </ReviewCardHeader>
-                <ReviewCardContent>
-                  Change automatic unlock time from 30 minutes to 15 minutes to match updated security policy.
-                </ReviewCardContent>
-                <ReviewCardActions>
-                  <RejectButton>
-                    <RejectIcon />
-                  </RejectButton>
-                  <AcceptButton>
-                    <AcceptIconStyled />
-                  </AcceptButton>
-                </ReviewCardActions>
-              </ReviewCard>
+              {editState.edit1Accepted === null && (
+                <ReviewCard>
+                  <ReviewCardHeader>
+                    <ReviewCardTitle>Reduce wait time</ReviewCardTitle>
+                    <ReviewCardCount>1 of 2</ReviewCardCount>
+                  </ReviewCardHeader>
+                  <ReviewCardContent>
+                    Change automatic unlock time from 30 minutes to 15 minutes to match updated security policy.
+                  </ReviewCardContent>
+                  <ReviewCardActions>
+                    <RejectButton onClick={handleRejectEdit1}>
+                      <RejectIcon />
+                    </RejectButton>
+                    <AcceptButton onClick={handleAcceptEdit1}>
+                      <AcceptIconStyled />
+                    </AcceptButton>
+                  </ReviewCardActions>
+                </ReviewCard>
+              )}
 
-              <ReviewCard>
-                <ReviewCardHeader>
-                  <ReviewCardTitle>Simplify unlock process</ReviewCardTitle>
-                  <ReviewCardCount>2 of 2</ReviewCardCount>
-                </ReviewCardHeader>
-                <ReviewCardContent>
-                  Users no longer need to reset their password after unlocking via email, making the process faster.
-                </ReviewCardContent>
-                <ReviewCardActions>
-                  <RejectButton>
-                    <RejectIcon />
-                  </RejectButton>
-                  <AcceptButton>
-                    <AcceptIconStyled />
-                  </AcceptButton>
-                </ReviewCardActions>
-              </ReviewCard>
+              {editState.edit2Accepted === null && (
+                <ReviewCard>
+                  <ReviewCardHeader>
+                    <ReviewCardTitle>Simplify unlock process</ReviewCardTitle>
+                    <ReviewCardCount>2 of 2</ReviewCardCount>
+                  </ReviewCardHeader>
+                  <ReviewCardContent>
+                    Users no longer need to reset their password after unlocking via email, making the process faster.
+                  </ReviewCardContent>
+                  <ReviewCardActions>
+                    <RejectButton onClick={handleRejectEdit2}>
+                      <RejectIcon />
+                    </RejectButton>
+                    <AcceptButton onClick={handleAcceptEdit2}>
+                      <AcceptIconStyled />
+                    </AcceptButton>
+                  </ReviewCardActions>
+                </ReviewCard>
+              )}
             </SidePanel>
           </MainContentArea>
         </Content>
