@@ -154,10 +154,14 @@ export default function Stepper({ steps, currentStep }: StepperProps) {
               </StepIcon>
               <StepLabel $isCurrent={isCurrent} $isCompleted={isCompleted}>{step.label}</StepLabel>
             </StepHeader>
-            {(isCurrent && step.description) && (
+            {isCurrent && (
               <StepContent $showContent={true} $isLast={isLast}>
                 <StepContentInner $isCurrent={isCurrent} $isLast={isLast}>
-                  <StepDescription>{step.description}</StepDescription>
+                  {step.description ? (
+                    <StepDescription>{step.description}</StepDescription>
+                  ) : (
+                    <div style={{ height: '24px' }} />
+                  )}
                 </StepContentInner>
               </StepContent>
             )}

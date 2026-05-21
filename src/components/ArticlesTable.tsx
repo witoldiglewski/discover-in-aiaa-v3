@@ -25,6 +25,7 @@ const Container = styled.div.attrs({ className: 'articles-table-container' })`
   gap: 20px;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 const Header = styled.div.attrs({ className: 'articles-table-header' })`
@@ -32,6 +33,7 @@ const Header = styled.div.attrs({ className: 'articles-table-header' })`
   flex-direction: column;
   gap: 7px;
   padding: 8px 12px;
+  overflow: hidden;
 `;
 
 const TitleRow = styled.div.attrs({ className: 'articles-title-row' })`
@@ -69,9 +71,10 @@ const Subtitle = styled.p.attrs({ className: 'articles-subtitle' })`
 const TableHeader = styled.div.attrs({ className: 'articles-table-header-row' })`
   display: flex;
   gap: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 32px;
+  padding-right: 32px;
   height: 20px;
+  overflow: hidden;
 `;
 
 const ColumnHeader = styled.div.attrs({ className: 'articles-column-header' })<{ $width?: string }>`
@@ -93,7 +96,7 @@ const TableContent = styled.div.attrs({ className: 'articles-table-content' })`
   flex: 1;
   border: 1px solid #dcdcda;
   border-radius: 12px;
-  padding: 12px 20px;
+  padding: 12px;
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
@@ -125,10 +128,11 @@ const TableRow = styled.div.attrs({ className: 'articles-table-row' })<{ $index?
   align-items: center;
   padding: 12px 20px;
   border: 1px solid #eae9e8;
-  border-radius: 12px;
+  border-radius: 8px;
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease forwards;
   animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
+  overflow: hidden;
 `;
 
 const TitleCell = styled.div.attrs({ className: 'articles-cell-title' })`
@@ -246,7 +250,9 @@ const articles: Article[] = [
   { title: 'Troubleshooting login issues', status: 'New article', impact: 'high' },
   { title: 'Resetting passwords', status: 'New article', impact: 'high' },
   { title: 'Recovering usernames', status: 'New article', impact: 'high' },
+  { title: 'Enabling two-factor authentication', status: 'New article', impact: 'high' },
   { title: 'Unlocking accounts after too many attempts', status: 'Article changes', impact: 'medium' },
+  { title: 'Managing account security settings', status: 'New article', impact: 'medium' },
 ];
 
 export default function ArticlesTable() {
@@ -292,7 +298,7 @@ export default function ArticlesTable() {
             <InfoIcon />
           </TitleRow>
           <Subtitle>
-            All recommendations are drafts and require your review before publishing.
+            Review and edit AI-generated articles or batch approve them to your knowledge base by going to the next step.
           </Subtitle>
         </Header>
 

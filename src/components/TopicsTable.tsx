@@ -219,7 +219,7 @@ export default function TopicsTable() {
           <InfoIcon />
         </TitleRow>
         <Subtitle>
-          All recommendations are drafts and require your review before publishing.
+          These topics represent the hi-impact customer questions that could benefit from automation.
         </Subtitle>
       </Header>
 

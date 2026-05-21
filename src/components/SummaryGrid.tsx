@@ -278,7 +278,7 @@ export default function SummaryGrid() {
           <InfoIcon />
         </TitleRow>
         <Subtitle>
-          All recommendations are drafts and require your review before publishing.
+          Review the impact of your approved automation recommendations. Click "Next" to publish all approved articles and procedures.
         </Subtitle>
       </Header>
 

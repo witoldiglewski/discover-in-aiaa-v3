@@ -109,22 +109,23 @@ const Divider = styled.div.attrs({ className: 'section-divider' })`
 const steps = [
   {
     label: 'Analysis',
-    description: 'Include instructions and forms as needed.',
+    description: '',
   },
   {
     label: 'Identify topics',
-    description: 'Selecting trending topics that could be automated',
+    description: 'AI selected trending topics for automation',
   },
   {
     label: 'Create articles',
-    description: 'Include instructions and forms as needed.',
+    description: 'Review AI-generated articles',
   },
   {
     label: 'Create procedures',
-    description: 'Include instructions and forms as needed.',
+    description: 'Review AI-generated procedures',
   },
   {
     label: 'Summary',
+    description: 'Review impact and publish approved content',
   },
 ];
 
@@ -209,7 +210,7 @@ export default function MainContent() {
       </ContentArea>
 
       <ActionFooter
-        currentStep={2}
+        currentStep={currentStep + 1}
         totalSteps={4}
         onPrevious={handlePrevious}
         onNext={handleNext}
