@@ -6,6 +6,7 @@ import SparkleAltIcon from '../../svg-assets/sparkle-alt.svg?react';
 import HighImpactIcon from '../../svg-assets/high-impact.svg?react';
 import MediumImpactIcon from '../../svg-assets/medium-impact.svg?react';
 import ArticleOverlay from './ArticleOverlay';
+import ReviewArticleOverlay from './ReviewArticleOverlay';
 
 const fadeInUp = keyframes`
   from {
@@ -90,7 +91,32 @@ const TableContent = styled.div.attrs({ className: 'articles-table-content' })`
   flex-direction: column;
   gap: 4px;
   flex: 1;
+  border: 1px solid #dcdcda;
+  border-radius: 12px;
+  padding: 12px 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
+
+  /* Custom scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d8dcde;
+    border-radius: 6px;
+    border: 3px solid white;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b8c0c5;
+  }
 `;
 
 const TableRow = styled.div.attrs({ className: 'articles-table-row' })<{ $index?: number }>`
@@ -225,10 +251,19 @@ const articles: Article[] = [
 
 export default function ArticlesTable() {
   const [showOverlay, setShowOverlay] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState<string>('');
+
+  const handleReviewClick = (title: string) => {
+    setSelectedArticle(title);
+    setShowOverlay(true);
+  };
+
+  const isReviewArticle = selectedArticle === 'Unlocking accounts after too many attempts';
 
   return (
     <>
-      {showOverlay && <ArticleOverlay onClose={() => setShowOverlay(false)} />}
+      {showOverlay && isReviewArticle && <ReviewArticleOverlay onClose={() => setShowOverlay(false)} />}
+      {showOverlay && !isReviewArticle && <ArticleOverlay articleTitle={selectedArticle} onClose={() => setShowOverlay(false)} />}
       <Container>
         <Header>
           <TitleRow>
@@ -260,7 +295,7 @@ export default function ArticlesTable() {
                 <ImpactText>{article.impact === 'high' ? 'High' : 'Medium'}</ImpactText>
               </ImpactCell>
               <ActionCell>
-                <ReviewButton onClick={() => setShowOverlay(true)}>
+                <ReviewButton onClick={() => handleReviewClick(article.title)}>
                   Review
                   <ChevronIcon />
                 </ReviewButton>

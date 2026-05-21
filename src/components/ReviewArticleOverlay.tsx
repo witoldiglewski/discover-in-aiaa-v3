@@ -1,6 +1,8 @@
 import { createPortal } from 'react-dom';
+import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import XIcon from '@zendeskgarden/svg-icons/src/16/x-stroke.svg?react';
+import CheckIcon from '@zendeskgarden/svg-icons/src/16/check-sm-stroke.svg?react';
 
 const fadeIn = keyframes`
   from {
@@ -112,7 +114,6 @@ const Content = styled.div.attrs({ className: 'modal-content' })`
   overflow: hidden;
 `;
 
-// Toolbar styles
 const Toolbar = styled.div.attrs({ className: 'toolbar' })`
   height: 48px;
   width: 100%;
@@ -223,7 +224,13 @@ const ToolbarHtml = styled.button.attrs({ className: 'toolbar-btn toolbar-html' 
   }
 `;
 
-// Article editor area
+const MainContentArea = styled.div.attrs({ className: 'main-content-area' })`
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+  min-height: 0;
+`;
+
 const ArticleEditorContainer = styled.div.attrs({ className: 'article-editor' })`
   flex: 1;
   overflow-y: auto;
@@ -363,7 +370,173 @@ const ArticleBody = styled.div.attrs({ className: 'article-body' })`
   }
 `;
 
-// Footer styles
+const HighlightAddition = styled.span.attrs({ className: 'highlight-addition' })`
+  background: #ddf0c9;
+  padding: 2px 0;
+`;
+
+const HighlightDeletion = styled.span.attrs({ className: 'highlight-deletion' })`
+  background: #f7e5e6;
+  text-decoration: line-through;
+  padding: 2px 0;
+`;
+
+const SidePanel = styled.div.attrs({ className: 'side-panel' })`
+  width: 360px;
+  flex-shrink: 0;
+  background: #f8f9f9;
+  border-left: 1px solid #d8dcde;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 12px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #d8dcde;
+    border-radius: 6px;
+    border: 3px solid #f8f9f9;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #b8c0c5;
+  }
+`;
+
+const SummaryCard = styled.div.attrs({ className: 'summary-card' })`
+  background: white;
+  border: 1px solid #dcdcda;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const SummaryTitle = styled.div.attrs({ className: 'summary-title' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #2f3130;
+`;
+
+const SummaryText = styled.div.attrs({ className: 'summary-text' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #646864;
+`;
+
+const ReviewCard = styled.div.attrs({ className: 'review-card' })`
+  background: white;
+  border: 1px solid #dcdcda;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+`;
+
+const ReviewCardHeader = styled.div.attrs({ className: 'review-card-header' })`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const ReviewCardTitle = styled.div.attrs({ className: 'review-card-title' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #2f3130;
+`;
+
+const ReviewCardCount = styled.div.attrs({ className: 'review-card-count' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #646864;
+`;
+
+const ReviewCardContent = styled.div.attrs({ className: 'review-card-content' })`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #2f3130;
+  padding: 12px;
+  background: #f8f9f9;
+  border-radius: 4px;
+`;
+
+const ReviewCardActions = styled.div.attrs({ className: 'review-card-actions' })`
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+`;
+
+const RejectButton = styled.button.attrs({ className: 'reject-button' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #d8dcde;
+  border-radius: 4px;
+  background: white;
+  cursor: pointer;
+  color: #68737d;
+
+  &:hover {
+    background: #f8f9f9;
+  }
+`;
+
+const AcceptButton = styled.button.attrs({ className: 'accept-button' })`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #078d4f;
+  border-radius: 4px;
+  background: #078d4f;
+  cursor: pointer;
+  color: white;
+
+  &:hover {
+    background: #067042;
+  }
+`;
+
+const RejectIcon = styled(XIcon).attrs({ className: 'reject-icon' })`
+  width: 16px;
+  height: 16px;
+`;
+
+const AcceptIconStyled = styled(CheckIcon).attrs({ className: 'accept-icon' })`
+  width: 16px;
+  height: 16px;
+`;
+
 const Footer = styled.div.attrs({ className: 'modal-footer' })`
   height: 72px;
   width: 100%;
@@ -454,164 +627,13 @@ const SaveButton = styled.button.attrs({ className: 'btn-save' })`
   }
 `;
 
-interface ArticleContent {
-  title: string;
-  body: JSX.Element;
-}
-
-interface ArticleOverlayProps {
-  articleTitle: string;
+interface ReviewArticleOverlayProps {
   onClose: () => void;
 }
 
-const articleContents: Record<string, ArticleContent> = {
-  'Troubleshooting login issues': {
-    title: 'Troubleshooting login issues',
-    body: (
-      <>
-        <p>Having trouble logging into your account? Follow these steps to resolve common login issues and regain access to your account quickly.</p>
-
-        <h2>Check Your Credentials</h2>
-        <p>Before trying anything else, make sure you're entering the correct information:</p>
-        <ul>
-          <li>Verify that your email address is spelled correctly.</li>
-          <li>Check that Caps Lock is off when entering your password.</li>
-          <li>Ensure there are no extra spaces before or after your email or password.</li>
-        </ul>
-
-        <h2>Reset Your Password</h2>
-        <p>If you can't remember your password:</p>
-        <ol>
-          <li>Click on "Forgot Password?" on the login page.</li>
-          <li>Enter your email address and submit the form.</li>
-          <li>Check your email for a password reset link (check your spam folder if you don't see it).</li>
-          <li>Click the link and create a new password.</li>
-        </ol>
-
-        <h2>Clear Browser Cache and Cookies</h2>
-        <p>Sometimes stored data can interfere with login. Try clearing your browser's cache and cookies, then attempt to log in again.</p>
-
-        <h2>Try a Different Browser or Device</h2>
-        <p>If the issue persists, try logging in using a different browser or device to rule out browser-specific issues.</p>
-      </>
-    )
-  },
-  'Resetting passwords': {
-    title: 'Resetting passwords',
-    body: (
-      <>
-        <p>Need to reset your password? Whether you've forgotten it or want to update it for security reasons, we've made the process quick and easy.</p>
-
-        <h2>From the Login Page</h2>
-        <p>If you can't log in:</p>
-        <ol>
-          <li>Navigate to the login page.</li>
-          <li>Click "Forgot Password?" below the password field.</li>
-          <li>Enter the email address associated with your account.</li>
-          <li>Click "Send Reset Link".</li>
-          <li>Check your email for instructions (the link is valid for 24 hours).</li>
-          <li>Click the link in the email to create a new password.</li>
-        </ol>
-
-        <h2>From Your Account Settings</h2>
-        <p>If you're already logged in and want to change your password:</p>
-        <ol>
-          <li>Go to Account Settings from the profile menu.</li>
-          <li>Select "Security" from the sidebar.</li>
-          <li>Click "Change Password".</li>
-          <li>Enter your current password, then your new password twice.</li>
-          <li>Click "Update Password" to save.</li>
-        </ol>
-
-        <h2>Password Requirements</h2>
-        <p>Your new password must meet these requirements:</p>
-        <ul>
-          <li>At least 8 characters long.</li>
-          <li>Contains at least one uppercase letter.</li>
-          <li>Contains at least one lowercase letter.</li>
-          <li>Contains at least one number.</li>
-          <li>Contains at least one special character (!@#$%^&*).</li>
-        </ul>
-      </>
-    )
-  },
-  'Recovering usernames': {
-    title: 'Recovering usernames',
-    body: (
-      <>
-        <p>Forgot your username? Don't worry—you can recover it using your email address or phone number associated with your account.</p>
-
-        <h2>Recover Username via Email</h2>
-        <p>To retrieve your username using your email:</p>
-        <ol>
-          <li>Go to the login page and click "Forgot Username?".</li>
-          <li>Enter the email address you used when creating your account.</li>
-          <li>Click "Send Username Reminder".</li>
-          <li>Check your email—your username will be sent to you within a few minutes.</li>
-        </ol>
-
-        <h2>Recover Username via Phone Number</h2>
-        <p>If you registered with a phone number:</p>
-        <ol>
-          <li>Go to the login page and click "Forgot Username?".</li>
-          <li>Select the "Use phone number" option.</li>
-          <li>Enter your phone number and click "Send Code".</li>
-          <li>Enter the verification code sent via SMS.</li>
-          <li>Your username will be displayed on the screen.</li>
-        </ol>
-
-        <h2>Still Can't Find Your Username?</h2>
-        <p>If you don't receive an email or SMS:</p>
-        <ul>
-          <li>Check your spam or junk mail folder.</li>
-          <li>Verify that you're using the correct email address or phone number.</li>
-          <li>Contact our support team if you still need help.</li>
-        </ul>
-      </>
-    )
-  },
-  'Unlocking accounts after too many attempts': {
-    title: 'Unlocking accounts after too many attempts',
-    body: (
-      <>
-        <p>For security reasons, your account is temporarily locked after multiple unsuccessful login attempts. Here's how to unlock it and regain access.</p>
-
-        <h2>Wait for Automatic Unlock</h2>
-        <p>Your account will automatically unlock after 30 minutes. This is the simplest option if you're not in a hurry.</p>
-
-        <h2>Unlock Immediately via Email</h2>
-        <p>To unlock your account right away:</p>
-        <ol>
-          <li>Check your email for an "Account Locked" notification.</li>
-          <li>Click the "Unlock My Account" link in the email.</li>
-          <li>Follow the verification steps to confirm your identity.</li>
-          <li>Create a new password if prompted.</li>
-        </ol>
-
-        <h2>Unlock via Support</h2>
-        <p>If you didn't receive an unlock email:</p>
-        <ul>
-          <li>Contact our support team through the help center.</li>
-          <li>Provide your username or email address.</li>
-          <li>Verify your identity by answering security questions.</li>
-          <li>Our team will unlock your account and help you reset your password.</li>
-        </ul>
-
-        <h2>Prevent Future Lockouts</h2>
-        <p>To avoid getting locked out again:</p>
-        <ul>
-          <li>Use a password manager to store your credentials securely.</li>
-          <li>Reset your password if you're having trouble remembering it.</li>
-          <li>Enable two-factor authentication for added security.</li>
-        </ul>
-      </>
-    )
-  }
-};
-
-export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlayProps) {
+export default function ReviewArticleOverlay({ onClose }: ReviewArticleOverlayProps) {
   const portalRoot = document.getElementById('root')?.parentElement || document.body;
-  const content = articleContents[articleTitle];
+  const [currentEdit, setCurrentEdit] = useState(1);
 
   return createPortal(
     <Overlay onClick={onClose}>
@@ -619,7 +641,7 @@ export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlay
         <Header>
           <HeaderTitle>
             <HeaderTitleRegular>Article review:</HeaderTitleRegular>
-            <HeaderTitleBold>{articleTitle}</HeaderTitleBold>
+            <HeaderTitleBold>Unlocking accounts after too many attempts</HeaderTitleBold>
           </HeaderTitle>
           <HeaderCloseButton onClick={onClose}>
             <CloseIcon />
@@ -627,7 +649,6 @@ export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlay
         </Header>
 
         <Content>
-          {/* Formatting Toolbar */}
           <Toolbar>
             <ToolbarItems>
               <ToolbarDropdown className="toolbar-heading">
@@ -705,34 +726,106 @@ export default function ArticleOverlay({ articleTitle, onClose }: ArticleOverlay
             </ToolbarItems>
           </Toolbar>
 
-          {/* Article Editor */}
-          <ArticleEditorContainer>
-            <ArticleWrapper>
-              <ArticleHeaderBar>
-                <DraftBadge>
-                  <DraftIcon />
-                  Draft
-                </DraftBadge>
-                <HeaderDivider />
-                <NewArticleTag>New article</NewArticleTag>
-                <HeaderDivider />
-                <LanguageButton>American English</LanguageButton>
-              </ArticleHeaderBar>
+          <MainContentArea>
+            <ArticleEditorContainer>
+              <ArticleWrapper>
+                <ArticleHeaderBar>
+                  <DraftBadge>
+                    <DraftIcon />
+                    Draft
+                  </DraftBadge>
+                  <HeaderDivider />
+                  <NewArticleTag>Article changes</NewArticleTag>
+                  <HeaderDivider />
+                  <LanguageButton>American English</LanguageButton>
+                </ArticleHeaderBar>
 
-              <Article>
-                <ArticleTitle contentEditable suppressContentEditableWarning>
-                  {content.title}
-                </ArticleTitle>
+                <Article>
+                  <ArticleTitle contentEditable suppressContentEditableWarning>
+                    Unlocking accounts after too many attempts
+                  </ArticleTitle>
 
-                <ArticleBody contentEditable suppressContentEditableWarning>
-                  {content.body}
-                </ArticleBody>
-              </Article>
-            </ArticleWrapper>
-          </ArticleEditorContainer>
+                  <ArticleBody contentEditable suppressContentEditableWarning>
+                    <p>For security reasons, your account is temporarily locked after multiple unsuccessful login attempts. Here's how to unlock it and regain access.</p>
+
+                    <h2>Wait for Automatic Unlock</h2>
+                    <p>Your account will automatically unlock after <HighlightDeletion>30 minutes</HighlightDeletion><HighlightAddition>15 minutes</HighlightAddition>. This is the simplest option if you're not in a hurry.</p>
+
+                    <h2>Unlock Immediately via Email</h2>
+                    <p>To unlock your account right away:</p>
+                    <ol>
+                      <li>Check your email for an "Account Locked" notification.</li>
+                      <li>Click the "Unlock My Account" link in the email.</li>
+                      <li>Follow the verification steps to confirm your identity.</li>
+                      <li><HighlightDeletion>Create a new password if prompted.</HighlightDeletion><HighlightAddition>You'll be able to log in immediately without changing your password.</HighlightAddition></li>
+                    </ol>
+
+                    <h2>Unlock via Support</h2>
+                    <p>If you didn't receive an unlock email:</p>
+                    <ul>
+                      <li>Contact our support team through the help center.</li>
+                      <li>Provide your username or email address.</li>
+                      <li>Verify your identity by answering security questions.</li>
+                      <li>Our team will unlock your account and help you reset your password.</li>
+                    </ul>
+
+                    <h2>Prevent Future Lockouts</h2>
+                    <p>To avoid getting locked out again:</p>
+                    <ul>
+                      <li>Use a password manager to store your credentials securely.</li>
+                      <li>Reset your password if you're having trouble remembering it.</li>
+                      <li>Enable two-factor authentication for added security.</li>
+                    </ul>
+                  </ArticleBody>
+                </Article>
+              </ArticleWrapper>
+            </ArticleEditorContainer>
+
+            <SidePanel>
+              <SummaryCard>
+                <SummaryTitle>Review 2 of 2 edits</SummaryTitle>
+                <SummaryText>AI has suggested changes to improve clarity and accuracy based on your knowledge base.</SummaryText>
+              </SummaryCard>
+
+              <ReviewCard>
+                <ReviewCardHeader>
+                  <ReviewCardTitle>Reduce wait time</ReviewCardTitle>
+                  <ReviewCardCount>1 of 2</ReviewCardCount>
+                </ReviewCardHeader>
+                <ReviewCardContent>
+                  Change automatic unlock time from 30 minutes to 15 minutes to match updated security policy.
+                </ReviewCardContent>
+                <ReviewCardActions>
+                  <RejectButton>
+                    <RejectIcon />
+                  </RejectButton>
+                  <AcceptButton>
+                    <AcceptIconStyled />
+                  </AcceptButton>
+                </ReviewCardActions>
+              </ReviewCard>
+
+              <ReviewCard>
+                <ReviewCardHeader>
+                  <ReviewCardTitle>Simplify unlock process</ReviewCardTitle>
+                  <ReviewCardCount>2 of 2</ReviewCardCount>
+                </ReviewCardHeader>
+                <ReviewCardContent>
+                  Users no longer need to reset their password after unlocking via email, making the process faster.
+                </ReviewCardContent>
+                <ReviewCardActions>
+                  <RejectButton>
+                    <RejectIcon />
+                  </RejectButton>
+                  <AcceptButton>
+                    <AcceptIconStyled />
+                  </AcceptButton>
+                </ReviewCardActions>
+              </ReviewCard>
+            </SidePanel>
+          </MainContentArea>
         </Content>
 
-        {/* Footer */}
         <Footer>
           <FooterLeft>
             <PreviewButton>
