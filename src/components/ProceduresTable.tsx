@@ -133,7 +133,8 @@ const TableRow = styled.div.attrs({ className: 'procedures-table-row' })<{ $inde
 `;
 
 const TitleCell = styled.div.attrs({ className: 'procedures-cell-title' })`
-  min-width: 260px;
+  flex: 1;
+  min-width: 0;
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 12px;
@@ -267,7 +268,7 @@ export default function ProceduresTable() {
       </Header>
 
       <TableHeader>
-        <ColumnHeader $width="260px">Title</ColumnHeader>
+        <ColumnHeader>Title</ColumnHeader>
         <ColumnHeader>Status</ColumnHeader>
         <ColumnHeader>Impact</ColumnHeader>
         <ColumnHeader $width="80px">Action</ColumnHeader>
