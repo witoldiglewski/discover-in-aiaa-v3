@@ -415,12 +415,13 @@ const SidePanel = styled.div.attrs({ className: 'side-panel' })`
 
 const SummaryCard = styled.div.attrs({ className: 'summary-card' })`
   background: white;
-  border: 1px solid #dcdcda;
+  border: 1px solid transparent;
   border-radius: 8px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 `;
 
 const SummaryTitle = styled.div.attrs({ className: 'summary-title' })`
@@ -443,12 +444,13 @@ const SummaryText = styled.div.attrs({ className: 'summary-text' })`
 
 const ReviewCard = styled.div.attrs({ className: 'review-card' })`
   background: white;
-  border: 1px solid #dcdcda;
+  border: 1px solid transparent;
   border-radius: 8px;
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 `;
 
 const ReviewCardHeader = styled.div.attrs({ className: 'review-card-header' })`
