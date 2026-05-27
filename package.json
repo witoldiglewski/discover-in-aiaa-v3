@@ -1,42 +1,25 @@
 {
   "name": "discover-in-aiaa",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "description": "Discover automation opportunities - Multi-version prototype",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "playwright test",
-    "test:ui": "playwright test --ui"
-  },
-  "dependencies": {
-    "@zendesk-ui/assets": "^2.7.2",
-    "@zendesk-ui/navigation": "^1.11.0",
-    "@zendeskgarden/css-bedrock": "^10.0.1",
-    "@zendeskgarden/react-avatars": "^9.15.4",
-    "@zendeskgarden/react-buttons": "^9.15.4",
-    "@zendeskgarden/react-theming": "^9.15.4",
-    "@zendeskgarden/react-typography": "^9.15.4",
-    "@zendeskgarden/svg-icons": "^8.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "styled-components": "^6.4.2"
+    "dev:v1": "cd v1 && npm run dev",
+    "dev:v2": "cd v2 && npm run dev",
+    "dev:both": "npm-run-all --parallel dev:v1 dev:v2",
+    "build:v1": "cd v1 && npm run build",
+    "build:v2": "cd v2 && npm run build",
+    "build:both": "npm-run-all build:v1 build:v2",
+    "install:v1": "cd v1 && npm install",
+    "install:v2": "cd v2 && npm install",
+    "install:all": "npm-run-all install:v1 install:v2",
+    "test:v1": "cd v1 && npm run test",
+    "test:v2": "cd v2 && npm run test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.17.0",
-    "@playwright/test": "^1.49.1",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.17.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
-    "globals": "^15.14.0",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.6",
-    "vite-plugin-svgr": "^4.3.0"
+    "npm-run-all": "^4.1.5"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

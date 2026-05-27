@@ -1,0 +1,42 @@
+{
+  "name": "discover-in-aiaa-v2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
+  },
+  "dependencies": {
+    "@zendesk-ui/assets": "^2.7.2",
+    "@zendesk-ui/navigation": "^1.11.0",
+    "@zendeskgarden/css-bedrock": "^10.0.1",
+    "@zendeskgarden/react-avatars": "^9.15.4",
+    "@zendeskgarden/react-buttons": "^9.15.4",
+    "@zendeskgarden/react-theming": "^9.15.4",
+    "@zendeskgarden/react-typography": "^9.15.4",
+    "@zendeskgarden/svg-icons": "^8.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "styled-components": "^6.4.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@playwright/test": "^1.49.1",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.6",
+    "vite-plugin-svgr": "^4.3.0"
+  }
+}
