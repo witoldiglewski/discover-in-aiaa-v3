@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  height: 100vh;
+}
+
+/* Override Zendesk Navigation Main component border-radius */
+[data-garden-id="navigation.main"] {
+  border-top-left-radius: 24px !important;
+}

@@ -237,7 +237,7 @@ const ArticleEditorContainer = styled.div.attrs({ className: 'article-editor' })
   overflow-x: hidden;
   display: flex;
   justify-content: center;
-  padding: 40px 48px 80px 48px;
+  padding: 40px 48px;
   background: white;
 `;
 
@@ -247,7 +247,6 @@ const ArticleWrapper = styled.div.attrs({ className: 'article-wrapper' })`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 40px;
 `;
 
 const ArticleHeaderBar = styled.div.attrs({ className: 'article-header-bar' })`
@@ -315,7 +314,6 @@ const Article = styled.div.attrs({ className: 'article' })`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-bottom: 80px;
 `;
 
 const ArticleTitle = styled.h1.attrs({ className: 'article-title' })`
@@ -459,7 +457,7 @@ const ReviewCardContent = styled.div.attrs({ className: 'review-card-content' })
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3130;
 `;
 
@@ -503,7 +501,7 @@ const NavText = styled.span.attrs({ className: 'nav-text' })`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #646864;
 `;
 
@@ -650,19 +648,6 @@ const SaveButton = styled.button.attrs({ className: 'btn-save' })`
 `;
 
 interface ReviewArticleOverlayProps {
-  item: {
-    type: 'procedure' | 'article';
-    title: string;
-    relatedTopic: string;
-    articleContent?: {
-      body: JSX.Element;
-      edits: {
-        description: string;
-        oldText: string;
-        newText: string;
-      }[];
-    };
-  };
   onClose: () => void;
   onSave: () => void;
 }
@@ -670,19 +655,13 @@ interface ReviewArticleOverlayProps {
 interface EditState {
   edit1Accepted: boolean | null; // null = pending, true = accepted, false = rejected
   edit2Accepted: boolean | null;
-  edit3Accepted: boolean | null;
 }
 
-export default function ReviewArticleOverlay({ item, onClose, onSave }: ReviewArticleOverlayProps) {
+export default function ReviewArticleOverlay({ onClose, onSave }: ReviewArticleOverlayProps) {
   const portalRoot = document.getElementById('root')?.parentElement || document.body;
-
-  // Use article content if provided, otherwise fall back to default
-  const hasContent = item.type === 'article' && item.articleContent;
-
   const [editState, setEditState] = useState<EditState>({
     edit1Accepted: null,
     edit2Accepted: null,
-    edit3Accepted: null,
   });
 
   const handleAcceptEdit1 = () => {
@@ -701,125 +680,16 @@ export default function ReviewArticleOverlay({ item, onClose, onSave }: ReviewAr
     setEditState(prev => ({ ...prev, edit2Accepted: false }));
   };
 
-  const handleAcceptEdit3 = () => {
-    setEditState(prev => ({ ...prev, edit3Accepted: true }));
-  };
-
-  const handleRejectEdit3 = () => {
-    setEditState(prev => ({ ...prev, edit3Accepted: false }));
-  };
-
   // Count remaining edits
-  const remainingEdits = [editState.edit1Accepted, editState.edit2Accepted, editState.edit3Accepted].filter(state => state === null).length;
-
-  // Function to render article body with highlights for edits
-  const renderArticleBodyWithHighlights = () => {
-    if (!hasContent || !item.articleContent) {
-      return null;
-    }
-
-    const edits = item.articleContent.edits;
-    const body = item.articleContent.body;
-
-    // Process a string with all pending edits
-    const processString = (str: string): any => {
-      let parts: any[] = [str];
-
-      // Process each edit
-      edits.forEach((edit, editIndex) => {
-        const state = editIndex === 0 ? editState.edit1Accepted : editIndex === 1 ? editState.edit2Accepted : editState.edit3Accepted;
-
-        if (state === null) {
-          // Edit is pending - show highlights
-          const newParts: any[] = [];
-
-          parts.forEach((part, partIndex) => {
-            if (typeof part === 'string') {
-              if (edit.oldText && part.includes(edit.oldText)) {
-                // Deletion + addition
-                const splitParts = part.split(edit.oldText);
-                splitParts.forEach((splitPart, splitIndex) => {
-                  newParts.push(splitPart);
-                  if (splitIndex < splitParts.length - 1) {
-                    newParts.push(
-                      <HighlightDeletion key={`del-${editIndex}-${partIndex}-${splitIndex}`}>{edit.oldText}</HighlightDeletion>
-                    );
-                    if (edit.newText) {
-                      newParts.push(
-                        <HighlightAddition key={`add-${editIndex}-${partIndex}-${splitIndex}`}>{edit.newText}</HighlightAddition>
-                      );
-                    }
-                  }
-                });
-              } else if (!edit.oldText && edit.newText && part.includes(edit.newText)) {
-                // Pure addition - shouldn't happen in current article, but handle it
-                const splitParts = part.split(edit.newText);
-                splitParts.forEach((splitPart, splitIndex) => {
-                  newParts.push(splitPart);
-                  if (splitIndex < splitParts.length - 1) {
-                    newParts.push(
-                      <HighlightAddition key={`add-${editIndex}-${partIndex}-${splitIndex}`}>{edit.newText}</HighlightAddition>
-                    );
-                  }
-                });
-              } else {
-                newParts.push(part);
-              }
-            } else {
-              newParts.push(part);
-            }
-          });
-
-          parts = newParts;
-        } else if (state === true) {
-          // Edit accepted - replace old with new
-          const newParts: any[] = [];
-          parts.forEach(part => {
-            if (typeof part === 'string' && edit.oldText) {
-              newParts.push(part.replace(edit.oldText, edit.newText));
-            } else {
-              newParts.push(part);
-            }
-          });
-          parts = newParts;
-        }
-        // If rejected (state === false), keep oldText as is (no change needed)
-      });
-
-      return parts.length === 1 ? parts[0] : parts;
-    };
-
-    // Process JSX element recursively
-    const processElement = (element: any): any => {
-      if (typeof element === 'string') {
-        return processString(element);
-      }
-
-      if (element && element.props && element.props.children) {
-        return {
-          ...element,
-          props: {
-            ...element.props,
-            children: Array.isArray(element.props.children)
-              ? element.props.children.map(processElement).flat()
-              : processElement(element.props.children)
-          }
-        };
-      }
-
-      return element;
-    };
-
-    return processElement(body);
-  };
+  const remainingEdits = [editState.edit1Accepted, editState.edit2Accepted].filter(state => state === null).length;
 
   return createPortal(
     <Overlay onClick={onClose}>
       <Modal onClick={(e) => e.stopPropagation()}>
         <Header>
           <HeaderTitle>
-            <HeaderTitleRegular>{item.type === 'article' ? 'Article' : 'Procedure'} review:</HeaderTitleRegular>
-            <HeaderTitleBold>{item.title}</HeaderTitleBold>
+            <HeaderTitleRegular>Article review:</HeaderTitleRegular>
+            <HeaderTitleBold>Unlocking accounts after too many attempts</HeaderTitleBold>
           </HeaderTitle>
           <HeaderCloseButton onClick={onClose}>
             <CloseIcon />
@@ -920,132 +790,129 @@ export default function ReviewArticleOverlay({ item, onClose, onSave }: ReviewAr
 
                 <Article>
                   <ArticleTitle contentEditable suppressContentEditableWarning>
-                    {item.title}
+                    Unlocking accounts after too many attempts
                   </ArticleTitle>
 
                   <ArticleBody contentEditable suppressContentEditableWarning>
-                    {hasContent ? renderArticleBodyWithHighlights() : (
-                      <p>Content for {item.type} "{item.title}" related to {item.relatedTopic}.</p>
-                    )}
+                    <p>For security reasons, your account is temporarily locked after multiple unsuccessful login attempts. Here's how to unlock it and regain access.</p>
+
+                    <h2>Wait for Automatic Unlock</h2>
+                    <p>Your account will automatically unlock after {
+                      editState.edit1Accepted === null ? (
+                        <>
+                          <HighlightDeletion>30 minutes</HighlightDeletion>
+                          <HighlightAddition>15 minutes</HighlightAddition>
+                        </>
+                      ) : editState.edit1Accepted === true ? (
+                        '15 minutes'
+                      ) : (
+                        '30 minutes'
+                      )
+                    }. This is the simplest option if you're not in a hurry.</p>
+
+                    <h2>Unlock Immediately via Email</h2>
+                    <p>To unlock your account right away:</p>
+                    <ol>
+                      <li>Check your email for an "Account Locked" notification.</li>
+                      <li>Click the "Unlock My Account" link in the email.</li>
+                      <li>Follow the verification steps to confirm your identity.</li>
+                      <li>{
+                        editState.edit2Accepted === null ? (
+                          <>
+                            <HighlightDeletion>Create a new password if prompted.</HighlightDeletion>
+                            <HighlightAddition>You'll be able to log in immediately without changing your password.</HighlightAddition>
+                          </>
+                        ) : editState.edit2Accepted === true ? (
+                          "You'll be able to log in immediately without changing your password."
+                        ) : (
+                          'Create a new password if prompted.'
+                        )
+                      }</li>
+                    </ol>
+
+                    <h2>Unlock via Support</h2>
+                    <p>If you didn't receive an unlock email:</p>
+                    <ul>
+                      <li>Contact our support team through the help center.</li>
+                      <li>Provide your username or email address.</li>
+                      <li>Verify your identity by answering security questions.</li>
+                      <li>Our team will unlock your account and help you reset your password.</li>
+                    </ul>
+
+                    <h2>Prevent Future Lockouts</h2>
+                    <p>To avoid getting locked out again:</p>
+                    <ul>
+                      <li>Use a password manager to store your credentials securely.</li>
+                      <li>Reset your password if you're having trouble remembering it.</li>
+                      <li>Enable two-factor authentication for added security.</li>
+                    </ul>
                   </ArticleBody>
                 </Article>
               </ArticleWrapper>
             </ArticleEditorContainer>
 
             <SidePanel>
-              {hasContent && item.articleContent!.edits.length > 0 ? (
-                <>
-                  <SummaryCard>
-                    <SummaryTitle>
-                      {remainingEdits > 0
-                        ? `Review ${remainingEdits} of ${item.articleContent!.edits.length} edits`
-                        : 'All edits reviewed'
-                      }
-                    </SummaryTitle>
-                    <SummaryText>
-                      {remainingEdits > 0
-                        ? 'AI has suggested changes to improve clarity and accuracy based on your knowledge base.'
-                        : 'You have reviewed all suggested edits. Click "Save" to apply your changes or "Close" to discard them.'
-                      }
-                    </SummaryText>
-                  </SummaryCard>
+              <SummaryCard>
+                <SummaryTitle>Review {remainingEdits} of 2 edits</SummaryTitle>
+                <SummaryText>AI has suggested changes to improve clarity and accuracy based on your knowledge base.</SummaryText>
+              </SummaryCard>
 
-                  {editState.edit1Accepted === null && item.articleContent!.edits[0] && (
-                    <ReviewCard>
-                      <ReviewCardContent>
-                        <strong>{item.articleContent!.edits[0].description}</strong>
-                        <br />
-                        {item.articleContent!.edits[0].oldText && `Change "${item.articleContent!.edits[0].oldText}" to "${item.articleContent!.edits[0].newText}"`}
-                        {!item.articleContent!.edits[0].oldText && `Add "${item.articleContent!.edits[0].newText}"`}
-                      </ReviewCardContent>
-                      <ReviewCardActions>
-                        <NavigationSection>
-                          <NavButton disabled>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
-                          </NavButton>
-                          <NavText>1 of {item.articleContent!.edits.length}</NavText>
-                          <NavButton onClick={() => {}}>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
-                          </NavButton>
-                        </NavigationSection>
-                        <ActionButtons>
-                          <RejectButton onClick={handleRejectEdit1}>
-                            <RejectIcon />
-                          </RejectButton>
-                          <AcceptButton onClick={handleAcceptEdit1}>
-                            <AcceptIconStyled />
-                          </AcceptButton>
-                        </ActionButtons>
-                      </ReviewCardActions>
-                    </ReviewCard>
-                  )}
+              {editState.edit1Accepted === null && (
+                <ReviewCard>
+                  <ReviewCardContent>
+                    <strong>Reduce wait time</strong>
+                    <br />
+                    Change automatic unlock time from 30 minutes to 15 minutes to match updated security policy.
+                  </ReviewCardContent>
+                  <ReviewCardActions>
+                    <NavigationSection>
+                      <NavButton disabled>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
+                      </NavButton>
+                      <NavText>1 of 2</NavText>
+                      <NavButton>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
+                      </NavButton>
+                    </NavigationSection>
+                    <ActionButtons>
+                      <RejectButton onClick={handleRejectEdit1}>
+                        <RejectIcon />
+                      </RejectButton>
+                      <AcceptButton onClick={handleAcceptEdit1}>
+                        <AcceptIconStyled />
+                      </AcceptButton>
+                    </ActionButtons>
+                  </ReviewCardActions>
+                </ReviewCard>
+              )}
 
-                  {editState.edit2Accepted === null && item.articleContent!.edits[1] && (
-                    <ReviewCard>
-                      <ReviewCardContent>
-                        <strong>{item.articleContent!.edits[1].description}</strong>
-                        <br />
-                        {item.articleContent!.edits[1].oldText && `Change "${item.articleContent!.edits[1].oldText}" to "${item.articleContent!.edits[1].newText}"`}
-                        {!item.articleContent!.edits[1].oldText && `Add "${item.articleContent!.edits[1].newText}"`}
-                      </ReviewCardContent>
-                      <ReviewCardActions>
-                        <NavigationSection>
-                          <NavButton onClick={() => {}}>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
-                          </NavButton>
-                          <NavText>2 of {item.articleContent!.edits.length}</NavText>
-                          <NavButton disabled>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
-                          </NavButton>
-                        </NavigationSection>
-                        <ActionButtons>
-                          <RejectButton onClick={handleRejectEdit2}>
-                            <RejectIcon />
-                          </RejectButton>
-                          <AcceptButton onClick={handleAcceptEdit2}>
-                            <AcceptIconStyled />
-                          </AcceptButton>
-                        </ActionButtons>
-                      </ReviewCardActions>
-                    </ReviewCard>
-                  )}
-
-                  {editState.edit3Accepted === null && item.articleContent!.edits[2] && (
-                    <ReviewCard>
-                      <ReviewCardContent>
-                        <strong>{item.articleContent!.edits[2].description}</strong>
-                        <br />
-                        {item.articleContent!.edits[2].oldText && item.articleContent!.edits[2].newText && `Change "${item.articleContent!.edits[2].oldText}" to "${item.articleContent!.edits[2].newText}"`}
-                        {item.articleContent!.edits[2].oldText && !item.articleContent!.edits[2].newText && `Remove "${item.articleContent!.edits[2].oldText}"`}
-                        {!item.articleContent!.edits[2].oldText && item.articleContent!.edits[2].newText && `Add "${item.articleContent!.edits[2].newText}"`}
-                      </ReviewCardContent>
-                      <ReviewCardActions>
-                        <NavigationSection>
-                          <NavButton onClick={() => {}}>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
-                          </NavButton>
-                          <NavText>3 of {item.articleContent!.edits.length}</NavText>
-                          <NavButton disabled>
-                            <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
-                          </NavButton>
-                        </NavigationSection>
-                        <ActionButtons>
-                          <RejectButton onClick={handleRejectEdit3}>
-                            <RejectIcon />
-                          </RejectButton>
-                          <AcceptButton onClick={handleAcceptEdit3}>
-                            <AcceptIconStyled />
-                          </AcceptButton>
-                        </ActionButtons>
-                      </ReviewCardActions>
-                    </ReviewCard>
-                  )}
-                </>
-              ) : (
-                <SummaryCard>
-                  <SummaryTitle>Review {item.type}</SummaryTitle>
-                  <SummaryText>Review the AI-generated {item.type} for "{item.relatedTopic}".</SummaryText>
-                </SummaryCard>
+              {editState.edit2Accepted === null && (
+                <ReviewCard>
+                  <ReviewCardContent>
+                    <strong>Simplify unlock process</strong>
+                    <br />
+                    Users no longer need to reset their password after unlocking via email, making the process faster.
+                  </ReviewCardContent>
+                  <ReviewCardActions>
+                    <NavigationSection>
+                      <NavButton>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(90deg)' }} />
+                      </NavButton>
+                      <NavText>2 of 2</NavText>
+                      <NavButton disabled>
+                        <img src="/toolbar-icons/ico-article-editor-toolbar-chevron-12.svg" alt="" style={{ transform: 'rotate(-90deg)' }} />
+                      </NavButton>
+                    </NavigationSection>
+                    <ActionButtons>
+                      <RejectButton onClick={handleRejectEdit2}>
+                        <RejectIcon />
+                      </RejectButton>
+                      <AcceptButton onClick={handleAcceptEdit2}>
+                        <AcceptIconStyled />
+                      </AcceptButton>
+                    </ActionButtons>
+                  </ReviewCardActions>
+                </ReviewCard>
               )}
             </SidePanel>
           </MainContentArea>

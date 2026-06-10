@@ -1,5 +1,4 @@
 import { ReactNode, useState } from 'react';
-import styled from 'styled-components';
 import {
   Product,
   Header,
@@ -8,16 +7,6 @@ import {
   Main,
   ProfileMenu,
 } from '@zendesk-ui/navigation';
-
-const StyledMain = styled(Main)`
-  background: transparent !important;
-  box-shadow: none !important;
-  overflow: visible !important;
-  flex: 1 !important;
-  min-height: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-`;
 
 // Import 20px icons from @zendesk-ui/assets for navigation
 import LayoutGridIcon from '@zendesk-ui/assets/icons/20px/layout-grid-fill.svg?react';
@@ -161,9 +150,9 @@ export default function GlobalNav({ children }: GlobalNavProps) {
         </Subnav>
       )}
 
-      <StyledMain>
+      <Main>
         {children}
-      </StyledMain>
+      </Main>
     </Product>
   );
 }
