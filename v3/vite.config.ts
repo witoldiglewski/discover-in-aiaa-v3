@@ -4,7 +4,7 @@ import svgr from 'vite-plugin-svgr'
 
 export default defineConfig({
   plugins: [react(), svgr()],
-  base: '/discover-in-aiaa/',
+  base: './',
   server: {
     port: 5179,
   },
