@@ -10,6 +10,7 @@ import ChevronRightDefaultIcon from '../assets/icons/buttons-chevron-right-defau
 import CloseSmallIcon from '../assets/icons/buttons-close-small.svg?react';
 import ResizeHandleIcon from '../assets/icons/text-area-resize-handle.svg?react';
 import XIcon from '../assets/icons/tag-icon-x.svg?react';
+import CoffeeBotAvatarImg from '../assets/icons/Coffee-bot-Avatar.svg';
 
 const fadeInUp = keyframes`
   from {
@@ -679,7 +680,7 @@ export default function PersonalizeProfile({
         setUploadedFile({
           name: 'morning-brew-logo.png',
           progress: 100,
-          thumbnail: '/src/assets/icons/Coffee-bot-Avatar.svg' // Using coffee bot as mock thumbnail
+          thumbnail: CoffeeBotAvatarImg // Using coffee bot as mock thumbnail
         });
       } else {
         setUploadedFile(prev => prev ? {...prev, progress} : null);
