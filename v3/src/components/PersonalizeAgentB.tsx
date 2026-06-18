@@ -719,7 +719,7 @@ interface PersonalizeAgentBProps {
   selectedLanguage: string;
   setSelectedLanguage: (language: string) => void;
   selectedTranslationLanguages: string[];
-  setSelectedTranslationLanguages: (languages: string[]) => void;
+  setSelectedTranslationLanguages: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 // 12 most popular languages in the world
@@ -745,13 +745,13 @@ export default function PersonalizeAgentB({ widgetIsReady, selectedLanguage, set
   const translationDropdownRef = useRef<HTMLDivElement>(null);
 
   const handleRemoveLanguage = (language: string) => {
-    setSelectedTranslationLanguages(prev => prev.filter(lang => lang !== language));
+    setSelectedTranslationLanguages((prev: string[]) => prev.filter((lang: string) => lang !== language));
   };
 
   const handleToggleLanguage = (language: string) => {
-    setSelectedTranslationLanguages(prev => {
+    setSelectedTranslationLanguages((prev: string[]) => {
       if (prev.includes(language)) {
-        return prev.filter(lang => lang !== language);
+        return prev.filter((lang: string) => lang !== language);
       } else {
         return [...prev, language];
       }

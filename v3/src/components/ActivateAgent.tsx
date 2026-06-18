@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Button } from '@zendeskgarden/react-buttons';
 import { Tag } from '@zendeskgarden/react-tags';
@@ -72,7 +71,6 @@ import ChevronLeftIcon from '../assets/icons/buttons-chevron-left.svg?react';
 import ChevronRightDefaultIcon from '../assets/icons/buttons-chevron-right-default.svg?react';
 import CloseSmallIcon from '../assets/icons/buttons-close-small.svg?react';
 import ChannelMessagingIcon from '../assets/icons/channel-messaging.svg?react';
-import CheckIcon from '../assets/icons/dropdown-Check.svg?react';
 import CheckboxCheckIcon from '../assets/icons/checkbox-check.svg?react';
 import ChannelAndroidIcon from '../assets/icons/channel-android.svg?react';
 import ChannelIosSkdIcon from '../assets/icons/channel-ios-skd.svg?react';

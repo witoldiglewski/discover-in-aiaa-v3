@@ -794,7 +794,7 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
     }
   }, [showLoader, onLoadingChange]);
   const testListRef = useRef<HTMLDivElement>(null);
-  const testingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const testingIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const steps = [
     { label: 'Connect', isCurrent: false },

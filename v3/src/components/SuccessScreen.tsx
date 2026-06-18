@@ -670,10 +670,6 @@ export default function SuccessScreen({
   const illustrationRef = useRef<HTMLDivElement>(null);
   const [animationKey, setAnimationKey] = useState(0);
 
-  const handleReload = () => {
-    setAnimationKey(prev => prev + 1);
-  };
-
   useEffect(() => {
     // Hide the placeholder bot avatar in the SVG
     if (illustrationRef.current) {

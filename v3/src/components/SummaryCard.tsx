@@ -80,7 +80,7 @@ export default function SummaryCard({ items, animate = false, onAnimationComplet
     }
 
     // Animate items one by one with 0.5s delay
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
 
     items.forEach((_, index) => {
       const timer = setTimeout(() => {
