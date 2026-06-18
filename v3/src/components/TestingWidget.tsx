@@ -264,10 +264,10 @@ const PurpleShape = styled.div<{ $delay: number }>`
   height: 280px;
   left: 10px;
   bottom: -130px;
-  background: #9E59F7;
+  background: #AB59F7;
   filter: blur(45px);
   border-radius: 50%;
-  opacity: 0.85;
+  opacity: 0.5;
   animation: float1 14s ease-in-out infinite;
   animation-delay: ${props => props.$delay}s;
   mix-blend-mode: overlay;
@@ -300,10 +300,10 @@ const BlueShape = styled.div<{ $delay: number }>`
   height: 260px;
   right: 20px;
   bottom: -110px;
-  background: #7279FF;
+  background: #729AFF;
   filter: blur(42px);
   border-radius: 50%;
-  opacity: 0.85;
+  opacity: 0.5;
   animation: float2 16s ease-in-out infinite;
   animation-delay: ${props => props.$delay}s;
   mix-blend-mode: screen;
@@ -340,10 +340,10 @@ const OrangeShape = styled.div<{ $delay: number }>`
   left: 50%;
   bottom: -140px;
   transform: translateX(-50%);
-  background: #FF9F31;
+  background: #AB59F7;
   filter: blur(40px);
   border-radius: 50%;
-  opacity: 0.85;
+  opacity: 0.5;
   animation: float3 13s ease-in-out infinite;
   animation-delay: ${props => props.$delay}s;
   mix-blend-mode: screen;

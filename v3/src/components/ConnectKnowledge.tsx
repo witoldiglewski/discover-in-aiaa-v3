@@ -189,13 +189,14 @@ const FormField = styled.div`
   z-index: 10;
 `;
 
-const FieldLabel = styled.label`
+const FieldLabel = styled.h3`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0;
   color: var(--fg-default, #2f3941);
+  margin: 0;
 `;
 
 const DropdownWrapper = styled.div`
@@ -449,7 +450,7 @@ const SourcesHeader = styled.div`
   width: 100%;
 `;
 
-const SourcesTitle = styled.h3`
+const SourcesTitle = styled.h4`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 600;
   font-size: 14px;
@@ -627,7 +628,7 @@ const StepIcon = styled.div<{ $isCurrent: boolean }>`
   align-items: center;
   justify-content: center;
   background: ${props => props.$isCurrent
-    ? 'linear-gradient(138.15deg, rgb(140, 49, 255) 0%, rgb(255, 159, 49) 132.69%)'
+    ? '#8D59B1'
     : 'var(--tag-bg-default, #e8eaec)'};
   flex-shrink: 0;
 `;
@@ -683,9 +684,9 @@ export default function ConnectKnowledge({ widgetIsReady, setWidgetIsReady, widg
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const brands = [
-    { id: 'chewbarka', name: 'Chewbarka', initials: 'CH', articles: 52 },
-    { id: 'chewies-biscuit', name: "Chewie's biscuit", initials: 'CB', articles: 32 },
-    { id: 'chewies-family', name: "Chewie's family", initials: 'CF', articles: 0 },
+    { id: 'joes-coffee', name: "Joe's Coffee", initials: 'JC', articles: 52 },
+    { id: 'morning-brew', name: "Morning Brew Co.", initials: 'MB', articles: 32 },
+    { id: 'bean-there', name: "Bean There", initials: 'BT', articles: 28 },
   ];
 
   useEffect(() => {

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { Button } from '@zendeskgarden/react-buttons';
 import { Tag } from '@zendeskgarden/react-tags';
@@ -16,10 +17,10 @@ const fadeInUp = keyframes`
 `;
 
 // Import bot icons
-import BotFormalIcon from '../assets/icons/bot-Formal.svg?react';
-import BotEnthusiasticIcon from '../assets/icons/bot-enthusiastic.svg?react';
-import BotInformalIcon from '../assets/icons/bot-informal.svg?react';
-import BotCustomIcon from '../assets/icons/bot-custom.svg?react';
+import BotFormalIcon from '../assets/icons/bot-avatar-professional.svg?react';
+import BotEnthusiasticIcon from '../assets/icons/bot-avatar-enthusiastic.svg?react';
+import BotInformalIcon from '../assets/icons/bot-avatar-informal.svg?react';
+import BotCustomIcon from '../assets/icons/bot-avatar-custom.svg?react';
 import ResizeHandleIcon from '../assets/icons/text-area-resize-handle.svg?react';
 import ChannelMessagingIcon from '../assets/icons/channel-messaging.svg?react';
 
@@ -27,6 +28,10 @@ import ChannelMessagingIcon from '../assets/icons/channel-messaging.svg?react';
 import ChevronLeftIcon from '../assets/icons/buttons-chevron-left.svg?react';
 import ChevronRightDefaultIcon from '../assets/icons/buttons-chevron-right-default.svg?react';
 import CloseSmallIcon from '../assets/icons/buttons-close-small.svg?react';
+import ChevronDownIcon from '../assets/icons/inputs-chevron-down.svg?react';
+import CheckIcon from '../assets/icons/dropdown-Check.svg?react';
+import TagXIcon from '../assets/icons/tag-icon-x.svg?react';
+import LinkAnchorIcon from '../assets/icons/link-anchor.svg?react';
 
 const Header = styled.div`
   display: flex;
@@ -144,12 +149,19 @@ const MainPanel = styled.div`
   background: var(--bg-default, white);
   border: 1px solid var(--border-default, #dcdcda);
   border-radius: var(--border-radii-xl, 16px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const MainPanelContent = styled.div`
   padding: var(--spacing-lg, 32px) var(--spacing-xl, 40px);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-lg, 32px);
-  height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  flex: 1;
 `;
 
 const SectionTitle = styled.h2`
@@ -171,6 +183,7 @@ const ToneOfVoiceSection = styled.div`
   width: 100%;
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease forwards;
+  animation-delay: 0.2s;
   position: relative;
   z-index: 1;
 `;
@@ -440,6 +453,305 @@ const FileUploadText = styled.p`
   text-align: center;
 `;
 
+const LanguageSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 12px);
+  max-width: 800px;
+  width: 100%;
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease forwards;
+  animation-delay: 0s;
+  position: relative;
+  z-index: 20;
+`;
+
+const TranslationSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+  max-width: 800px;
+  width: 100%;
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease forwards;
+  animation-delay: 0.1s;
+  position: relative;
+  z-index: 10;
+`;
+
+const FieldContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs, 4px);
+  width: 100%;
+`;
+
+const FieldLabel = styled.h4`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  width: 100%;
+`;
+
+const FieldHint = styled.p`
+  flex: 1;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
+`;
+
+const HintLink = styled.a`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-primary, #406cc4);
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: baseline;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+`;
+
+const DropdownContainer = styled.div`
+  position: relative;
+  width: 100%;
+  z-index: 10;
+`;
+
+const DropdownButton = styled.button`
+  width: 100%;
+  height: 40px;
+  padding: 10px 36px 10px 12px;
+  background: var(--bg-default, white);
+  border: 1px solid var(--border-input, #b7b7b3);
+  border-radius: var(--border-radii-control, 8px);
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-align: left;
+  outline: none;
+  position: relative;
+
+  &:hover {
+    border-color: var(--border-default, #dcdcda);
+  }
+
+  &:focus {
+    border-color: var(--border-primaryemphasis, #406cc4);
+    box-shadow: 0 0 0 1px var(--bg-default, white), 0 0 0 4px var(--border-primaryemphasis, #406cc4);
+  }
+`;
+
+const InputIcon = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-subtle, #646864);
+  pointer-events: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const DropdownMenu = styled.div<{ $isOpen: boolean; $top?: number; $left?: number; $width?: number }>`
+  position: fixed;
+  top: ${props => props.$top}px;
+  left: ${props => props.$left}px;
+  width: ${props => props.$width}px;
+  background: var(--bg-raised, white);
+  border: 1px solid var(--border-subtle, #e8eaec);
+  border-radius: var(--border-radii-lg, 12px);
+  box-shadow: 0px 16px 12px rgba(10, 13, 14, 0.16);
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs, 4px);
+  z-index: 1000;
+  max-height: 224px;
+  overflow-y: auto;
+`;
+
+const DropdownItem = styled.div<{ $isSelected?: boolean; $hasCheckbox?: boolean }>`
+  padding: 10px 12px 10px ${props => props.$hasCheckbox ? '12px' : '36px'};
+  margin: 0;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: ${props => props.$isSelected ? '600' : '400'};
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  position: relative;
+  background: transparent;
+  transition: background-color 0.1s ease;
+
+  /* Left border indicator for hover state */
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--border-primaryemphasis, #406cc4);
+    border-radius: 4px 0 0 4px;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+  }
+
+  &:hover {
+    background: var(--bg-primarysubtle, #ebf4ff);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+`;
+
+const CheckIconWrapper = styled.div`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--border-primaryemphasis, #406cc4);
+  }
+`;
+
+const MultiSelectTrigger = styled.button`
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 36px 6px 12px;
+  background: var(--bg-default, white);
+  border: 1px solid var(--border-input, #b7b7b3);
+  border-radius: var(--border-radii-control, 8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: relative;
+  text-align: left;
+  outline: none;
+
+  &:hover {
+    border-color: var(--border-default, #dcdcda);
+  }
+
+  &:focus {
+    border-color: var(--border-primaryemphasis, #406cc4);
+    box-shadow: 0 0 0 1px var(--bg-default, white), 0 0 0 4px var(--border-primaryemphasis, #406cc4);
+  }
+`;
+
+const MultiSelectIcon = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fg-subtle, #646864);
+  pointer-events: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+`;
+
+const LanguageTag = styled.div`
+  background: var(--tag-bg-default, #eae9e8);
+  border-radius: var(--border-radii-controlsubtle, 4px);
+  height: 32px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+
+  span {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--tag-fg-default, #2f3130);
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: var(--tag-fg-default, #2f3130);
+    }
+  }
+`;
+
 const Footer = styled.div`
   display: flex;
   align-items: center;
@@ -541,7 +853,7 @@ const StepIcon = styled.div<{ $isCurrent: boolean }>`
   align-items: center;
   justify-content: center;
   background: ${props => props.$isCurrent
-    ? 'linear-gradient(138.15deg, rgb(140, 49, 255) 0%, rgb(255, 159, 49) 132.69%)'
+    ? '#8D59B1'
     : 'var(--tag-bg-default, #e8eaec)'};
   flex-shrink: 0;
 `;
@@ -583,17 +895,105 @@ const ConnectorLine = styled.div`
   min-width: 0;
 `;
 
+const LANGUAGES = [
+  'English', 'Spanish', 'French', 'German', 'Italian', 'Portuguese', 'Dutch', 'Polish', 'Turkish',
+  'Russian', 'Japanese', 'Korean', 'Chinese (Simplified)', 'Chinese (Traditional)', 'Arabic', 'Hebrew'
+];
+
 interface PersonalizeAgentProps {
   widgetIsReady: boolean;
   selectedTone: 'professional' | 'enthusiastic' | 'informal' | 'custom';
   setSelectedTone: (tone: 'professional' | 'enthusiastic' | 'informal' | 'custom') => void;
   customToneText: string;
   setCustomToneText: (text: string) => void;
+  selectedLanguage: string;
+  setSelectedLanguage: (language: string) => void;
+  selectedTranslationLanguages: string[];
+  setSelectedTranslationLanguages: (languages: string[]) => void;
 }
 
-export default function PersonalizeAgent({ widgetIsReady, selectedTone, setSelectedTone, customToneText, setCustomToneText }: PersonalizeAgentProps) {
+export default function PersonalizeAgent({
+  widgetIsReady,
+  selectedTone,
+  setSelectedTone,
+  customToneText,
+  setCustomToneText,
+  selectedLanguage,
+  setSelectedLanguage,
+  selectedTranslationLanguages,
+  setSelectedTranslationLanguages
+}: PersonalizeAgentProps) {
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+  const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+  const [isTranslationDropdownOpen, setIsTranslationDropdownOpen] = useState(false);
+  const [languageDropdownPos, setLanguageDropdownPos] = useState({ top: 0, left: 0, width: 0 });
+  const [translationDropdownPos, setTranslationDropdownPos] = useState({ top: 0, left: 0, width: 0 });
   const maxCharacters = 500;
+
+  const languageDropdownRef = useRef<HTMLDivElement>(null);
+  const translationDropdownRef = useRef<HTMLDivElement>(null);
+  const languageButtonRef = useRef<HTMLButtonElement>(null);
+  const translationButtonRef = useRef<HTMLButtonElement>(null);
+  const languageMenuRef = useRef<HTMLDivElement>(null);
+  const translationMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
+      // Check language dropdown
+      if (languageDropdownRef.current && !languageDropdownRef.current.contains(target) &&
+          languageMenuRef.current && !languageMenuRef.current.contains(target)) {
+        setIsLanguageDropdownOpen(false);
+      }
+
+      // Check translation dropdown
+      if (translationDropdownRef.current && !translationDropdownRef.current.contains(target) &&
+          translationMenuRef.current && !translationMenuRef.current.contains(target)) {
+        setIsTranslationDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLanguageDropdownToggle = () => {
+    if (!isLanguageDropdownOpen && languageButtonRef.current) {
+      const rect = languageButtonRef.current.getBoundingClientRect();
+      setLanguageDropdownPos({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width
+      });
+    }
+    setIsLanguageDropdownOpen(!isLanguageDropdownOpen);
+  };
+
+  const handleTranslationDropdownToggle = () => {
+    if (!isTranslationDropdownOpen && translationButtonRef.current) {
+      const rect = translationButtonRef.current.getBoundingClientRect();
+      setTranslationDropdownPos({
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width
+      });
+    }
+    setIsTranslationDropdownOpen(!isTranslationDropdownOpen);
+  };
+
+  const handleToggleLanguage = (language: string) => {
+    if (selectedTranslationLanguages.includes(language)) {
+      setSelectedTranslationLanguages(selectedTranslationLanguages.filter(l => l !== language));
+    } else {
+      setSelectedTranslationLanguages([...selectedTranslationLanguages, language]);
+    }
+  };
+
+  const handleRemoveLanguage = (language: string) => {
+    setSelectedTranslationLanguages(selectedTranslationLanguages.filter(l => l !== language));
+  };
 
   // CHANGE 1: Update step position to 2 (Personalize)
   const steps = [
@@ -627,11 +1027,128 @@ export default function PersonalizeAgent({ widgetIsReady, selectedTone, setSelec
         </StepperPanel>
 
         <MainPanel>
-          {/* CHANGE 2: Main content replaced with Personalize content */}
-          <SectionTitle>
-            <span>Personalize your AI agent </span>
-            <span style={{ fontSize: '12px', lineHeight: '16px', letterSpacing: 0 }}>(1 of 3)</span>
-          </SectionTitle>
+          <MainPanelContent>
+            {/* CHANGE 2: Main content replaced with Personalize content */}
+            <SectionTitle>Personalize your AI agent</SectionTitle>
+
+            {/* Language Selection */}
+            <LanguageSection>
+            <FieldContainer>
+              <FieldLabel>Select language*</FieldLabel>
+              <FieldHint>
+                The default language your AI agent uses to communicate. You can add more languages in your Localization settings in Admin Center.{' '}
+                <HintLink href="#" target="_blank">
+                  Localization settings
+                  <LinkAnchorIcon style={{ marginLeft: '4px' }} />
+                </HintLink>
+              </FieldHint>
+            </FieldContainer>
+
+            <DropdownContainer ref={languageDropdownRef}>
+              <DropdownButton
+                ref={languageButtonRef}
+                onClick={handleLanguageDropdownToggle}
+              >
+                <span>{selectedLanguage}</span>
+                <InputIcon>
+                  <ChevronDownIcon />
+                </InputIcon>
+              </DropdownButton>
+              {isLanguageDropdownOpen && createPortal(
+                <DropdownMenu
+                  ref={languageMenuRef}
+                  $isOpen={isLanguageDropdownOpen}
+                  $top={languageDropdownPos.top}
+                  $left={languageDropdownPos.left}
+                  $width={languageDropdownPos.width}
+                >
+                  {LANGUAGES.map((language) => {
+                    const isSelected = selectedLanguage === language;
+                    return (
+                      <DropdownItem
+                        key={language}
+                        $isSelected={isSelected}
+                        $hasCheckbox={false}
+                        onClick={() => {
+                          setSelectedLanguage(language);
+                          setIsLanguageDropdownOpen(false);
+                        }}
+                      >
+                        {isSelected && (
+                          <CheckIconWrapper>
+                            <CheckIcon />
+                          </CheckIconWrapper>
+                        )}
+                        {language}
+                      </DropdownItem>
+                    );
+                  })}
+                </DropdownMenu>,
+                document.body
+              )}
+            </DropdownContainer>
+          </LanguageSection>
+
+          {/* Translation Languages */}
+          <TranslationSection>
+            <FieldContainer>
+              <FieldLabel>Select languages for translation</FieldLabel>
+            </FieldContainer>
+
+            <DropdownContainer ref={translationDropdownRef}>
+              <MultiSelectTrigger
+                ref={translationButtonRef}
+                onClick={handleTranslationDropdownToggle}
+              >
+                {selectedTranslationLanguages.map((language) => (
+                  <LanguageTag key={language}>
+                    <span>{language}</span>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveLanguage(language);
+                      }}
+                      aria-label={`Remove ${language}`}
+                    >
+                      <TagXIcon />
+                    </button>
+                  </LanguageTag>
+                ))}
+                <MultiSelectIcon>
+                  <ChevronDownIcon />
+                </MultiSelectIcon>
+              </MultiSelectTrigger>
+              {isTranslationDropdownOpen && createPortal(
+                <DropdownMenu
+                  ref={translationMenuRef}
+                  $isOpen={isTranslationDropdownOpen}
+                  $top={translationDropdownPos.top}
+                  $left={translationDropdownPos.left}
+                  $width={translationDropdownPos.width}
+                >
+                  {LANGUAGES.filter(lang => lang !== selectedLanguage).map((language) => {
+                    const isSelected = selectedTranslationLanguages.includes(language);
+                    return (
+                      <DropdownItem
+                        key={language}
+                        onClick={() => handleToggleLanguage(language)}
+                        $hasCheckbox={false}
+                        $isSelected={isSelected}
+                      >
+                        {isSelected && (
+                          <CheckIconWrapper>
+                            <CheckIcon />
+                          </CheckIconWrapper>
+                        )}
+                        {language}
+                      </DropdownItem>
+                    );
+                  })}
+                </DropdownMenu>,
+                document.body
+              )}
+            </DropdownContainer>
+          </TranslationSection>
 
           {/* Tone of Voice section */}
           <ToneOfVoiceSection>
@@ -718,19 +1235,7 @@ export default function PersonalizeAgent({ widgetIsReady, selectedTone, setSelec
               )}
             </CustomTile>
           </ToneOfVoiceSection>
-
-          {/* Add avatar section */}
-          <AvatarSection>
-            <SourcesHeader>
-              <SourcesTitle>Add avatar</SourcesTitle>
-              <SourcesHint>Use a JPG, PNG, or GIF smaller than 100KB. 50px by 50px works best.</SourcesHint>
-            </SourcesHeader>
-
-            {/* File upload */}
-            <FileUploadArea>
-              <FileUploadText>Choose a file or drag and drop here</FileUploadText>
-            </FileUploadArea>
-          </AvatarSection>
+          </MainPanelContent>
         </MainPanel>
       </>
   );

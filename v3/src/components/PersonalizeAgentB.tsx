@@ -672,7 +672,7 @@ const StepIcon = styled.div<{ $isCurrent: boolean }>`
   align-items: center;
   justify-content: center;
   background: ${props => props.$isCurrent
-    ? 'linear-gradient(138.15deg, rgb(140, 49, 255) 0%, rgb(255, 159, 49) 132.69%)'
+    ? '#8D59B1'
     : 'var(--tag-bg-default, #e8eaec)'};
   flex-shrink: 0;
 `;
@@ -806,10 +806,7 @@ export default function PersonalizeAgentB({ widgetIsReady, selectedLanguage, set
         </StepperPanel>
 
         <MainPanel>
-          <SectionTitle>
-            <span>Personalize your AI agent </span>
-            <span style={{ fontSize: '12px', lineHeight: '16px', letterSpacing: 0 }}>(2 of 3)</span>
-          </SectionTitle>
+          <SectionTitle>Personalize your AI agent</SectionTitle>
 
           {/* Language Selection */}
           <LanguageSection>

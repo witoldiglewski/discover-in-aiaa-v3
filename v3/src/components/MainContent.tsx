@@ -4,14 +4,20 @@ import { Button } from '@zendeskgarden/react-buttons';
 import SparkleIcon from '@zendeskgarden/svg-icons/src/16/sparkle-fill.svg?react';
 import ConnectKnowledge, { ConnectKnowledgeHeader, ConnectKnowledgeFooter } from './ConnectKnowledge';
 import PersonalizeAgent, { PersonalizeAgentHeader, PersonalizeAgentFooter } from './PersonalizeAgent';
-import PersonalizeAgentB, { PersonalizeAgentBHeader, PersonalizeAgentBFooter } from './PersonalizeAgentB';
+import PersonalizeProfile, { PersonalizeProfileHeader, PersonalizeProfileFooter } from './PersonalizeProfile';
 import PersonalizeAgentC, { PersonalizeAgentCHeader, PersonalizeAgentCFooter } from './PersonalizeAgentC';
 import OptimizeAgent, { OptimizeAgentHeader, OptimizeAgentFooter } from './OptimizeAgent';
+import TestAgent, { TestAgentHeader, TestAgentFooter } from './TestAgent';
+import ActivateAgent, { ActivateAgentHeader, ActivateAgentFooter } from './ActivateAgent';
+import SuccessScreen from './SuccessScreen';
 import TestingWidget from './TestingWidget';
 
 // Import SVG as React components
 import BubbleIcon from '../assets/Bubble.svg?react';
 import PaperPlaneIcon from '../assets/Paper plane.svg?react';
+import ChevronLeftIcon from '../assets/icons/buttons-chevron-left.svg?react';
+import ChevronRightDefaultIcon from '../assets/icons/buttons-chevron-right-default.svg?react';
+import ChevronRightDisabledIcon from '../assets/icons/buttons-chevron-right-disabled.svg?react';
 
 const Container = styled.div`
   display: flex;
@@ -59,6 +65,72 @@ const StepFooter = styled.div`
   grid-area: footer;
 `;
 
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-xs, 8px) 0;
+  width: 100%;
+`;
+
+const BackButton = styled(Button)`
+  && {
+    height: 40px;
+    padding: 10px 16px;
+    border-radius: var(--border-radii-pill, 99px);
+    border: 1px solid var(--button-border-default, #999b97);
+    background: transparent;
+    color: var(--button-fg-default, #2f3130);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
+
+const ContinueButton = styled(Button)<{ $isEnabled: boolean }>`
+  && {
+    height: 40px;
+    padding: 10px 16px;
+    border-radius: var(--border-radii-pill, 99px);
+    background: ${props => props.$isEnabled ? 'var(--button-bg-emphasis, #2f3130)' : 'var(--bg-disabled, rgba(100, 104, 100, 0.08))'};
+    color: ${props => props.$isEnabled ? 'var(--fg-onemphasis, white)' : 'var(--fg-disabled, #8b8e89)'};
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: ${props => props.$isEnabled ? 'pointer' : 'not-allowed'};
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      ${props => props.$isEnabled && `
+        background: var(--button-bg-emphasis-hover, #404241);
+      `}
+    }
+  }
+`;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -271,7 +343,7 @@ const PurpleShape = styled.div<{ $delay: number }>`
   height: 300px;
   left: -50px;
   top: 50px;
-  background: #9E59F7;
+  background: #AB59F7;
   filter: blur(50px);
   border-radius: 50%;
   opacity: 0.85;
@@ -307,7 +379,7 @@ const BlueShape = styled.div<{ $delay: number }>`
   height: 280px;
   right: -50px;
   top: 80px;
-  background: #7279FF;
+  background: #729AFF;
   filter: blur(47px);
   border-radius: 50%;
   opacity: 0.85;
@@ -347,7 +419,7 @@ const OrangeShape = styled.div<{ $delay: number }>`
   left: 50%;
   bottom: 20px;
   transform: translateX(-50%);
-  background: #FF9F31;
+  background: #AB59F7;
   filter: blur(45px);
   border-radius: 50%;
   opacity: 0.85;
@@ -375,14 +447,20 @@ const OrangeShape = styled.div<{ $delay: number }>`
 `;
 
 export default function MainContent() {
-  const [currentStep, setCurrentStep] = useState<'home' | 'connect' | 'personalize' | 'personalize-b' | 'personalize-c' | 'optimize'>('home');
+  const [currentStep, setCurrentStep] = useState<'home' | 'connect' | 'personalize-profile' | 'personalize' | 'personalize-c' | 'optimize' | 'test' | 'activate' | 'success'>('home');
+  const [buildPhase, setBuildPhase] = useState<'discover' | 'review'>('discover');
   const [widgetCollapsed, setWidgetCollapsed] = useState(true);
   const [widgetIsReady, setWidgetIsReady] = useState(false);
+  const [agentName, setAgentName] = useState('');
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
   const [selectedTone, setSelectedTone] = useState<'professional' | 'enthusiastic' | 'informal' | 'custom'>('professional');
   const [customToneText, setCustomToneText] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [selectedTranslationLanguages, setSelectedTranslationLanguages] = useState<string[]>([]);
+  const [testComplete, setTestComplete] = useState(false);
+  const [isOptimizeLoading, setIsOptimizeLoading] = useState(true);
+  const [isTestLoading, setIsTestLoading] = useState(true);
 
   const handleStartMessaging = () => {
     setCurrentStep('connect');
@@ -396,40 +474,152 @@ export default function MainContent() {
     setCurrentStep('home');
   };
 
-  const handleContinueToPersonalize = () => {
-    setCurrentStep('personalize');
+  const handleContinueToPersonalizeProfile = () => {
+    setCurrentStep('personalize-profile');
   };
 
   const handleBackToConnect = () => {
     setCurrentStep('connect');
   };
 
-  const handleContinueToPersonalizeB = () => {
-    setCurrentStep('personalize-b');
+  const handleContinueToPersonalize = () => {
+    setCurrentStep('personalize');
+  };
+
+  const handleBackToPersonalizeProfile = () => {
+    setCurrentStep('personalize-profile');
+  };
+
+
+  const handleContinueToPersonalizeC = () => {
+    setCurrentStep('personalize-c');
   };
 
   const handleBackToPersonalize = () => {
     setCurrentStep('personalize');
   };
 
-  const handleContinueToPersonalizeC = () => {
-    setCurrentStep('personalize-c');
-  };
-
-  const handleBackToPersonalizeB = () => {
-    setCurrentStep('personalize-b');
-  };
-
   const handleContinueToOptimize = () => {
     setCurrentStep('optimize');
+    setWidgetCollapsed(true);
+    setBuildPhase('discover');
   };
 
   const handleBackToPersonalizeC = () => {
     setCurrentStep('personalize-c');
   };
 
+  const handleBuildContinue = () => {
+    if (buildPhase === 'discover') {
+      setBuildPhase('review');
+    } else {
+      setCurrentStep('test');
+    }
+  };
+
+  const handleBackToOptimize = () => {
+    setCurrentStep('optimize');
+    setBuildPhase('review');
+  };
+
+  const handleTestComplete = () => {
+    setTestComplete(true);
+  };
+
+  const handleContinueToActivate = () => {
+    setCurrentStep('activate');
+  };
+
+  const handleBackToTest = () => {
+    setCurrentStep('test');
+  };
+
+  const handleActivate = () => {
+    setCurrentStep('success');
+  };
+
+  const handleGoHome = () => {
+    setCurrentStep('home');
+  };
+
+  const handleCreateAnother = () => {
+    setCurrentStep('connect');
+  };
+
   // Render step content based on current step
-  if (currentStep === 'optimize') {
+  if (currentStep === 'success') {
+    return (
+      <SuccessScreen
+        agentName={agentName || "Agent name"}
+        companyName={selectedBrand || "Company name"}
+        selectedChannels={selectedChannels}
+        selectedTone={selectedTone}
+        estimatedAutomation="+8%"
+        onGoHome={handleGoHome}
+        onCreateAnother={handleCreateAnother}
+      />
+    );
+  } else if (currentStep === 'activate') {
+    return (
+      <StepWrapper>
+        <StepHeader>
+          <ActivateAgentHeader />
+        </StepHeader>
+        <StepContentArea>
+          <ActivateAgent
+            selectedChannels={selectedChannels}
+            setSelectedChannels={setSelectedChannels}
+          />
+        </StepContentArea>
+        <WidgetArea>
+          <TestingWidget
+            collapsed={widgetCollapsed}
+            onToggle={() => setWidgetCollapsed(!widgetCollapsed)}
+            isReady={widgetIsReady}
+          />
+        </WidgetArea>
+        <StepFooter>
+          <ActivateAgentFooter
+            onBack={handleBackToTest}
+            onActivate={handleActivate}
+            hasSelectedChannels={selectedChannels.length > 0}
+          />
+        </StepFooter>
+      </StepWrapper>
+    );
+  } else if (currentStep === 'test') {
+    return (
+      <StepWrapper>
+        <StepHeader>
+          <TestAgentHeader />
+        </StepHeader>
+        <StepContentArea>
+          <TestAgent
+            selectedTone={selectedTone}
+            agentName={agentName || 'Agent name'}
+            companyName={selectedBrand || 'Company name'}
+            onTestComplete={handleTestComplete}
+            onLoadingChange={setIsTestLoading}
+          />
+        </StepContentArea>
+        <WidgetArea>
+          <TestingWidget
+            collapsed={widgetCollapsed}
+            onToggle={() => setWidgetCollapsed(!widgetCollapsed)}
+            isReady={widgetIsReady}
+          />
+        </WidgetArea>
+        <StepFooter>
+          <TestAgentFooter
+            onBack={handleBackToOptimize}
+            onContinue={handleContinueToActivate}
+            testComplete={testComplete}
+            isLoading={isTestLoading}
+          />
+        </StepFooter>
+      </StepWrapper>
+    );
+  } else if (currentStep === 'optimize') {
     return (
       <StepWrapper>
         <StepHeader>
@@ -438,6 +628,9 @@ export default function MainContent() {
         <StepContentArea>
           <OptimizeAgent
             widgetIsReady={widgetIsReady}
+            selectedTone={selectedTone}
+            buildPhase={buildPhase}
+            onLoadingChange={setIsOptimizeLoading}
           />
         </StepContentArea>
         <WidgetArea>
@@ -450,7 +643,9 @@ export default function MainContent() {
         <StepFooter>
           <OptimizeAgentFooter
             onBack={handleBackToPersonalizeC}
-            onContinue={() => console.log('Continue to test')}
+            onContinue={handleBuildContinue}
+            currentPhase={buildPhase}
+            isLoading={isOptimizeLoading}
           />
         </StepFooter>
       </StepWrapper>
@@ -475,25 +670,22 @@ export default function MainContent() {
         </WidgetArea>
         <StepFooter>
           <PersonalizeAgentCFooter
-            onBack={handleBackToPersonalizeB}
+            onBack={handleBackToPersonalize}
             onContinue={handleContinueToOptimize}
           />
         </StepFooter>
       </StepWrapper>
     );
-  } else if (currentStep === 'personalize-b') {
+  } else if (currentStep === 'personalize-profile') {
     return (
       <StepWrapper>
         <StepHeader>
-          <PersonalizeAgentBHeader />
+          <PersonalizeProfileHeader />
         </StepHeader>
         <StepContentArea>
-          <PersonalizeAgentB
-            widgetIsReady={widgetIsReady}
-            selectedLanguage={selectedLanguage}
-            setSelectedLanguage={setSelectedLanguage}
-            selectedTranslationLanguages={selectedTranslationLanguages}
-            setSelectedTranslationLanguages={setSelectedTranslationLanguages}
+          <PersonalizeProfile
+            name={agentName}
+            onNameChange={setAgentName}
           />
         </StepContentArea>
         <WidgetArea>
@@ -504,9 +696,9 @@ export default function MainContent() {
           />
         </WidgetArea>
         <StepFooter>
-          <PersonalizeAgentBFooter
-            onBack={handleBackToPersonalize}
-            onContinue={handleContinueToPersonalizeC}
+          <PersonalizeProfileFooter
+            onBack={handleBackToConnect}
+            onContinue={handleContinueToPersonalize}
           />
         </StepFooter>
       </StepWrapper>
@@ -524,6 +716,10 @@ export default function MainContent() {
             setSelectedTone={setSelectedTone}
             customToneText={customToneText}
             setCustomToneText={setCustomToneText}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+            selectedTranslationLanguages={selectedTranslationLanguages}
+            setSelectedTranslationLanguages={setSelectedTranslationLanguages}
           />
         </StepContentArea>
         <WidgetArea>
@@ -535,8 +731,8 @@ export default function MainContent() {
         </WidgetArea>
         <StepFooter>
           <PersonalizeAgentFooter
-            onBack={handleBackToConnect}
-            onContinue={handleContinueToPersonalizeB}
+            onBack={handleBackToPersonalizeProfile}
+            onContinue={handleContinueToPersonalizeC}
           />
         </StepFooter>
       </StepWrapper>
@@ -567,7 +763,7 @@ export default function MainContent() {
         <StepFooter>
           <ConnectKnowledgeFooter
             onBack={handleBackToHome}
-            onContinue={handleContinueToPersonalize}
+            onContinue={handleContinueToPersonalizeProfile}
             selectedBrand={selectedBrand}
           />
         </StepFooter>
@@ -587,10 +783,9 @@ export default function MainContent() {
           <IconWrapper>
             <SparkleIcon />
           </IconWrapper>
-          <Title>Launch your AI agent in minutes</Title>
+          <Title>Choose your AI agent</Title>
           <Description>
-            Your AI agent applies your knowledge, business policies, and connected systems to reason
-            through requests, take the right action, and deliver complete resolutions.
+            Each AI agent uses your knowledge and business context to deliver helpful, accurate support.
           </Description>
         </TitleSection>
 
@@ -603,14 +798,13 @@ export default function MainContent() {
               <CardContent>
                 <CardTitle>Messaging agent</CardTitle>
                 <CardDescription>
-                  The support specialist resolves issues and answers queries, ensuring a smooth
-                  experience your customers.
+                  Help customers in live chat and messaging channels with fast answers and guided resolutions.
                 </CardDescription>
                 <StyledButton onClick={(e) => {
                   e.stopPropagation();
                   handleStartMessaging();
                 }}>
-                  Start
+                  Create
                 </StyledButton>
               </CardContent>
             </Card>
@@ -624,11 +818,10 @@ export default function MainContent() {
               <CardContent>
                 <CardTitle>Email agent</CardTitle>
                 <CardDescription>
-                  The support specialist resolves issues and answers queries, ensuring a smooth
-                  experience your customers.
+                  Respond to email and web form requests with clear, consistent replies and smart escalation.
                 </CardDescription>
                 <StyledButton onClick={handleStartEmail}>
-                  Start
+                  Create
                 </StyledButton>
               </CardContent>
             </Card>
