@@ -724,7 +724,7 @@ export default function PersonalizeProfile({
 
       <MainPanel>
         <FormSection $delay={0}>
-          <SectionTitle>Personalize your AI agent</SectionTitle>
+          <SectionTitle>Create your AI agent profile</SectionTitle>
           <FieldContainer>
             <FieldLabel>Agent name</FieldLabel>
             <InputWrapper $isFocused={isNameFocused}>

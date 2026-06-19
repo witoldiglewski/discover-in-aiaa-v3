@@ -806,7 +806,7 @@ export default function PersonalizeAgentB({ widgetIsReady, selectedLanguage, set
         </StepperPanel>
 
         <MainPanel>
-          <SectionTitle>Personalize your AI agent</SectionTitle>
+          <SectionTitle>Set language and tone of voice</SectionTitle>
 
           {/* Language Selection */}
           <LanguageSection>

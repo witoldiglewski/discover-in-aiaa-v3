@@ -485,7 +485,7 @@ export default function PersonalizeAgentC({ widgetIsReady }: PersonalizeAgentCPr
         </StepperPanel>
 
         <MainPanel>
-          <SectionTitle>Personalize your AI agent</SectionTitle>
+          <SectionTitle>Set up system replies</SectionTitle>
 
           <SystemRepliesSection>
             <SectionHeader>
