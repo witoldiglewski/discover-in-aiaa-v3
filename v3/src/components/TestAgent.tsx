@@ -19,6 +19,17 @@ import BotAvatarInformalIcon from '../assets/icons/bot-avatar-informal.svg?react
 import BotAvatarCustomIcon from '../assets/icons/bot-avatar-custom.svg?react';
 import CoffeeBotAvatarIcon from '../assets/icons/Coffee-bot-Avatar.svg?react';
 
+// Import sorting icons
+import SortingDisabledIcon from '../assets/icons/sorting-disabled.svg?react';
+import SortingTopIcon from '../assets/icons/sorting-top.svg?react';
+import SortingBottomIcon from '../assets/icons/sorting-bottom.svg?react';
+
+// Import tag icons
+import TagPersonAvatarIcon from '../assets/icons/tag-person-avatar.svg?react';
+
+// Import table icons
+import TableChevronRightIcon from '../assets/icons/table-chevron-right.svg?react';
+
 const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -146,6 +157,22 @@ const SectionTitle = styled.h2`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const SectionTitleGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xxs, 4px);
+`;
+
+const SectionDescription = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
   letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
@@ -328,6 +355,8 @@ const SummaryContainer = styled.div`
   height: 100%;
   position: relative;
   overflow: hidden;
+  opacity: 0;
+  animation: ${fadeInUp} 0.5s ease forwards;
 
   &::before {
     content: '';
@@ -469,9 +498,6 @@ const SummaryHeader = styled.div<{ $index?: number }>`
   align-items: center;
   gap: var(--spacing-sm, 12px);
   width: auto;
-  opacity: 0;
-  animation: ${fadeInUp} 0.5s ease forwards;
-  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
   position: relative;
   z-index: 2;
 `;
@@ -524,18 +550,12 @@ const SummaryDivider = styled.div<{ $index?: number }>`
   height: 1px;
   background: var(--border-default, #dcdcda);
   width: 100%;
-  opacity: 0;
-  animation: ${fadeInUp} 0.5s ease forwards;
-  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
 `;
 
 const SummaryItem = styled.div<{ $index?: number }>`
   display: flex;
   align-items: center;
   gap: var(--spacing-xs, 8px);
-  opacity: 0;
-  animation: ${fadeInUp} 0.5s ease forwards;
-  animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
 `;
 
 const CheckIconGreen = styled(AnimationCheckIcon)`
@@ -733,12 +753,223 @@ const ConnectorLine = styled.div`
   min-width: 0;
 `;
 
+const ReportTable = styled.table`
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+`;
+
+const ReportTableHeader = styled.thead`
+  position: sticky;
+  top: 0;
+  background: var(--bg-default, white);
+  z-index: 10;
+`;
+
+const ReportTableHeaderRow = styled.tr`
+  border-bottom: 1px solid var(--border-default, #dcdcda);
+`;
+
+const ReportTableHeaderCell = styled.th`
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  text-align: left;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  border-bottom: 1px solid var(--border-default, #dcdcda);
+  background: var(--bg-subtle, #f7f7f7);
+  cursor: pointer;
+`;
+
+const HeaderCellContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 8px);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--fg-subtle, #646864);
+  }
+`;
+
+const NameCellContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+`;
+
+const TopicName = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const ConversationCount = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
+`;
+
+const ReportTableBody = styled.tbody``;
+
+const ReportTableRow = styled.tr<{ $selected?: boolean }>`
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(64, 108, 196, 0.08);
+  }
+
+  ${props => props.$selected && `
+    background: rgba(64, 108, 196, 0.16);
+  `}
+`;
+
+const ReportTableCell = styled.td`
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-subtle, #e9ebed);
+
+  tr:last-child & {
+    border-bottom: none;
+  }
+`;
+
+const ChevronCell = styled.td`
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  text-align: right;
+  vertical-align: middle;
+  width: 60px;
+  border-bottom: 1px solid var(--border-subtle, #e9ebed);
+
+  tr:last-child & {
+    border-bottom: none;
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--fg-subtle, #646864);
+  }
+`;
+
+const StatusTagBase = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  height: 20px;
+  border-radius: var(--border-radii-pill, 99px);
+`;
+
+const StatusDot = styled.div<{ $color: string }>`
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: ${props => props.$color};
+  flex-shrink: 0;
+`;
+
+const StatusText = styled.span`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+`;
+
+const GoodTag = styled(StatusTagBase)`
+  background: #ddf0c9;
+
+  ${StatusText} {
+    color: #25390f;
+  }
+`;
+
+const AcceptableTag = styled(StatusTagBase)`
+  background: #f6eba6;
+
+  ${StatusText} {
+    color: #3b3405;
+  }
+`;
+
+const PoorTag = styled(StatusTagBase)`
+  background: #f7e5e6;
+
+  ${StatusText} {
+    color: #5f1c20;
+  }
+`;
+
+const PersonaTag = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px 0 2px;
+  height: 20px;
+  border-radius: var(--border-radii-pill, 99px);
+  background: var(--tag-bg-default, #eae9e8);
+
+  svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+`;
+
+const PersonaText = styled.span`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: var(--tag-fg-default, #2f3130);
+  white-space: nowrap;
+`;
+
+const ReportTableContainer = styled.div`
+  flex: 1;
+  overflow: hidden;
+  border: 1px solid var(--border-default, #dcdcda);
+  border-radius: var(--border-radii-xl, 16px);
+  background: var(--bg-default, white);
+  display: flex;
+  flex-direction: column;
+`;
+
+const ReportTableScroll = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
 interface TestAgentProps {
   selectedTone: 'professional' | 'enthusiastic' | 'informal' | 'custom';
   agentName?: string;
   companyName?: string;
   onTestComplete?: () => void;
   onLoadingChange?: (isLoading: boolean) => void;
+  onConversationSelect?: (conversation: {name: string, status: string} | null) => void;
 }
 
 const TEST_TOPICS = [
@@ -783,9 +1014,40 @@ const TOPIC_NUMBERS = [
   7070, 8080
 ];
 
-export default function TestAgent({ selectedTone, agentName = 'Agent name', companyName = 'Company name', onTestComplete, onLoadingChange }: TestAgentProps) {
+const PERSONAS = ['New customer', 'Existing customer', 'Premium user', 'Trial user'];
+const STATUSES = ['Good', 'Acceptable', 'Poor'];
+
+const generateTestReportData = () => {
+  return TEST_TOPICS.map((topic, index) => {
+    // 8th item is Poor, others random between Good and Acceptable
+    let status;
+    if (index === 7) {
+      status = 'Poor';
+    } else {
+      status = Math.random() > 0.7 ? 'Acceptable' : 'Good';
+    }
+
+    return {
+      name: topic,
+      conversationCount: Math.floor(Math.random() * 500) + 100, // Random 100-600
+      status,
+      persona: PERSONAS[Math.floor(Math.random() * PERSONAS.length)],
+      turns: 2 + Math.floor(Math.random() * 4), // Random 2-5
+    };
+  });
+};
+
+export default function TestAgent({ selectedTone, agentName = 'Agent name', companyName = 'Company name', onTestComplete, onLoadingChange, onConversationSelect }: TestAgentProps) {
+  const [testReportData] = useState(() => generateTestReportData());
   const [showLoader, setShowLoader] = useState(true);
-  const [testPhase, setTestPhase] = useState<'creating' | 'testing' | 'complete'>('creating');
+  const [testPhase, setTestPhase] = useState<'creating' | 'testing' | 'complete' | 'report'>('creating');
+  const [showReport, setShowReport] = useState(false);
+  const [testDuration, setTestDuration] = useState(0);
+  const [testStartTime, setTestStartTime] = useState<number | null>(null);
+  const [selectedRow, setSelectedRow] = useState<number | null>(null);
+  const [sortColumn, setSortColumn] = useState<'name' | 'status' | 'persona' | 'duration' | 'turns' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [selectedConversation, setSelectedConversation] = useState<{name: string, status: string} | null>(null);
   const [testedCount, setTestedCount] = useState(0);
   const [passedCount, setPassedCount] = useState(0);
   const [failedCount, setFailedCount] = useState(0);
@@ -834,6 +1096,7 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
             setPassedCount(0);
             setFailedCount(0);
             setTestPhase('testing');
+            setTestStartTime(Date.now());
             return prev;
           }
           return prev + 1;
@@ -862,6 +1125,9 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
           }
           setTimeout(() => {
             setTestPhase('complete');
+            // Calculate final duration (30-55 seconds)
+            const finalDuration = 30 + Math.floor(Math.random() * 26);
+            setTestDuration(finalDuration);
             // Call onTestComplete after summary animation completes (0.6s fade in)
             if (onTestComplete) {
               setTimeout(onTestComplete, 600);
@@ -898,6 +1164,71 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
       testListRef.current.scrollTop = testListRef.current.scrollHeight;
     }
   }, [visibleTests, testedCount, testPhase]);
+
+  // Handle sorting
+  const handleSort = (column: 'name' | 'status' | 'persona' | 'duration' | 'turns') => {
+    if (sortColumn === column) {
+      // Toggle direction or clear sort
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else {
+        setSortColumn(null);
+        setSortDirection('asc');
+      }
+    } else {
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+
+  // Get sorted data
+  const getSortedData = () => {
+    if (!sortColumn) return testReportData;
+
+    const sorted = [...testReportData].sort((a, b) => {
+      let aVal: any, bVal: any;
+
+      switch (sortColumn) {
+        case 'name':
+          aVal = a.name.toLowerCase();
+          bVal = b.name.toLowerCase();
+          break;
+        case 'status':
+          const statusOrder = { 'Good': 1, 'Acceptable': 2, 'Poor': 3 };
+          aVal = statusOrder[a.status as keyof typeof statusOrder];
+          bVal = statusOrder[b.status as keyof typeof statusOrder];
+          break;
+        case 'persona':
+          aVal = a.persona.toLowerCase();
+          bVal = b.persona.toLowerCase();
+          break;
+        case 'duration':
+          aVal = testDuration;
+          bVal = testDuration;
+          break;
+        case 'turns':
+          aVal = a.turns;
+          bVal = b.turns;
+          break;
+        default:
+          return 0;
+      }
+
+      if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return sorted;
+  };
+
+  const sortedData = getSortedData();
+
+  // Get sorting icon for column
+  const getSortIcon = (column: 'name' | 'status' | 'persona' | 'duration' | 'turns') => {
+    if (sortColumn !== column) return <SortingDisabledIcon />;
+    return sortDirection === 'asc' ? <SortingTopIcon /> : <SortingBottomIcon />;
+  };
 
   if (showLoader) {
     return (
@@ -951,9 +1282,118 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
       </StepperPanel>
       <MainPanel>
         <MainPanelContent>
-          <SectionTitle>Testing report</SectionTitle>
+          {showReport ? (
+            <>
+              <SectionTitleGroup>
+                <SectionTitle>Testing report</SectionTitle>
+                <SectionDescription>
+                  Review the results of 32 automated test scenarios that simulated real customer conversations.
+                </SectionDescription>
+              </SectionTitleGroup>
 
-          <BentoGrid>
+              <ReportTableContainer>
+                <ReportTableScroll>
+                  <ReportTable>
+                    <ReportTableHeader>
+                      <ReportTableHeaderRow>
+                        <ReportTableHeaderCell onClick={() => handleSort('name')}>
+                          <HeaderCellContent>
+                            Name
+                            {getSortIcon('name')}
+                          </HeaderCellContent>
+                        </ReportTableHeaderCell>
+                        <ReportTableHeaderCell onClick={() => handleSort('status')}>
+                          <HeaderCellContent>
+                            Status
+                            {getSortIcon('status')}
+                          </HeaderCellContent>
+                        </ReportTableHeaderCell>
+                        <ReportTableHeaderCell onClick={() => handleSort('persona')}>
+                          <HeaderCellContent>
+                            Persona
+                            {getSortIcon('persona')}
+                          </HeaderCellContent>
+                        </ReportTableHeaderCell>
+                        <ReportTableHeaderCell onClick={() => handleSort('duration')}>
+                          <HeaderCellContent>
+                            Duration
+                            {getSortIcon('duration')}
+                          </HeaderCellContent>
+                        </ReportTableHeaderCell>
+                        <ReportTableHeaderCell onClick={() => handleSort('turns')}>
+                          <HeaderCellContent>
+                            Turns
+                            {getSortIcon('turns')}
+                          </HeaderCellContent>
+                        </ReportTableHeaderCell>
+                        <ReportTableHeaderCell></ReportTableHeaderCell>
+                      </ReportTableHeaderRow>
+                    </ReportTableHeader>
+                    <ReportTableBody>
+                      {sortedData.map((row, index) => (
+                        <ReportTableRow
+                          key={index}
+                          $selected={selectedRow === index}
+                          onClick={() => {
+                            setSelectedRow(selectedRow === index ? null : index);
+                            if (row.status === 'Good' || row.status === 'Acceptable') {
+                              const newConversation = selectedConversation?.name === row.name ? null : {name: row.name, status: row.status};
+                              setSelectedConversation(newConversation);
+                              if (onConversationSelect) {
+                                onConversationSelect(newConversation);
+                              }
+                            }
+                          }}
+                        >
+                          <ReportTableCell>
+                            <NameCellContent>
+                              <TopicName>{row.name}</TopicName>
+                              <ConversationCount>{row.conversationCount} conversations</ConversationCount>
+                            </NameCellContent>
+                          </ReportTableCell>
+                          <ReportTableCell>
+                            {row.status === 'Good' && (
+                              <GoodTag>
+                                <StatusDot $color="#4b7d04" />
+                                <StatusText>Good</StatusText>
+                              </GoodTag>
+                            )}
+                            {row.status === 'Acceptable' && (
+                              <AcceptableTag>
+                                <StatusDot $color="#7f7004" />
+                                <StatusText>Acceptable</StatusText>
+                              </AcceptableTag>
+                            )}
+                            {row.status === 'Poor' && (
+                              <PoorTag>
+                                <StatusDot $color="#c63f46" />
+                                <StatusText>Poor</StatusText>
+                              </PoorTag>
+                            )}
+                          </ReportTableCell>
+                          <ReportTableCell>
+                            <PersonaTag>
+                              <TagPersonAvatarIcon />
+                              <PersonaText>{row.persona}</PersonaText>
+                            </PersonaTag>
+                          </ReportTableCell>
+                          <ReportTableCell>{testDuration}s</ReportTableCell>
+                          <ReportTableCell>{row.turns}</ReportTableCell>
+                          <ChevronCell>
+                            <TableChevronRightIcon />
+                          </ChevronCell>
+                        </ReportTableRow>
+                      ))}
+                    </ReportTableBody>
+                  </ReportTable>
+                </ReportTableScroll>
+              </ReportTableContainer>
+            </>
+          ) : (
+            <>
+              <SectionTitle>Testing report</SectionTitle>
+
+              <BentoGrid>
             <MetricCard $index={0}>
               <MetricInfoIcon />
               <MetricValue>8</MetricValue>
@@ -1001,7 +1441,7 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
                       <SummaryText>CSAT Projection 88%</SummaryText>
                     </SummaryItem>
                   </SummaryList>
-                  <ReportButton $index={4}>See full report</ReportButton>
+                  <ReportButton $index={4} onClick={() => setShowReport(true)}>See full report</ReportButton>
                 </SummaryContainer>
               ) : (
                 <TestingContentWrapper>
@@ -1041,6 +1481,8 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
               )}
             </TestingContainer>
           </BentoGrid>
+            </>
+          )}
         </MainPanelContent>
       </MainPanel>
     </>

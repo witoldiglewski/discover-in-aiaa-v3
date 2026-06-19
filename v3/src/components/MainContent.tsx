@@ -452,6 +452,7 @@ export default function MainContent() {
   const [currentStep, setCurrentStep] = useState<'home' | 'connect' | 'personalize-profile' | 'personalize' | 'personalize-c' | 'optimize' | 'test' | 'activate' | 'success'>('home');
   const [widgetCollapsed, setWidgetCollapsed] = useState(true);
   const [widgetIsReady, setWidgetIsReady] = useState(false);
+  const [conversationDetails, setConversationDetails] = useState<{name: string, status: string} | null>(null);
   const [agentName, setAgentName] = useState('');
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
   const [selectedChannels, setSelectedChannels] = useState<string[]>([]);
@@ -615,6 +616,7 @@ export default function MainContent() {
             companyName={selectedBrand || 'Company name'}
             onTestComplete={handleTestComplete}
             onLoadingChange={setIsTestLoading}
+            onConversationSelect={setConversationDetails}
           />
         </StepContentArea>
         <WidgetArea>
@@ -622,6 +624,8 @@ export default function MainContent() {
             collapsed={widgetCollapsed}
             onToggle={() => setWidgetCollapsed(!widgetCollapsed)}
             isReady={widgetIsReady}
+            conversationDetails={conversationDetails}
+            onConversationClose={() => setConversationDetails(null)}
           />
         </WidgetArea>
         <StepFooter>
