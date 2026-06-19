@@ -821,10 +821,10 @@ const ReviewTopicHeader = styled.div`
 
 const ReviewTopicTitle = styled.h4`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.0004px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -1492,52 +1492,58 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
 
             {REVIEW_CONTENT.map((section, sectionIndex) => {
               const displayTickets = TOPICS_DATA[sectionIndex]?.sampleTickets.slice(0, 5) || [];
+              const topicCoverage = TOPICS_DATA[sectionIndex]?.coverage || section.coverage;
               const isTooltipOpen = tooltipStates[sectionIndex] || false;
               const isFlipped = flippedStates[sectionIndex] || false;
 
               return (
                 <ReviewTopicSection key={sectionIndex} $index={sectionIndex}>
                   <ReviewTopicHeader>
-                    <ReviewTopicTitle>{section.topic}</ReviewTopicTitle>
-                    <SampleLinkWrapper style={{ marginLeft: '20px' }}>
-                      <Tooltip
-                        content={
-                          <TooltipContent
-                            ref={(el) => { tooltipRefs.current[sectionIndex] = el; }}
-                            $isFlipped={isFlipped}
-                            onMouseEnter={() => handleTooltipMouseEnter(sectionIndex)}
-                            onMouseLeave={() => handleTooltipMouseLeave(sectionIndex)}
-                          >
-                            <TooltipHeading>Sample tickets</TooltipHeading>
-                            <TicketList>
-                              {displayTickets.map((ticket, ticketIndex) => (
-                                <TicketItem key={ticketIndex} href="#">
-                                  <LetterTag>
-                                    <LetterTagText>S</LetterTagText>
-                                  </LetterTag>
-                                  <TicketText>{ticket}</TicketText>
-                                </TicketItem>
-                              ))}
-                            </TicketList>
-                          </TooltipContent>
-                        }
-                        placement="top"
-                        size="large"
-                        delayMS={0}
-                        hasArrow={false}
-                        zIndex={9999}
-                        isVisible={isTooltipOpen}
-                      >
-                        <SampleLink
-                          ref={(el) => { linkRefs.current[sectionIndex] = el; }}
-                          href="#"
-                          onMouseEnter={() => handleMouseEnter(sectionIndex)}
-                          onMouseLeave={() => handleMouseLeave(sectionIndex)}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                      <ReviewTopicTitle>{section.topic}</ReviewTopicTitle>
+                      <SampleLinkWrapper>
+                        <Tooltip
+                          content={
+                            <TooltipContent
+                              ref={(el) => { tooltipRefs.current[sectionIndex] = el; }}
+                              $isFlipped={isFlipped}
+                              onMouseEnter={() => handleTooltipMouseEnter(sectionIndex)}
+                              onMouseLeave={() => handleTooltipMouseLeave(sectionIndex)}
+                            >
+                              <TooltipHeading>Sample tickets</TooltipHeading>
+                              <TicketList>
+                                {displayTickets.map((ticket, ticketIndex) => (
+                                  <TicketItem key={ticketIndex} href="#">
+                                    <LetterTag>
+                                      <LetterTagText>S</LetterTagText>
+                                    </LetterTag>
+                                    <TicketText>{ticket}</TicketText>
+                                  </TicketItem>
+                                ))}
+                              </TicketList>
+                            </TooltipContent>
+                          }
+                          placement="top"
+                          size="large"
+                          delayMS={0}
+                          hasArrow={false}
+                          zIndex={9999}
+                          isVisible={isTooltipOpen}
                         >
-                          Sample tickets
-                        </SampleLink>
-                      </Tooltip>
-                    </SampleLinkWrapper>
+                          <SampleLink
+                            ref={(el) => { linkRefs.current[sectionIndex] = el; }}
+                            href="#"
+                            onMouseEnter={() => handleMouseEnter(sectionIndex)}
+                            onMouseLeave={() => handleMouseLeave(sectionIndex)}
+                          >
+                            Sample tickets
+                          </SampleLink>
+                        </Tooltip>
+                      </SampleLinkWrapper>
+                    </div>
+                    <ReviewTopicCoverageTag size="small">
+                      <span>{topicCoverage}</span>
+                    </ReviewTopicCoverageTag>
                   </ReviewTopicHeader>
                   <ContentItemsContainer>
                     {section.items.map((item, itemIndex) => (
