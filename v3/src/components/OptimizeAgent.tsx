@@ -193,7 +193,7 @@ const SectionTitle = styled.h2`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -203,7 +203,7 @@ const SectionDescription = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -479,7 +479,7 @@ const KPILabel = styled.p<{ $darkMode?: boolean }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: ${props => props.$darkMode ? '#a47ebf' : '#8d59b1'};
   margin: 0;
 `;
@@ -505,7 +505,7 @@ const KPISubtitle = styled.p<{ $darkMode?: boolean }>`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: ${props => props.$darkMode ? '#dcdcda' : 'var(--fg-default, #2f3130)'};
   margin: 0;
 `;
@@ -535,7 +535,7 @@ const TopicsTitle = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -545,7 +545,7 @@ const TopicsSubtitle = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -628,7 +628,7 @@ const TopicCount = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -638,7 +638,7 @@ const SampleLink = styled.a`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--anchor-fg-neutral, #2f3130);
   text-decoration: underline;
   cursor: pointer;
@@ -669,7 +669,7 @@ const CoverageTag = styled(Tag)`
       font-weight: 600;
       font-size: 12px;
       line-height: 16px;
-      letter-spacing: -0.0004px;
+      letter-spacing: 0;
       color: var(--tag-fg-default, #2f3130);
     }
   }
@@ -725,7 +725,7 @@ const TooltipHeading = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3130;
   margin: 0;
 `;
@@ -764,7 +764,7 @@ const LetterTagText = styled.span`
   font-weight: 600;
   font-size: 10px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: white;
   text-align: center;
 `;
@@ -774,7 +774,7 @@ const TicketText = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #1f73b7;
   flex: 1;
   overflow: hidden;
@@ -791,7 +791,7 @@ const MoreTickets = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #1f73b7;
   cursor: pointer;
 
@@ -825,7 +825,7 @@ const ReviewTopicTitle = styled.h4`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -839,10 +839,10 @@ const ReviewTopicCoverageTag = styled(Tag)`
 
     span {
       font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      font-weight: 400;
+      font-weight: 600;
       font-size: 12px;
       line-height: 16px;
-      letter-spacing: -0.0004px;
+      letter-spacing: 0;
       color: var(--tag-fg-default, #2f3130);
     }
   }
@@ -858,13 +858,15 @@ const ContentItemsContainer = styled.div`
   gap: var(--spacing-xs, 8px);
 `;
 
-const ContentItem = styled.div`
+const ContentItem = styled.div<{ $isFading?: boolean }>`
   padding: 4px var(--spacing-sm, 12px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-xs, 8px);
   cursor: pointer;
+  opacity: ${props => props.$isFading ? 0 : 1};
+  transition: opacity 0.3s ease;
 `;
 
 const ContentSeparator = styled.div`
@@ -885,7 +887,7 @@ const ContentItemTitle = styled.span`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
 `;
 
@@ -908,7 +910,7 @@ const ContentTypeBadge = styled.div<{ $type: 'article' | 'procedure' }>`
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    letter-spacing: -0.0004px;
+    letter-spacing: 0;
     color: var(--fg-default, #2f3130);
   }
 `;
@@ -971,7 +973,7 @@ const DetailsTitle = styled.h3`
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -996,7 +998,7 @@ const DetailsSectionLabel = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -1006,7 +1008,7 @@ const DetailsSectionValue = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -1031,7 +1033,7 @@ const AccordionHeader = styled.button<{ $isOpen: boolean }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   text-align: left;
   transition: background 0.2s ease;
@@ -1067,7 +1069,7 @@ const AccordionItemLabel = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   min-width: 100px;
@@ -1078,7 +1080,7 @@ const AccordionItemValue = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   flex: 1;
@@ -1101,7 +1103,7 @@ const DetailsButton = styled(Button)`
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
-    letter-spacing: -0.154px;
+    letter-spacing: 0;
   }
 `;
 
@@ -1431,9 +1433,10 @@ const REVIEW_CONTENT = [
 interface OptimizeAgentProps {
   widgetIsReady: boolean;
   selectedTone: 'professional' | 'enthusiastic' | 'informal' | 'custom';
-  buildPhase: 'discover' | 'review';
   onLoadingChange?: (isLoading: boolean) => void;
   onContentSelect?: (content: {type: 'article' | 'procedure', title: string, topic: string} | null) => void;
+  rejectedContent?: Array<{type: 'article' | 'procedure', title: string, topic: string}>;
+  fadingContent?: {type: 'article' | 'procedure', title: string, topic: string} | null;
 }
 
 function useAnimatedNumber(endValue: number, duration: number = 1200, delay: number = 0) {
@@ -1524,7 +1527,7 @@ function AnimatedValue({ endValue, format = 'number', delay = 0 }: AnimatedValue
   return <>{animatedValue.toLocaleString()}</>;
 }
 
-export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase, onLoadingChange, onContentSelect }: OptimizeAgentProps) {
+export default function OptimizeAgent({ widgetIsReady, selectedTone, onLoadingChange, onContentSelect, rejectedContent = [], fadingContent = null }: OptimizeAgentProps) {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
@@ -1623,8 +1626,6 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
             <BuildAgentLoader onComplete={() => setShowLoader(false)} />
           ) : (
             <MainPanelContent>
-          {buildPhase === 'discover' ? (
-            <>
           <SectionTitleGroup>
             <SectionTitle>Discover automation opportunities</SectionTitle>
             <SectionDescription>
@@ -1685,7 +1686,16 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
               <TopicsTitle>Approve suggested content to improve automation</TopicsTitle>
             </TopicsHeader>
 
-            {REVIEW_CONTENT.map((section, sectionIndex) => {
+            {REVIEW_CONTENT
+              .filter(section => {
+                const filteredItems = section.items.filter(item => !rejectedContent.some(rejected =>
+                  rejected.type === item.type &&
+                  rejected.title === item.title &&
+                  rejected.topic === section.topic
+                ));
+                return filteredItems.length > 0;
+              })
+              .map((section, sectionIndex) => {
               const displayTickets = TOPICS_DATA[sectionIndex]?.sampleTickets.slice(0, 5) || [];
               const topicCoverage = TOPICS_DATA[sectionIndex]?.coverage || section.coverage;
               const isTooltipOpen = tooltipStates[sectionIndex] || false;
@@ -1741,10 +1751,17 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
                     </ReviewTopicCoverageTag>
                   </ReviewTopicHeader>
                   <ContentItemsContainer>
-                    {section.items.map((item, itemIndex) => (
+                    {section.items
+                      .filter(item => !rejectedContent.some(rejected =>
+                        rejected.type === item.type &&
+                        rejected.title === item.title &&
+                        rejected.topic === section.topic
+                      ))
+                      .map((item, itemIndex, filteredArray) => (
                       <>
                         <ContentItem
                           key={itemIndex}
+                          $isFading={fadingContent?.type === item.type && fadingContent?.title === item.title && fadingContent?.topic === section.topic}
                           onClick={() => {
                             const content = {type: item.type, title: item.title, topic: section.topic};
                             setSelectedContent(content);
@@ -1762,7 +1779,7 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
                             <ChevronRightIcon />
                           </ChevronIconButton>
                         </ContentItem>
-                        {itemIndex < section.items.length - 1 && <ContentSeparator />}
+                        {itemIndex < filteredArray.length - 1 && <ContentSeparator />}
                       </>
                     ))}
                   </ContentItemsContainer>
@@ -1770,49 +1787,6 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
               );
             })}
           </SectionHeader>
-          </>
-          ) : (
-            <>
-          <SectionTitleGroup>
-            <SectionTitle>Review suggested content per topic</SectionTitle>
-            <SectionDescription>
-              We have prepared AI generated articles and procedures that will improve AI agents automation rate.
-            </SectionDescription>
-          </SectionTitleGroup>
-
-          <SectionHeader>
-            {REVIEW_CONTENT.map((section, index) => (
-              <ReviewTopicSection key={index} $index={index}>
-                <ReviewTopicHeader>
-                  <ReviewTopicTitle>{section.topic}</ReviewTopicTitle>
-                  <ReviewTopicCoverageTag size="small">
-                    <span>{section.coverage}</span>
-                  </ReviewTopicCoverageTag>
-                </ReviewTopicHeader>
-                <ContentItemsContainer>
-                  {section.items.map((item, itemIndex) => (
-                    <>
-                      <ContentItem key={itemIndex}>
-                        <ContentItemLeft>
-                          <ContentItemTitle>{item.title}</ContentItemTitle>
-                          <ContentTypeBadge $type={item.type}>
-                            {item.type === 'article' ? <TagArticleIcon /> : <TagProcedureIcon />}
-                            <span>{item.type === 'article' ? 'Article' : 'Procedure'}</span>
-                          </ContentTypeBadge>
-                        </ContentItemLeft>
-                        <ChevronIconButton>
-                          <ChevronRightIcon />
-                        </ChevronIconButton>
-                      </ContentItem>
-                      {itemIndex < section.items.length - 1 && <ContentSeparator />}
-                    </>
-                  ))}
-                </ContentItemsContainer>
-              </ReviewTopicSection>
-            ))}
-          </SectionHeader>
-          </>
-          )}
           </MainPanelContent>
           )}
         </MainPanel>
@@ -1843,16 +1817,12 @@ export function OptimizeAgentHeader() {
 export function OptimizeAgentFooter({
   onBack,
   onContinue,
-  currentPhase,
   isLoading = false
 }: {
   onBack: () => void;
   onContinue?: () => void;
-  currentPhase?: 'discover' | 'review';
   isLoading?: boolean;
 }) {
-  const buttonText = currentPhase === 'review' ? 'Approve and continue' : 'Continue';
-
   return (
     <Footer>
       <BackButton onClick={onBack}>
@@ -1864,7 +1834,7 @@ export function OptimizeAgentFooter({
         $isEnabled={!isLoading}
         onClick={() => !isLoading && onContinue && onContinue()}
       >
-        <span>{buttonText}</span>
+        <span>Continue</span>
         <ChevronRightDefaultIcon />
       </ContinueButton>
     </Footer>

@@ -223,7 +223,7 @@ const SectionTitle = styled.h2`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -244,7 +244,7 @@ const FieldLabel = styled.h3`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3941);
   margin: 0;
 `;
@@ -305,7 +305,7 @@ const ChannelName = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3941;
   margin: 0;
 `;
@@ -315,7 +315,7 @@ const ChannelType = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: #2f3941;
   margin: 0;
 `;

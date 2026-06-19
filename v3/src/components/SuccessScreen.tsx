@@ -281,7 +281,7 @@ const Title = styled.h1`
   font-weight: 400;
   font-size: 20px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   width: 100%;
@@ -303,7 +303,7 @@ const Description = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   width: 100%;
@@ -330,7 +330,7 @@ const PrimaryButton = styled(Button)`
     font-weight: 600;
     font-size: 12px;
     line-height: 16px;
-    letter-spacing: -0.0004px;
+    letter-spacing: 0;
     white-space: nowrap;
     flex-shrink: 0;
 
@@ -358,7 +358,7 @@ const OrText = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   white-space: nowrap;
@@ -371,7 +371,7 @@ const StyledAnchor = styled(Anchor)`
     font-weight: 400;
     font-size: 12px;
     line-height: 16px;
-    letter-spacing: -0.0004px;
+    letter-spacing: 0;
     color: var(--anchor-fg-neutral, #2f3130);
     text-decoration: underline;
     text-underline-position: from-font;
@@ -396,7 +396,7 @@ const ReloadButton = styled(Button)`
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
-    letter-spacing: -0.154px;
+    letter-spacing: 0;
     white-space: nowrap;
     z-index: 1000;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
@@ -503,7 +503,7 @@ const AgentName = styled.p`
   font-weight: 700;
   font-size: 17px;
   line-height: 22px;
-  letter-spacing: -0.408px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   flex-shrink: 0;
@@ -514,7 +514,7 @@ const AgentSubtitle = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-subtle, #646864);
   margin: 0;
   flex-shrink: 0;
@@ -557,7 +557,7 @@ const ChannelName = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: #2f3941;
   margin: 0;
   white-space: nowrap;
@@ -581,7 +581,7 @@ const SuccessTagText = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--tag-fg-success, #25390f);
   margin: 0;
   text-align: center;

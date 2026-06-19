@@ -59,6 +59,8 @@ const StepContentArea = styled.div`
 
 const WidgetArea = styled.div`
   grid-area: widget;
+  min-height: 0;
+  display: flex;
 `;
 
 const StepFooter = styled.div`
@@ -288,7 +290,7 @@ const CardTitle = styled.h2`
 `;
 
 const CardDescription = styled.p`
-  font-family: 'Vanilla Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
@@ -448,7 +450,6 @@ const OrangeShape = styled.div<{ $delay: number }>`
 
 export default function MainContent() {
   const [currentStep, setCurrentStep] = useState<'home' | 'connect' | 'personalize-profile' | 'personalize' | 'personalize-c' | 'optimize' | 'test' | 'activate' | 'success'>('home');
-  const [buildPhase, setBuildPhase] = useState<'discover' | 'review'>('discover');
   const [widgetCollapsed, setWidgetCollapsed] = useState(true);
   const [widgetIsReady, setWidgetIsReady] = useState(false);
   const [agentName, setAgentName] = useState('');
@@ -462,6 +463,25 @@ export default function MainContent() {
   const [isOptimizeLoading, setIsOptimizeLoading] = useState(true);
   const [isTestLoading, setIsTestLoading] = useState(true);
   const [selectedContent, setSelectedContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
+  const [rejectedContent, setRejectedContent] = useState<Array<{type: 'article' | 'procedure', title: string, topic: string}>>([]);
+  const [fadingContent, setFadingContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
+
+  const handleRejectContent = () => {
+    if (selectedContent) {
+      setFadingContent(selectedContent);
+      setSelectedContent(null);
+      setWidgetCollapsed(true);
+
+      setTimeout(() => {
+        setRejectedContent(prev => [...prev, selectedContent]);
+        setFadingContent(null);
+      }, 300);
+    }
+  };
+
+  const handleApproveContent = () => {
+    setSelectedContent(null);
+  };
 
   const handleStartMessaging = () => {
     setCurrentStep('connect');
@@ -503,7 +523,6 @@ export default function MainContent() {
   const handleContinueToOptimize = () => {
     setCurrentStep('optimize');
     setWidgetCollapsed(true);
-    setBuildPhase('discover');
   };
 
   const handleBackToPersonalizeC = () => {
@@ -511,16 +530,11 @@ export default function MainContent() {
   };
 
   const handleBuildContinue = () => {
-    if (buildPhase === 'discover') {
-      setBuildPhase('review');
-    } else {
-      setCurrentStep('test');
-    }
+    setCurrentStep('test');
   };
 
   const handleBackToOptimize = () => {
     setCurrentStep('optimize');
-    setBuildPhase('review');
   };
 
   const handleTestComplete = () => {
@@ -630,9 +644,10 @@ export default function MainContent() {
           <OptimizeAgent
             widgetIsReady={widgetIsReady}
             selectedTone={selectedTone}
-            buildPhase={buildPhase}
             onLoadingChange={setIsOptimizeLoading}
             onContentSelect={setSelectedContent}
+            rejectedContent={rejectedContent}
+            fadingContent={fadingContent}
           />
         </StepContentArea>
         <WidgetArea>
@@ -641,15 +656,14 @@ export default function MainContent() {
             onToggle={() => setWidgetCollapsed(!widgetCollapsed)}
             isReady={widgetIsReady}
             contentDetails={selectedContent}
-            onApprove={() => setSelectedContent(null)}
-            onReject={() => setSelectedContent(null)}
+            onApprove={handleApproveContent}
+            onReject={handleRejectContent}
           />
         </WidgetArea>
         <StepFooter>
           <OptimizeAgentFooter
             onBack={handleBackToPersonalizeC}
             onContinue={handleBuildContinue}
-            currentPhase={buildPhase}
             isLoading={isOptimizeLoading}
           />
         </StepFooter>

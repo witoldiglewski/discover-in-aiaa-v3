@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Button } from '@zendeskgarden/react-buttons';
+import { Tag } from '@zendeskgarden/react-tags';
 
 // Import icons
 import CollapseActiveIcon from '../assets/icons/testing-widget-collapse-active.svg?react';
@@ -11,6 +12,11 @@ import NoticeZendeskIcon from '../assets/icons/testing-widget-notice-zendesk.svg
 import SendDisabledIcon from '../assets/icons/testing-widget-send-disabled.svg?react';
 import SendDefaultIcon from '../assets/icons/testing-widget-send-default.svg?react';
 import ChevronDownIcon from '@zendeskgarden/svg-icons/src/16/chevron-down-stroke.svg?react';
+import ChevronLeftIcon from '@zendeskgarden/svg-icons/src/16/chevron-left-stroke.svg?react';
+import TagArticleIcon from '../assets/icons/tag-article.svg?react';
+import TagProcedureIcon from '../assets/icons/tag-procedure.svg?react';
+import TagXIcon from '../assets/icons/tag-icon-x.svg?react';
+import InputChevronDownIcon from '../assets/icons/inputs-chevron-down.svg?react';
 
 const WidgetContainer = styled.div<{ $collapsed: boolean }>`
   background: var(--bg-default, white);
@@ -19,6 +25,7 @@ const WidgetContainer = styled.div<{ $collapsed: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
+  max-height: 100%;
   overflow: hidden;
   width: ${props => props.$collapsed ? '56px' : '320px'};
   transition: width 0.3s ease;
@@ -369,13 +376,145 @@ const OrangeShape = styled.div<{ $delay: number }>`
   }
 `;
 
-const DetailsContent = styled.div`
-  flex: 1;
+const DetailsContent = styled.div<{ $collapsed: boolean }>`
+  flex: ${props => props.$collapsed ? '0' : '1'};
+  min-height: 0;
+  max-height: 100%;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: var(--spacing-md, 20px);
-  display: flex;
+  display: ${props => props.$collapsed ? 'none' : 'flex'};
   flex-direction: column;
   gap: var(--spacing-md, 20px);
+  opacity: ${props => props.$collapsed ? 0 : 1};
+  transform: ${props => props.$collapsed ? 'translateY(10px)' : 'translateY(0)'};
+  transition: ${props => props.$collapsed ? 'none' : 'opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s'};
+  pointer-events: ${props => props.$collapsed ? 'none' : 'auto'};
+  position: relative;
+  z-index: 1;
+  animation: ${props => props.$collapsed ? 'none' : 'fadeInUpDetails 0.3s ease 0.3s both'};
+
+  @keyframes fadeInUpDetails {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const DetailsTopSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 12px);
+  padding-bottom: var(--spacing-md, 20px);
+  border-bottom: 1px solid var(--border-default, #dcdcda);
+`;
+
+const DetailsTopicLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const DetailsMainTitle = styled.h2`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const TagsRow = styled.div`
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+  align-items: center;
+`;
+
+const StyledTag = styled(Tag)`
+  && {
+    border-radius: var(--border-radii-pill, 99px);
+    padding: 2px var(--spacing-xs, 8px);
+    height: 20px;
+
+    span {
+      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0;
+      color: var(--tag-fg-default, #2f3130);
+    }
+  }
+`;
+
+const ContentTypeBadge = styled.div<{ $type: 'article' | 'procedure' }>`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--border-radii-pill, 99px);
+  background: ${props => props.$type === 'article' ? '#ddf0c9' : '#e3f1ff'};
+  height: 20px;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  span {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--fg-default, #2f3130);
+  }
+`;
+
+const RationaleSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const RationaleTitle = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const RationaleText = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const SampleNote = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
 `;
 
 const DetailsTypeLabel = styled.p`
@@ -400,7 +539,7 @@ const DetailsSectionLabel = styled.p`
   font-weight: 600;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -410,7 +549,7 @@ const DetailsSectionValue = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -418,15 +557,23 @@ const DetailsSectionValue = styled.p`
 const AccordionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--border-default, #dcdcda);
-  border-radius: var(--border-radii-lg, 12px);
-  overflow: hidden;
+`;
+
+const AccordionItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border-subtle, #e8eaec);
+  border-bottom: 1px solid var(--border-subtle, #e8eaec);
+
+  & + & {
+    border-top: none;
+  }
 `;
 
 const AccordionHeader = styled.button<{ $isOpen: boolean }>`
-  background: var(--bg-default, white);
+  background: transparent;
   border: none;
-  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  padding: var(--spacing-md, 20px) 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -435,13 +582,13 @@ const AccordionHeader = styled.button<{ $isOpen: boolean }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   text-align: left;
-  transition: background 0.2s ease;
+  transition: opacity 0.2s ease;
 
   &:hover {
-    background: rgba(0, 0, 0, 0.02);
+    opacity: 0.8;
   }
 
   svg {
@@ -455,44 +602,209 @@ const AccordionHeader = styled.button<{ $isOpen: boolean }>`
 const AccordionContent = styled.div<{ $isOpen: boolean }>`
   display: ${props => props.$isOpen ? 'flex' : 'none'};
   flex-direction: column;
-  gap: var(--spacing-sm, 12px);
-  padding: 0 var(--spacing-md, 20px) var(--spacing-sm, 12px);
-  border-top: 1px solid var(--border-default, #dcdcda);
+  padding-bottom: var(--spacing-md, 20px);
 `;
 
-const AccordionItem = styled.div`
+const AccordionContentTitle = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const AccordionContentDescription = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
+`;
+
+const AccordionRow = styled.div`
   display: flex;
-  gap: var(--spacing-xs, 8px);
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const AccordionItemLabel = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.0004px;
-  color: var(--fg-default, #2f3130);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-subtle, #646864);
   margin: 0;
-  min-width: 100px;
 `;
 
 const AccordionItemValue = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.0004px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  text-align: right;
+`;
+
+const OutlineButton = styled(Button)`
+  && {
+    height: 32px;
+    padding: 8px 12px;
+    border-radius: var(--border-radii-pill, 99px);
+    border: 1px solid var(--button-border-default, #999b97);
+    background: transparent;
+    color: var(--button-fg-default, #2f3130);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
+
+const RadioOption = styled.div<{ $selected: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 8px);
+  cursor: pointer;
+  padding: var(--spacing-xs, 8px) 0;
+`;
+
+const RadioButton = styled.div<{ $selected: boolean }>`
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: white;
+  border: ${props => props.$selected ? '6px solid #2f3130' : '1px solid var(--border-input, #b7b7b3)'};
+  flex-shrink: 0;
+`;
+
+const RadioLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   flex: 1;
 `;
 
-const DetailsFooter = styled.div`
+const InputWithTagsContainer = styled.div`
+  width: 100%;
+  min-height: 40px;
+  padding: 4px 36px 4px 12px;
+  background: var(--bg-default, white);
+  border: 1px solid var(--border-input, #b7b7b3);
+  border-radius: var(--border-radii-control, 8px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xxs, 4px);
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--border-default, #dcdcda);
+  }
+`;
+
+const InputTag = styled.div`
+  background: var(--tag-bg-default, #eae9e8);
+  border-radius: var(--border-radii-controlsubtle, 4px);
+  height: 32px;
+  padding: 4px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+
+  span {
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0;
+    color: var(--tag-fg-default, #2f3130);
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      color: var(--fg-default, #2f3130);
+    }
+
+    &:hover svg {
+      color: var(--fg-emphasis, #000);
+    }
+  }
+`;
+
+const InputChevronIcon = styled.div`
+  position: absolute;
+  right: 11px;
+  top: 9px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    color: var(--fg-default, #2f3130);
+  }
+`;
+
+const DetailsFooter = styled.div<{ $collapsed: boolean }>`
   padding: var(--spacing-md, 20px);
   border-top: 1px solid var(--border-default, #dcdcda);
-  display: flex;
+  display: ${props => props.$collapsed ? 'none' : 'flex'};
   gap: var(--spacing-xs, 8px);
+  opacity: ${props => props.$collapsed ? 0 : 1};
+  transform: ${props => props.$collapsed ? 'translateY(10px)' : 'translateY(0)'};
+  transition: ${props => props.$collapsed ? 'none' : 'opacity 0.3s ease 0.4s, transform 0.3s ease 0.4s'};
+  pointer-events: ${props => props.$collapsed ? 'none' : 'auto'};
+  position: relative;
+  z-index: 1;
+  animation: ${props => props.$collapsed ? 'none' : 'fadeInUpDetailsFooter 0.3s ease 0.4s both'};
+
+  @keyframes fadeInUpDetailsFooter {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const DetailsButton = styled(Button)`
@@ -505,7 +817,7 @@ const DetailsButton = styled(Button)`
     font-weight: 600;
     font-size: 14px;
     line-height: 20px;
-    letter-spacing: -0.154px;
+    letter-spacing: 0;
   }
 `;
 
@@ -546,14 +858,32 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
   const [internalCollapsed, setInternalCollapsed] = useState(true);
   const [placementOpen, setPlacementOpen] = useState(false);
   const [permissionsOpen, setPermissionsOpen] = useState(false);
+  const [visibilityOption, setVisibilityOption] = useState<'everyone' | 'segment'>('segment');
 
   const collapsed = controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed;
+
+  // Auto-expand when content is selected
+  useEffect(() => {
+    if (contentDetails) {
+      if (onToggle && collapsed) {
+        onToggle();
+      } else if (!onToggle) {
+        setInternalCollapsed(false);
+      }
+    }
+  }, [contentDetails]);
 
   const handleToggle = () => {
     if (onToggle) {
       onToggle();
     } else {
       setInternalCollapsed(!internalCollapsed);
+    }
+  };
+
+  const handleBack = () => {
+    if (onApprove) {
+      onApprove();
     }
   };
 
@@ -574,7 +904,14 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
             </IconButton>
           ) : (
             <>
-              <HeaderTitle>{contentDetails ? `${contentDetails.type.charAt(0).toUpperCase() + contentDetails.type.slice(1)} details` : 'Preview'}</HeaderTitle>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                {contentDetails && (
+                  <IconButton onClick={handleBack}>
+                    <ChevronLeftIcon />
+                  </IconButton>
+                )}
+                <HeaderTitle>{contentDetails ? `${contentDetails.type.charAt(0).toUpperCase() + contentDetails.type.slice(1)} details` : 'Preview'}</HeaderTitle>
+              </div>
               <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
                 {!contentDetails && (
                   <IconButton>
@@ -592,56 +929,98 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
 
       {contentDetails ? (
         <>
-          <DetailsContent>
-            <DetailsSection>
-              <DetailsTypeLabel>{contentDetails.type} details</DetailsTypeLabel>
-              <DetailsSectionValue style={{ fontSize: '20px', lineHeight: '24px', letterSpacing: '-0.45px' }}>
-                {contentDetails.title}
-              </DetailsSectionValue>
-            </DetailsSection>
+          <DetailsContent $collapsed={collapsed} key={`details-content-${contentDetails.title}`}>
+            <DetailsTopSection>
+              <DetailsTopicLabel>Topic: {contentDetails.topic}</DetailsTopicLabel>
+              <DetailsMainTitle>{contentDetails.title}</DetailsMainTitle>
+              <TagsRow>
+                <StyledTag size="small">
+                  <span>8% Estimated automation</span>
+                </StyledTag>
+                <ContentTypeBadge $type={contentDetails.type}>
+                  {contentDetails.type === 'article' ? <TagArticleIcon /> : <TagProcedureIcon />}
+                  <span>{contentDetails.type === 'article' ? 'Article' : 'Procedure'}</span>
+                </ContentTypeBadge>
+              </TagsRow>
+            </DetailsTopSection>
 
-            <DetailsSection>
-              <DetailsSectionLabel>Topic</DetailsSectionLabel>
-              <DetailsSectionValue>{contentDetails.topic}</DetailsSectionValue>
-            </DetailsSection>
-
-            <AccordionContainer>
-              <AccordionHeader $isOpen={placementOpen} onClick={() => setPlacementOpen(!placementOpen)}>
-                Placement
-                <ChevronDownIcon />
-              </AccordionHeader>
-              <AccordionContent $isOpen={placementOpen}>
-                <AccordionItem>
-                  <AccordionItemLabel>Category</AccordionItemLabel>
-                  <AccordionItemValue>General</AccordionItemValue>
-                </AccordionItem>
-                <AccordionItem>
-                  <AccordionItemLabel>Section</AccordionItemLabel>
-                  <AccordionItemValue>Account and settings</AccordionItemValue>
-                </AccordionItem>
-              </AccordionContent>
-            </AccordionContainer>
+            <RationaleSection>
+              <RationaleTitle>Rationale</RationaleTitle>
+              <RationaleText>
+                Tickets with some intents tend to be routed to the same agent. Automate this action with a trigger to reduce manual triage and help improve resolution time.
+              </RationaleText>
+            </RationaleSection>
 
             <AccordionContainer>
-              <AccordionHeader $isOpen={permissionsOpen} onClick={() => setPermissionsOpen(!permissionsOpen)}>
-                Viewing permissions
-                <ChevronDownIcon />
-              </AccordionHeader>
-              <AccordionContent $isOpen={permissionsOpen}>
-                <AccordionItem>
-                  <AccordionItemLabel>Visibility</AccordionItemLabel>
-                  <AccordionItemValue>Everyone</AccordionItemValue>
-                </AccordionItem>
-                <AccordionItem>
-                  <AccordionItemLabel>User segment</AccordionItemLabel>
-                  <AccordionItemValue>—</AccordionItemValue>
-                </AccordionItem>
-              </AccordionContent>
+              <AccordionItem>
+                <AccordionHeader $isOpen={placementOpen} onClick={() => setPlacementOpen(!placementOpen)}>
+                  Placement
+                  <ChevronDownIcon />
+                </AccordionHeader>
+                <AccordionContent $isOpen={placementOpen} style={{ gap: '4px' }}>
+                  <AccordionContentTitle>Categories and sections</AccordionContentTitle>
+                  <AccordionContentDescription>
+                    Select where you want to publish the article.
+                  </AccordionContentDescription>
+                  <div style={{ marginTop: '4px' }}>
+                    <OutlineButton>Manage sections</OutlineButton>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem>
+                <AccordionHeader $isOpen={permissionsOpen} onClick={() => setPermissionsOpen(!permissionsOpen)}>
+                  Viewing permissions
+                  <ChevronDownIcon />
+                </AccordionHeader>
+                <AccordionContent $isOpen={permissionsOpen} style={{ gap: '20px' }}>
+                  <AccordionContentDescription>
+                    Select who can view this article based on user segments.
+                  </AccordionContentDescription>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div onClick={() => setVisibilityOption('segment')} style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <RadioButton $selected={visibilityOption === 'segment'} />
+                        <RadioLabel>Only visible to the selected user segments</RadioLabel>
+                      </div>
+                      <AccordionContentDescription>Select up to 10 user segments.</AccordionContentDescription>
+                      {visibilityOption === 'segment' && (
+                        <InputWithTagsContainer style={{ marginTop: '4px' }}>
+                          <InputTag>
+                            <span>Everyone</span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                              }}
+                              aria-label="Remove Everyone"
+                            >
+                              <TagXIcon />
+                            </button>
+                          </InputTag>
+                          <InputChevronIcon>
+                            <InputChevronDownIcon />
+                          </InputChevronIcon>
+                        </InputWithTagsContainer>
+                      )}
+                    </div>
+
+                    <RadioOption $selected={visibilityOption === 'everyone'} onClick={() => setVisibilityOption('everyone')}>
+                      <RadioButton $selected={visibilityOption === 'everyone'} />
+                      <RadioLabel>Visible to everyone</RadioLabel>
+                    </RadioOption>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
             </AccordionContainer>
+
+            <SampleNote>
+              Based on a sample of 48,200 tickets from July 16, 2025 to July 23, 2025.
+            </SampleNote>
           </DetailsContent>
-          <DetailsFooter>
+          <DetailsFooter $collapsed={collapsed}>
             <RejectButton onClick={onReject}>Reject</RejectButton>
-            <ApproveButton onClick={onApprove}>Approve</ApproveButton>
+            <ApproveButton onClick={onApprove}>Review</ApproveButton>
           </DetailsFooter>
         </>
       ) : (

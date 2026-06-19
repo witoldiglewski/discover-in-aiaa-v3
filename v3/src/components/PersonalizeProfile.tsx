@@ -398,7 +398,7 @@ const ProgressPercentage = styled.p`
   font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   white-space: nowrap;
@@ -451,7 +451,7 @@ const FileName = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
   flex: 1;

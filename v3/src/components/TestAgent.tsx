@@ -146,7 +146,7 @@ const SectionTitle = styled.h2`
   font-weight: 400;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -189,7 +189,7 @@ const MetricLabel = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
 `;
 
@@ -225,6 +225,7 @@ const TestingContentWrapper = styled.div`
   overflow: hidden;
   flex: 1;
   min-height: 0;
+  height: 100%;
 `;
 
 const TestingHeader = styled.div`
@@ -256,7 +257,7 @@ const TestingStatusText = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-accent, #8d59b1);
   margin: 0;
 `;
@@ -290,7 +291,7 @@ const TestNumber = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-subtle, #646864);
   min-width: 48px;
 `;
@@ -300,7 +301,7 @@ const TestTitle = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 16px;
-  letter-spacing: -0.0004px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   flex: 1;
 `;
@@ -320,9 +321,11 @@ const SummaryContainer = styled.div`
   padding: var(--spacing-lg, 32px);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: var(--spacing-md, 20px);
   width: 100%;
+  height: 100%;
   position: relative;
   overflow: hidden;
 
@@ -463,9 +466,9 @@ const OrangeShape = styled.div<{ $delay: number }>`
 const SummaryHeader = styled.div<{ $index?: number }>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--spacing-md, 20px);
-  width: 100%;
+  align-items: center;
+  gap: var(--spacing-sm, 12px);
+  width: auto;
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease forwards;
   animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
@@ -492,7 +495,7 @@ const AgentName = styled.h3`
   font-weight: 600;
   font-size: 18px;
   line-height: 24px;
-  letter-spacing: -0.45px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -502,7 +505,7 @@ const AgentCompany = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-subtle, #646864);
   margin: 0;
 `;
@@ -512,7 +515,7 @@ const SummaryList = styled.div`
   flex-direction: column;
   gap: var(--spacing-xs, 8px);
   align-items: flex-start;
-  width: 100%;
+  width: auto;
   position: relative;
   z-index: 2;
 `;
@@ -546,7 +549,7 @@ const SummaryText = styled.p`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  letter-spacing: -0.154px;
+  letter-spacing: 0;
   color: var(--fg-default, #2f3130);
   margin: 0;
 `;
@@ -975,11 +978,6 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
             <TestingContainer $index={true} $isComplete={testPhase === 'complete'}>
               {testPhase === 'complete' ? (
                 <SummaryContainer>
-                  <BackgroundGradient>
-                    <PurpleShape $delay={0} />
-                    <BlueShape $delay={2} />
-                    <OrangeShape $delay={4} />
-                  </BackgroundGradient>
                   <SummaryHeader $index={0}>
                     <AvatarLarge>
                       <CoffeeBotAvatarIcon />
@@ -996,11 +994,11 @@ export default function TestAgent({ selectedTone, agentName = 'Agent name', comp
                     </SummaryItem>
                     <SummaryItem $index={2}>
                       <CheckIconGreen />
-                      <SummaryText>CSAT Projection 88%</SummaryText>
+                      <SummaryText>Automation coverage 62%</SummaryText>
                     </SummaryItem>
                     <SummaryItem $index={3}>
                       <CheckIconGreen />
-                      <SummaryText>Automation coverage 62%</SummaryText>
+                      <SummaryText>CSAT Projection 88%</SummaryText>
                     </SummaryItem>
                   </SummaryList>
                   <ReportButton $index={4}>See full report</ReportButton>
