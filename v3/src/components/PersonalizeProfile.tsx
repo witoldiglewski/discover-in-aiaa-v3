@@ -150,7 +150,7 @@ const MainPanel = styled.div`
 const FormSection = styled.div<{ $delay?: number }>`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm, 12px);
+  gap: var(--spacing-lg, 32px);
   max-width: 800px;
   width: 100%;
   opacity: 0;
