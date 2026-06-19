@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { Button } from '@zendeskgarden/react-buttons';
 
 // Import icons
 import CollapseActiveIcon from '../assets/icons/testing-widget-collapse-active.svg?react';
@@ -9,6 +10,7 @@ import NoticeWarningIcon from '../assets/icons/testing-widget-notice-warning.svg
 import NoticeZendeskIcon from '../assets/icons/testing-widget-notice-zendesk.svg?react';
 import SendDisabledIcon from '../assets/icons/testing-widget-send-disabled.svg?react';
 import SendDefaultIcon from '../assets/icons/testing-widget-send-default.svg?react';
+import ChevronDownIcon from '@zendeskgarden/svg-icons/src/16/chevron-down-stroke.svg?react';
 
 const WidgetContainer = styled.div<{ $collapsed: boolean }>`
   background: var(--bg-default, white);
@@ -367,14 +369,183 @@ const OrangeShape = styled.div<{ $delay: number }>`
   }
 `;
 
+const DetailsContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 20px);
+`;
+
+const DetailsTypeLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.66px;
+  text-transform: uppercase;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
+`;
+
+const DetailsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const DetailsSectionLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const DetailsSectionValue = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const AccordionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-default, #dcdcda);
+  border-radius: var(--border-radii-lg, 12px);
+  overflow: hidden;
+`;
+
+const AccordionHeader = styled.button<{ $isOpen: boolean }>`
+  background: var(--bg-default, white);
+  border: none;
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
+  color: var(--fg-default, #2f3130);
+  text-align: left;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+    transform: ${props => props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
+
+const AccordionContent = styled.div<{ $isOpen: boolean }>`
+  display: ${props => props.$isOpen ? 'flex' : 'none'};
+  flex-direction: column;
+  gap: var(--spacing-sm, 12px);
+  padding: 0 var(--spacing-md, 20px) var(--spacing-sm, 12px);
+  border-top: 1px solid var(--border-default, #dcdcda);
+`;
+
+const AccordionItem = styled.div`
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+  align-items: flex-start;
+`;
+
+const AccordionItemLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  min-width: 100px;
+`;
+
+const AccordionItemValue = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  flex: 1;
+`;
+
+const DetailsFooter = styled.div`
+  padding: var(--spacing-md, 20px);
+  border-top: 1px solid var(--border-default, #dcdcda);
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const DetailsButton = styled(Button)`
+  && {
+    flex: 1;
+    height: 40px;
+    padding: 10px 16px;
+    border-radius: var(--border-radii-pill, 99px);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.154px;
+  }
+`;
+
+const ApproveButton = styled(DetailsButton)`
+  && {
+    background: var(--button-bg-emphasis, #2f3130);
+    color: var(--fg-onemphasis, white);
+    border: none;
+
+    &:hover {
+      background: var(--button-bg-emphasis-hover, #404241);
+    }
+  }
+`;
+
+const RejectButton = styled(DetailsButton)`
+  && {
+    background: transparent;
+    color: var(--button-fg-default, #2f3130);
+    border: 1px solid var(--button-border-default, #999b97);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
+
 interface TestingWidgetProps {
   collapsed?: boolean;
   onToggle?: () => void;
   isReady?: boolean;
+  contentDetails?: {type: 'article' | 'procedure', title: string, topic: string} | null;
+  onApprove?: () => void;
+  onReject?: () => void;
 }
 
-export default function TestingWidget({ collapsed: controlledCollapsed, onToggle, isReady = false }: TestingWidgetProps) {
+export default function TestingWidget({ collapsed: controlledCollapsed, onToggle, isReady = false, contentDetails, onApprove, onReject }: TestingWidgetProps) {
   const [internalCollapsed, setInternalCollapsed] = useState(true);
+  const [placementOpen, setPlacementOpen] = useState(false);
+  const [permissionsOpen, setPermissionsOpen] = useState(false);
 
   const collapsed = controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed;
 
@@ -388,11 +559,13 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
 
   return (
     <WidgetContainer $collapsed={collapsed}>
-      <BackgroundGradient $isVisible={isReady && !collapsed}>
-        <PurpleShape $delay={0} />
-        <BlueShape $delay={2} />
-        <OrangeShape $delay={1} />
-      </BackgroundGradient>
+      {!contentDetails && (
+        <BackgroundGradient $isVisible={isReady && !collapsed}>
+          <PurpleShape $delay={0} />
+          <BlueShape $delay={2} />
+          <OrangeShape $delay={1} />
+        </BackgroundGradient>
+      )}
       <Header $collapsed={collapsed}>
         <HeaderContent $collapsed={collapsed}>
           {collapsed ? (
@@ -401,11 +574,13 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
             </IconButton>
           ) : (
             <>
-              <HeaderTitle>Preview</HeaderTitle>
+              <HeaderTitle>{contentDetails ? `${contentDetails.type.charAt(0).toUpperCase() + contentDetails.type.slice(1)} details` : 'Preview'}</HeaderTitle>
               <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
-                <IconButton>
-                  <HistoryIcon />
-                </IconButton>
+                {!contentDetails && (
+                  <IconButton>
+                    <HistoryIcon />
+                  </IconButton>
+                )}
                 <IconButton $rotate onClick={handleToggle}>
                   <CollapseDefaultIcon />
                 </IconButton>
@@ -415,35 +590,93 @@ export default function TestingWidget({ collapsed: controlledCollapsed, onToggle
         </HeaderContent>
       </Header>
 
-      <Content $collapsed={collapsed} key={`content-${isReady}`}>
-        <EmptyState>
-          <IconWrapper>
-            {isReady ? <NoticeZendeskIcon /> : <NoticeWarningIcon />}
-          </IconWrapper>
-          <EmptyStateTitle>
-            {isReady ? 'Your AI Agent is ready to test' : 'Connect knowledge'}
-          </EmptyStateTitle>
-          <EmptyStateDescription>
-            {isReady
-              ? 'Your content may still be processing, some answers might be inaccurate until this is complete.'
-              : 'Select a brand and add knowledge sources to your AI agent. Then ask it questions to preview its responses.'
-            }
-          </EmptyStateDescription>
-        </EmptyState>
-      </Content>
+      {contentDetails ? (
+        <>
+          <DetailsContent>
+            <DetailsSection>
+              <DetailsTypeLabel>{contentDetails.type} details</DetailsTypeLabel>
+              <DetailsSectionValue style={{ fontSize: '20px', lineHeight: '24px', letterSpacing: '-0.45px' }}>
+                {contentDetails.title}
+              </DetailsSectionValue>
+            </DetailsSection>
 
-      <Footer $collapsed={collapsed} key={`footer-${isReady}`}>
-        <InputContainer $isEnabled={isReady}>
-          <InputWrapper>
-            <InputPlaceholder $isEnabled={isReady}>
-              {isReady ? 'Type a message' : 'Conversation is not active yet...'}
-            </InputPlaceholder>
-          </InputWrapper>
-          <SendButton disabled={!isReady} $isEnabled={isReady}>
-            {isReady ? <SendDefaultIcon /> : <SendDisabledIcon />}
-          </SendButton>
-        </InputContainer>
-      </Footer>
+            <DetailsSection>
+              <DetailsSectionLabel>Topic</DetailsSectionLabel>
+              <DetailsSectionValue>{contentDetails.topic}</DetailsSectionValue>
+            </DetailsSection>
+
+            <AccordionContainer>
+              <AccordionHeader $isOpen={placementOpen} onClick={() => setPlacementOpen(!placementOpen)}>
+                Placement
+                <ChevronDownIcon />
+              </AccordionHeader>
+              <AccordionContent $isOpen={placementOpen}>
+                <AccordionItem>
+                  <AccordionItemLabel>Category</AccordionItemLabel>
+                  <AccordionItemValue>General</AccordionItemValue>
+                </AccordionItem>
+                <AccordionItem>
+                  <AccordionItemLabel>Section</AccordionItemLabel>
+                  <AccordionItemValue>Account and settings</AccordionItemValue>
+                </AccordionItem>
+              </AccordionContent>
+            </AccordionContainer>
+
+            <AccordionContainer>
+              <AccordionHeader $isOpen={permissionsOpen} onClick={() => setPermissionsOpen(!permissionsOpen)}>
+                Viewing permissions
+                <ChevronDownIcon />
+              </AccordionHeader>
+              <AccordionContent $isOpen={permissionsOpen}>
+                <AccordionItem>
+                  <AccordionItemLabel>Visibility</AccordionItemLabel>
+                  <AccordionItemValue>Everyone</AccordionItemValue>
+                </AccordionItem>
+                <AccordionItem>
+                  <AccordionItemLabel>User segment</AccordionItemLabel>
+                  <AccordionItemValue>—</AccordionItemValue>
+                </AccordionItem>
+              </AccordionContent>
+            </AccordionContainer>
+          </DetailsContent>
+          <DetailsFooter>
+            <RejectButton onClick={onReject}>Reject</RejectButton>
+            <ApproveButton onClick={onApprove}>Approve</ApproveButton>
+          </DetailsFooter>
+        </>
+      ) : (
+        <>
+          <Content $collapsed={collapsed} key={`content-${isReady}`}>
+            <EmptyState>
+              <IconWrapper>
+                {isReady ? <NoticeZendeskIcon /> : <NoticeWarningIcon />}
+              </IconWrapper>
+              <EmptyStateTitle>
+                {isReady ? 'Your AI Agent is ready to test' : 'Connect knowledge'}
+              </EmptyStateTitle>
+              <EmptyStateDescription>
+                {isReady
+                  ? 'Your content may still be processing, some answers might be inaccurate until this is complete.'
+                  : 'Select a brand and add knowledge sources to your AI agent. Then ask it questions to preview its responses.'
+                }
+              </EmptyStateDescription>
+            </EmptyState>
+          </Content>
+
+          <Footer $collapsed={collapsed} key={`footer-${isReady}`}>
+            <InputContainer $isEnabled={isReady}>
+              <InputWrapper>
+                <InputPlaceholder $isEnabled={isReady}>
+                  {isReady ? 'Type a message' : 'Conversation is not active yet...'}
+                </InputPlaceholder>
+              </InputWrapper>
+              <SendButton disabled={!isReady} $isEnabled={isReady}>
+                {isReady ? <SendDefaultIcon /> : <SendDisabledIcon />}
+              </SendButton>
+            </InputContainer>
+          </Footer>
+        </>
+      )}
     </WidgetContainer>
   );
 }

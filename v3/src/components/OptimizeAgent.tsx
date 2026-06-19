@@ -1433,6 +1433,7 @@ interface OptimizeAgentProps {
   selectedTone: 'professional' | 'enthusiastic' | 'informal' | 'custom';
   buildPhase: 'discover' | 'review';
   onLoadingChange?: (isLoading: boolean) => void;
+  onContentSelect?: (content: {type: 'article' | 'procedure', title: string, topic: string} | null) => void;
 }
 
 function useAnimatedNumber(endValue: number, duration: number = 1200, delay: number = 0) {
@@ -1523,7 +1524,7 @@ function AnimatedValue({ endValue, format = 'number', delay = 0 }: AnimatedValue
   return <>{animatedValue.toLocaleString()}</>;
 }
 
-export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase, onLoadingChange }: OptimizeAgentProps) {
+export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase, onLoadingChange, onContentSelect }: OptimizeAgentProps) {
   const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
@@ -1744,7 +1745,11 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
                       <>
                         <ContentItem
                           key={itemIndex}
-                          onClick={() => setSelectedContent({type: item.type, title: item.title, topic: section.topic})}
+                          onClick={() => {
+                            const content = {type: item.type, title: item.title, topic: section.topic};
+                            setSelectedContent(content);
+                            if (onContentSelect) onContentSelect(content);
+                          }}
                         >
                           <ContentItemLeft>
                             <ContentItemTitle>{item.title}</ContentItemTitle>
@@ -1811,59 +1816,6 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
           </MainPanelContent>
           )}
         </MainPanel>
-
-        {selectedContent && (
-          <DetailsSidebar>
-            <DetailsHeader>
-              <DetailsTypeLabel>{selectedContent.type} details</DetailsTypeLabel>
-              <DetailsTitle>{selectedContent.title}</DetailsTitle>
-            </DetailsHeader>
-            <DetailsContent>
-              <DetailsSection>
-                <DetailsSectionLabel>Topic</DetailsSectionLabel>
-                <DetailsSectionValue>{selectedContent.topic}</DetailsSectionValue>
-              </DetailsSection>
-
-              <AccordionContainer>
-                <AccordionHeader $isOpen={placementOpen} onClick={() => setPlacementOpen(!placementOpen)}>
-                  Placement
-                  <ChevronDownIcon />
-                </AccordionHeader>
-                <AccordionContent $isOpen={placementOpen}>
-                  <AccordionItem>
-                    <AccordionItemLabel>Category</AccordionItemLabel>
-                    <AccordionItemValue>General</AccordionItemValue>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <AccordionItemLabel>Section</AccordionItemLabel>
-                    <AccordionItemValue>Account and settings</AccordionItemValue>
-                  </AccordionItem>
-                </AccordionContent>
-              </AccordionContainer>
-
-              <AccordionContainer>
-                <AccordionHeader $isOpen={permissionsOpen} onClick={() => setPermissionsOpen(!permissionsOpen)}>
-                  Viewing permissions
-                  <ChevronDownIcon />
-                </AccordionHeader>
-                <AccordionContent $isOpen={permissionsOpen}>
-                  <AccordionItem>
-                    <AccordionItemLabel>Visibility</AccordionItemLabel>
-                    <AccordionItemValue>Everyone</AccordionItemValue>
-                  </AccordionItem>
-                  <AccordionItem>
-                    <AccordionItemLabel>User segment</AccordionItemLabel>
-                    <AccordionItemValue>—</AccordionItemValue>
-                  </AccordionItem>
-                </AccordionContent>
-              </AccordionContainer>
-            </DetailsContent>
-            <DetailsFooter>
-              <RejectButton onClick={() => setSelectedContent(null)}>Reject</RejectButton>
-              <ApproveButton onClick={() => setSelectedContent(null)}>Approve</ApproveButton>
-            </DetailsFooter>
-          </DetailsSidebar>
-        )}
       </>
   );
 }

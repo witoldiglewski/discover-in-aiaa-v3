@@ -461,6 +461,7 @@ export default function MainContent() {
   const [testComplete, setTestComplete] = useState(false);
   const [isOptimizeLoading, setIsOptimizeLoading] = useState(true);
   const [isTestLoading, setIsTestLoading] = useState(true);
+  const [selectedContent, setSelectedContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
 
   const handleStartMessaging = () => {
     setCurrentStep('connect');
@@ -631,6 +632,7 @@ export default function MainContent() {
             selectedTone={selectedTone}
             buildPhase={buildPhase}
             onLoadingChange={setIsOptimizeLoading}
+            onContentSelect={setSelectedContent}
           />
         </StepContentArea>
         <WidgetArea>
@@ -638,6 +640,9 @@ export default function MainContent() {
             collapsed={widgetCollapsed}
             onToggle={() => setWidgetCollapsed(!widgetCollapsed)}
             isReady={widgetIsReady}
+            contentDetails={selectedContent}
+            onApprove={() => setSelectedContent(null)}
+            onReject={() => setSelectedContent(null)}
           />
         </WidgetArea>
         <StepFooter>
