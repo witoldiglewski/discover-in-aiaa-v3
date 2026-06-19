@@ -1486,8 +1486,8 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
 
           <SectionHeader>
             <TopicsHeader>
-              <TopicsTitle>32 high-impact topics identified</TopicsTitle>
-              <TopicsSubtitle>Based on 76,346 support conversations between Sep 30 and Oct 31</TopicsSubtitle>
+              <TopicsTitle>Approve suggested content to improve automation</TopicsTitle>
+              <TopicsSubtitle>We have prepared AI generated articles and procedures that will improve AI agents automation rate.</TopicsSubtitle>
             </TopicsHeader>
 
             {REVIEW_CONTENT.map((section, sectionIndex) => {
