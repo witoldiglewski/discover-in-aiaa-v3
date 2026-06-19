@@ -552,48 +552,74 @@ const TopicsSubtitle = styled.p`
 const TopicsList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-xs, 8px);
+  gap: 12px;
+  padding: 16px;
+  background: white;
+  border-radius: 5px;
   width: 100%;
-  overflow: visible;
 `;
 
-const TopicCard = styled.div<{ $index?: number }>`
-  background: var(--bg-default, white);
-  border: 1px solid var(--border-default, #dcdcda);
-  border-radius: var(--border-radii-lg, 12px);
-  padding: var(--spacing-sm, 12px) var(--spacing-lg, 32px) var(--spacing-sm, 12px) var(--spacing-md, 20px);
-  display: grid;
-  grid-template-columns: 1fr 100px 130px;
-  gap: var(--spacing-lg, 32px);
-  align-items: start;
-  min-height: 60px;
+const TopicChecklistItem = styled.div<{ $index?: number }>`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  width: 100%;
   opacity: 0;
   animation: ${fadeInUp} 0.5s ease forwards;
   animation-delay: ${props => props.$index ? props.$index * 0.1 : 0}s;
 `;
 
-const TopicInfo = styled.div`
+const CheckIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
   display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xxs, 4px);
+  align-items: center;
+  justify-content: center;
 `;
 
-const SampleLinkWrapper = styled.div`
-  width: 100px;
+const CheckIconSvg = styled.svg`
+  width: 20px;
+  height: 20px;
+`;
+
+const CheckCircle = styled.circle`
+  fill: #ddf0c9;
+  opacity: 1;
+`;
+
+const CheckMark = styled.path`
+  stroke: #293239;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+`;
+
+const TopicTextWrapper = styled.div`
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  align-self: center;
+  gap: 20px;
+  flex: 1;
 `;
 
 const TopicName = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.154px;
-  color: var(--fg-default, #2f3130);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+  color: #646864;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+const SampleLinkWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 `;
 
 const TopicCount = styled.p`
@@ -1471,56 +1497,62 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
                 const isFlipped = flippedStates[index] || false;
 
                 return (
-                  <TopicCard key={index} $index={index}>
-                    <TopicInfo>
+                  <TopicChecklistItem key={index} $index={index}>
+                    <CheckIcon>
+                      <CheckIconSvg viewBox="0 0 20 20">
+                        <CheckCircle
+                          cx="10"
+                          cy="10"
+                          r="8.33"
+                        />
+                        <CheckMark
+                          d="M7.5 10L9.16667 11.6667L12.5 8.33333"
+                        />
+                      </CheckIconSvg>
+                    </CheckIcon>
+                    <TopicTextWrapper>
                       <TopicName>{topic.name}</TopicName>
-                      <TopicCount>{topic.count}</TopicCount>
-                    </TopicInfo>
-                    <SampleLinkWrapper>
-                      <Tooltip
-                        content={
-                          <TooltipContent
-                            ref={(el) => { tooltipRefs.current[index] = el; }}
-                            $isFlipped={isFlipped}
-                            onMouseEnter={() => handleTooltipMouseEnter(index)}
-                            onMouseLeave={() => handleTooltipMouseLeave(index)}
-                          >
-                            <TooltipHeading>Sample tickets</TooltipHeading>
-                            <TicketList>
-                              {displayTickets.map((ticket, ticketIndex) => (
-                                <TicketItem key={ticketIndex} href="#">
-                                  <LetterTag>
-                                    <LetterTagText>S</LetterTagText>
-                                  </LetterTag>
-                                  <TicketText>{ticket}</TicketText>
-                                </TicketItem>
-                              ))}
-                            </TicketList>
-                          </TooltipContent>
-                        }
-                        placement="top"
-                        size="large"
-                        delayMS={0}
-                        hasArrow={false}
-                        zIndex={9999}
-                        isVisible={isTooltipOpen}
-                      >
-                        <SampleLink
-                          ref={(el) => { linkRefs.current[index] = el; }}
-                          href="#"
-                          onMouseEnter={() => handleMouseEnter(index)}
-                          onMouseLeave={() => handleMouseLeave(index)}
+                      <SampleLinkWrapper>
+                        <Tooltip
+                          content={
+                            <TooltipContent
+                              ref={(el) => { tooltipRefs.current[index] = el; }}
+                              $isFlipped={isFlipped}
+                              onMouseEnter={() => handleTooltipMouseEnter(index)}
+                              onMouseLeave={() => handleTooltipMouseLeave(index)}
+                            >
+                              <TooltipHeading>Sample tickets</TooltipHeading>
+                              <TicketList>
+                                {displayTickets.map((ticket, ticketIndex) => (
+                                  <TicketItem key={ticketIndex} href="#">
+                                    <LetterTag>
+                                      <LetterTagText>S</LetterTagText>
+                                    </LetterTag>
+                                    <TicketText>{ticket}</TicketText>
+                                  </TicketItem>
+                                ))}
+                              </TicketList>
+                            </TooltipContent>
+                          }
+                          placement="top"
+                          size="large"
+                          delayMS={0}
+                          hasArrow={false}
+                          zIndex={9999}
+                          isVisible={isTooltipOpen}
                         >
-                          Sample tickets
-                        </SampleLink>
-                      </Tooltip>
-                    </SampleLinkWrapper>
-                    <CoverageTagWrapper>
-                      <CoverageTag size="small">
-                        <span>{topic.coverage}</span>
-                      </CoverageTag>
-                    </CoverageTagWrapper>
-                  </TopicCard>
+                          <SampleLink
+                            ref={(el) => { linkRefs.current[index] = el; }}
+                            href="#"
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={() => handleMouseLeave(index)}
+                          >
+                            Sample tickets
+                          </SampleLink>
+                        </Tooltip>
+                      </SampleLinkWrapper>
+                    </TopicTextWrapper>
+                  </TopicChecklistItem>
                 );
               })}
             </TopicsList>
