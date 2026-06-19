@@ -1490,72 +1490,77 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
               <TopicsSubtitle>Based on 76,346 support conversations between Sep 30 and Oct 31</TopicsSubtitle>
             </TopicsHeader>
 
-            <TopicsList>
-              {TOPICS_DATA.map((topic, index) => {
-                const displayTickets = topic.sampleTickets.slice(0, 5);
-                const isTooltipOpen = tooltipStates[index] || false;
-                const isFlipped = flippedStates[index] || false;
+            {REVIEW_CONTENT.map((section, sectionIndex) => {
+              const displayTickets = TOPICS_DATA[sectionIndex]?.sampleTickets.slice(0, 5) || [];
+              const isTooltipOpen = tooltipStates[sectionIndex] || false;
+              const isFlipped = flippedStates[sectionIndex] || false;
 
-                return (
-                  <TopicChecklistItem key={index} $index={index}>
-                    <CheckIcon>
-                      <CheckIconSvg viewBox="0 0 20 20">
-                        <CheckCircle
-                          cx="10"
-                          cy="10"
-                          r="8.33"
-                        />
-                        <CheckMark
-                          d="M7.5 10L9.16667 11.6667L12.5 8.33333"
-                        />
-                      </CheckIconSvg>
-                    </CheckIcon>
-                    <TopicTextWrapper>
-                      <TopicName>{topic.name}</TopicName>
-                      <SampleLinkWrapper>
-                        <Tooltip
-                          content={
-                            <TooltipContent
-                              ref={(el) => { tooltipRefs.current[index] = el; }}
-                              $isFlipped={isFlipped}
-                              onMouseEnter={() => handleTooltipMouseEnter(index)}
-                              onMouseLeave={() => handleTooltipMouseLeave(index)}
-                            >
-                              <TooltipHeading>Sample tickets</TooltipHeading>
-                              <TicketList>
-                                {displayTickets.map((ticket, ticketIndex) => (
-                                  <TicketItem key={ticketIndex} href="#">
-                                    <LetterTag>
-                                      <LetterTagText>S</LetterTagText>
-                                    </LetterTag>
-                                    <TicketText>{ticket}</TicketText>
-                                  </TicketItem>
-                                ))}
-                              </TicketList>
-                            </TooltipContent>
-                          }
-                          placement="top"
-                          size="large"
-                          delayMS={0}
-                          hasArrow={false}
-                          zIndex={9999}
-                          isVisible={isTooltipOpen}
-                        >
-                          <SampleLink
-                            ref={(el) => { linkRefs.current[index] = el; }}
-                            href="#"
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={() => handleMouseLeave(index)}
+              return (
+                <ReviewTopicSection key={sectionIndex} $index={sectionIndex}>
+                  <ReviewTopicHeader>
+                    <ReviewTopicTitle>{section.topic}</ReviewTopicTitle>
+                    <SampleLinkWrapper style={{ marginLeft: '20px' }}>
+                      <Tooltip
+                        content={
+                          <TooltipContent
+                            ref={(el) => { tooltipRefs.current[sectionIndex] = el; }}
+                            $isFlipped={isFlipped}
+                            onMouseEnter={() => handleTooltipMouseEnter(sectionIndex)}
+                            onMouseLeave={() => handleTooltipMouseLeave(sectionIndex)}
                           >
-                            Sample tickets
-                          </SampleLink>
-                        </Tooltip>
-                      </SampleLinkWrapper>
-                    </TopicTextWrapper>
-                  </TopicChecklistItem>
-                );
-              })}
-            </TopicsList>
+                            <TooltipHeading>Sample tickets</TooltipHeading>
+                            <TicketList>
+                              {displayTickets.map((ticket, ticketIndex) => (
+                                <TicketItem key={ticketIndex} href="#">
+                                  <LetterTag>
+                                    <LetterTagText>S</LetterTagText>
+                                  </LetterTag>
+                                  <TicketText>{ticket}</TicketText>
+                                </TicketItem>
+                              ))}
+                            </TicketList>
+                          </TooltipContent>
+                        }
+                        placement="top"
+                        size="large"
+                        delayMS={0}
+                        hasArrow={false}
+                        zIndex={9999}
+                        isVisible={isTooltipOpen}
+                      >
+                        <SampleLink
+                          ref={(el) => { linkRefs.current[sectionIndex] = el; }}
+                          href="#"
+                          onMouseEnter={() => handleMouseEnter(sectionIndex)}
+                          onMouseLeave={() => handleMouseLeave(sectionIndex)}
+                        >
+                          Sample tickets
+                        </SampleLink>
+                      </Tooltip>
+                    </SampleLinkWrapper>
+                  </ReviewTopicHeader>
+                  <ContentItemsContainer>
+                    {section.items.map((item, itemIndex) => (
+                      <>
+                        <ContentItem key={itemIndex}>
+                          <ContentItemLeft>
+                            <ContentItemTitle>{item.title}</ContentItemTitle>
+                            <ContentTypeBadge $type={item.type}>
+                              {item.type === 'article' ? <TagArticleIcon /> : <TagProcedureIcon />}
+                              <span>{item.type === 'article' ? 'Article' : 'Procedure'}</span>
+                            </ContentTypeBadge>
+                          </ContentItemLeft>
+                          <ChevronIconButton>
+                            <ChevronRightIcon />
+                          </ChevronIconButton>
+                        </ContentItem>
+                        {itemIndex < section.items.length - 1 && <ContentSeparator />}
+                      </>
+                    ))}
+                  </ContentItemsContainer>
+                </ReviewTopicSection>
+              );
+            })}
           </SectionHeader>
           </>
           ) : (
