@@ -11,6 +11,7 @@ import TestAgent, { TestAgentHeader, TestAgentFooter } from './TestAgent';
 import ActivateAgent, { ActivateAgentHeader, ActivateAgentFooter } from './ActivateAgent';
 import SuccessScreen from './SuccessScreen';
 import TestingWidget from './TestingWidget';
+import ArticleEditor from './ArticleEditor';
 
 // Import SVG as React components
 import BubbleIcon from '../assets/Bubble.svg?react';
@@ -464,6 +465,7 @@ export default function MainContent() {
   const [isOptimizeLoading, setIsOptimizeLoading] = useState(true);
   const [isTestLoading, setIsTestLoading] = useState(true);
   const [selectedContent, setSelectedContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
+  const [editingContent, setEditingContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
   const [rejectedContent, setRejectedContent] = useState<Array<{type: 'article' | 'procedure', title: string, topic: string}>>([]);
   const [fadingContent, setFadingContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
 
@@ -481,7 +483,14 @@ export default function MainContent() {
   };
 
   const handleApproveContent = () => {
-    setSelectedContent(null);
+    if (selectedContent) {
+      setEditingContent(selectedContent);
+      setSelectedContent(null);
+    }
+  };
+
+  const handleCloseEditor = () => {
+    setEditingContent(null);
   };
 
   const handleStartMessaging = () => {
@@ -563,8 +572,10 @@ export default function MainContent() {
   };
 
   // Render step content based on current step
+  let stepContent;
+
   if (currentStep === 'success') {
-    return (
+    stepContent = (
       <SuccessScreen
         agentName={agentName || "Agent name"}
         companyName={selectedBrand || "Company name"}
@@ -576,7 +587,7 @@ export default function MainContent() {
       />
     );
   } else if (currentStep === 'activate') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <ActivateAgentHeader />
@@ -604,7 +615,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'test') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <TestAgentHeader />
@@ -639,7 +650,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'optimize') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <OptimizeAgentHeader />
@@ -674,7 +685,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'personalize-c') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <PersonalizeAgentCHeader />
@@ -700,7 +711,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'personalize-profile') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <PersonalizeProfileHeader />
@@ -727,7 +738,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'personalize') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <PersonalizeAgentHeader />
@@ -761,7 +772,7 @@ export default function MainContent() {
       </StepWrapper>
     );
   } else if (currentStep === 'connect') {
-    return (
+    stepContent = (
       <StepWrapper>
         <StepHeader>
           <ConnectKnowledgeHeader />
@@ -792,10 +803,9 @@ export default function MainContent() {
         </StepFooter>
       </StepWrapper>
     );
-  }
-
-  return (
-    <Container>
+  } else {
+    stepContent = (
+      <Container>
       <BackgroundGradient>
         <PurpleShape $delay={0} />
         <BlueShape $delay={2} />
@@ -852,5 +862,19 @@ export default function MainContent() {
         </CardsGrid>
       </ContentWrapper>
     </Container>
+    );
+  }
+
+  return (
+    <>
+      {stepContent}
+      {editingContent && (
+        <ArticleEditor
+          contentDetails={editingContent}
+          onBack={handleCloseEditor}
+          onSave={handleCloseEditor}
+        />
+      )}
+    </>
   );
 }

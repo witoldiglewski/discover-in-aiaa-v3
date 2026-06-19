@@ -1834,7 +1834,7 @@ export function OptimizeAgentFooter({
         $isEnabled={!isLoading}
         onClick={() => !isLoading && onContinue && onContinue()}
       >
-        <span>Continue</span>
+        <span>Approve all and continue</span>
         <ChevronRightDefaultIcon />
       </ContinueButton>
     </Footer>
