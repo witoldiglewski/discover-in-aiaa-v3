@@ -279,9 +279,9 @@ const SparkleIcon = styled(SparkleAltIcon)`
 const Title = styled.h1`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 17px;
-  line-height: 22px;
-  letter-spacing: -0.408px;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.45px;
   color: var(--fg-default, #2f3130);
   margin: 0;
   width: 100%;
@@ -301,9 +301,9 @@ const DescriptionSection = styled.div`
 const Description = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
   color: var(--fg-default, #2f3130);
   margin: 0;
   width: 100%;
@@ -485,8 +485,8 @@ const AgentHeader = styled.div`
 `;
 
 const BotAvatar = styled(CoffeeBotAvatarIcon)`
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 `;
 
@@ -501,9 +501,9 @@ const AgentInfo = styled.div`
 const AgentName = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 700;
-  font-size: 13px;
-  line-height: 18px;
-  letter-spacing: -0.078px;
+  font-size: 17px;
+  line-height: 22px;
+  letter-spacing: -0.408px;
   color: var(--fg-default, #2f3130);
   margin: 0;
   flex-shrink: 0;
@@ -512,12 +512,9 @@ const AgentName = styled.p`
 const AgentSubtitle = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 11px;
-  line-height: 16px;
-  letter-spacing: 0px;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.0004px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
   color: var(--fg-subtle, #646864);
   margin: 0;
   flex-shrink: 0;
@@ -542,25 +539,25 @@ const ChannelItem = styled.div`
 `;
 
 const ChannelIcon = styled.div`
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 
   svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
 const ChannelName = styled.p`
   font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: -0.0004px;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
   color: #2f3941;
   margin: 0;
   white-space: nowrap;
