@@ -39,6 +39,7 @@ const fadeInUp = keyframes`
 import ChevronLeftIcon from '../assets/icons/buttons-chevron-left.svg?react';
 import ChevronRightDefaultIcon from '../assets/icons/buttons-chevron-right-default.svg?react';
 import ChevronRightIcon from '@zendeskgarden/svg-icons/src/16/chevron-right-stroke.svg?react';
+import ChevronDownIcon from '@zendeskgarden/svg-icons/src/16/chevron-down-stroke.svg?react';
 import CloseSmallIcon from '../assets/icons/buttons-close-small.svg?react';
 import ChannelMessagingIcon from '../assets/icons/channel-messaging.svg?react';
 
@@ -936,6 +937,197 @@ const ChevronIconButton = styled.button`
   }
 `;
 
+const DetailsSidebar = styled.div`
+  width: 360px;
+  background: var(--bg-default, white);
+  border-left: 1px solid var(--border-default, #dcdcda);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const DetailsHeader = styled.div`
+  padding: var(--spacing-lg, 32px) var(--spacing-md, 20px) var(--spacing-md, 20px);
+  border-bottom: 1px solid var(--border-default, #dcdcda);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const DetailsTypeLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.66px;
+  text-transform: uppercase;
+  color: var(--fg-subtle, #646864);
+  margin: 0;
+`;
+
+const DetailsTitle = styled.h3`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.45px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const DetailsContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, 20px);
+`;
+
+const DetailsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const DetailsSectionLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const DetailsSectionValue = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+`;
+
+const AccordionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-default, #dcdcda);
+  border-radius: var(--border-radii-lg, 12px);
+  overflow: hidden;
+`;
+
+const AccordionHeader = styled.button<{ $isOpen: boolean }>`
+  background: var(--bg-default, white);
+  border: none;
+  padding: var(--spacing-sm, 12px) var(--spacing-md, 20px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: -0.154px;
+  color: var(--fg-default, #2f3130);
+  text-align: left;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s ease;
+    transform: ${props => props.$isOpen ? 'rotate(180deg)' : 'rotate(0deg)'};
+  }
+`;
+
+const AccordionContent = styled.div<{ $isOpen: boolean }>`
+  display: ${props => props.$isOpen ? 'flex' : 'none'};
+  flex-direction: column;
+  gap: var(--spacing-sm, 12px);
+  padding: 0 var(--spacing-md, 20px) var(--spacing-sm, 12px);
+  border-top: 1px solid var(--border-default, #dcdcda);
+`;
+
+const AccordionItem = styled.div`
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+  align-items: flex-start;
+`;
+
+const AccordionItemLabel = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  min-width: 100px;
+`;
+
+const AccordionItemValue = styled.p`
+  font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: -0.0004px;
+  color: var(--fg-default, #2f3130);
+  margin: 0;
+  flex: 1;
+`;
+
+const DetailsFooter = styled.div`
+  padding: var(--spacing-md, 20px);
+  border-top: 1px solid var(--border-default, #dcdcda);
+  display: flex;
+  gap: var(--spacing-xs, 8px);
+`;
+
+const DetailsButton = styled(Button)`
+  && {
+    flex: 1;
+    height: 40px;
+    padding: 10px 16px;
+    border-radius: var(--border-radii-pill, 99px);
+    font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.154px;
+  }
+`;
+
+const ApproveButton = styled(DetailsButton)`
+  && {
+    background: var(--button-bg-emphasis, #2f3130);
+    color: var(--fg-onemphasis, white);
+    border: none;
+
+    &:hover {
+      background: var(--button-bg-emphasis-hover, #404241);
+    }
+  }
+`;
+
+const RejectButton = styled(DetailsButton)`
+  && {
+    background: transparent;
+    color: var(--button-fg-default, #2f3130);
+    border: 1px solid var(--button-border-default, #999b97);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
 
 const Footer = styled.div`
   display: flex;
@@ -1343,6 +1535,9 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
   const [flippedStates, setFlippedStates] = useState<{[key: number]: boolean}>({});
   const linkRefs = useRef<{[key: number]: HTMLAnchorElement | null}>({});
   const tooltipRefs = useRef<{[key: number]: HTMLDivElement | null}>({});
+  const [selectedContent, setSelectedContent] = useState<{type: 'article' | 'procedure', title: string, topic: string} | null>(null);
+  const [placementOpen, setPlacementOpen] = useState(false);
+  const [permissionsOpen, setPermissionsOpen] = useState(false);
 
   const steps = [
     { label: 'Connect', isCurrent: false },
@@ -1487,7 +1682,6 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
           <SectionHeader>
             <TopicsHeader>
               <TopicsTitle>Approve suggested content to improve automation</TopicsTitle>
-              <TopicsSubtitle>We have prepared AI generated articles and procedures that will improve AI agents automation rate.</TopicsSubtitle>
             </TopicsHeader>
 
             {REVIEW_CONTENT.map((section, sectionIndex) => {
@@ -1548,7 +1742,10 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
                   <ContentItemsContainer>
                     {section.items.map((item, itemIndex) => (
                       <>
-                        <ContentItem key={itemIndex}>
+                        <ContentItem
+                          key={itemIndex}
+                          onClick={() => setSelectedContent({type: item.type, title: item.title, topic: section.topic})}
+                        >
                           <ContentItemLeft>
                             <ContentItemTitle>{item.title}</ContentItemTitle>
                             <ContentTypeBadge $type={item.type}>
@@ -1614,6 +1811,59 @@ export default function OptimizeAgent({ widgetIsReady, selectedTone, buildPhase,
           </MainPanelContent>
           )}
         </MainPanel>
+
+        {selectedContent && (
+          <DetailsSidebar>
+            <DetailsHeader>
+              <DetailsTypeLabel>{selectedContent.type} details</DetailsTypeLabel>
+              <DetailsTitle>{selectedContent.title}</DetailsTitle>
+            </DetailsHeader>
+            <DetailsContent>
+              <DetailsSection>
+                <DetailsSectionLabel>Topic</DetailsSectionLabel>
+                <DetailsSectionValue>{selectedContent.topic}</DetailsSectionValue>
+              </DetailsSection>
+
+              <AccordionContainer>
+                <AccordionHeader $isOpen={placementOpen} onClick={() => setPlacementOpen(!placementOpen)}>
+                  Placement
+                  <ChevronDownIcon />
+                </AccordionHeader>
+                <AccordionContent $isOpen={placementOpen}>
+                  <AccordionItem>
+                    <AccordionItemLabel>Category</AccordionItemLabel>
+                    <AccordionItemValue>General</AccordionItemValue>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <AccordionItemLabel>Section</AccordionItemLabel>
+                    <AccordionItemValue>Account and settings</AccordionItemValue>
+                  </AccordionItem>
+                </AccordionContent>
+              </AccordionContainer>
+
+              <AccordionContainer>
+                <AccordionHeader $isOpen={permissionsOpen} onClick={() => setPermissionsOpen(!permissionsOpen)}>
+                  Viewing permissions
+                  <ChevronDownIcon />
+                </AccordionHeader>
+                <AccordionContent $isOpen={permissionsOpen}>
+                  <AccordionItem>
+                    <AccordionItemLabel>Visibility</AccordionItemLabel>
+                    <AccordionItemValue>Everyone</AccordionItemValue>
+                  </AccordionItem>
+                  <AccordionItem>
+                    <AccordionItemLabel>User segment</AccordionItemLabel>
+                    <AccordionItemValue>—</AccordionItemValue>
+                  </AccordionItem>
+                </AccordionContent>
+              </AccordionContainer>
+            </DetailsContent>
+            <DetailsFooter>
+              <RejectButton onClick={() => setSelectedContent(null)}>Reject</RejectButton>
+              <ApproveButton onClick={() => setSelectedContent(null)}>Approve</ApproveButton>
+            </DetailsFooter>
+          </DetailsSidebar>
+        )}
       </>
   );
 }
