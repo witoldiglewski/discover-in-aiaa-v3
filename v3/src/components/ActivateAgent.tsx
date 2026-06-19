@@ -500,7 +500,7 @@ export default function ActivateAgent({ selectedChannels, setSelectedChannels }:
   const steps = [
     { label: 'Connect', isCurrent: false },
     { label: 'Personalize', isCurrent: false },
-    { label: 'Optimize', isCurrent: false },
+    { label: 'Build', isCurrent: false },
     { label: 'Test', isCurrent: false },
     { label: 'Activate', isCurrent: true },
   ];

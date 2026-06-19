@@ -457,7 +457,7 @@ export default function PersonalizeAgentC({ widgetIsReady }: PersonalizeAgentCPr
   const steps = [
     { label: 'Connect', isCurrent: false },
     { label: 'Personalize', isCurrent: true },
-    { label: 'Optimize', isCurrent: false },
+    { label: 'Build', isCurrent: false },
     { label: 'Test', isCurrent: false },
     { label: 'Activate', isCurrent: false },
   ];

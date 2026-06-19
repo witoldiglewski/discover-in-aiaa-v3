@@ -716,7 +716,7 @@ export default function ConnectKnowledge({ widgetIsReady, setWidgetIsReady, widg
   const steps = [
     { label: 'Connect', isCurrent: true },
     { label: 'Personalize', isCurrent: false },
-    { label: 'Optimize', isCurrent: false },
+    { label: 'Build', isCurrent: false },
     { label: 'Test', isCurrent: false },
     { label: 'Activate', isCurrent: false },
   ];
